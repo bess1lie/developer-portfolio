@@ -626,48 +626,92 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
   100% { transform: translate(-50%, 10px); opacity: 0; }
 }
 
-/* ---------- Recent ---------- */
-.recent-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--grid-gap);
-  perspective: 1000px;
-}
-.recent-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+/* ---------- Recent (editorial) ---------- */
+.projects-list {
   display: flex;
   flex-direction: column;
-  transform-style: preserve-3d;
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
-  will-change: transform;
+  gap: 80px;
 }
-.recent-card:hover {
-  border-color: var(--accent);
-  box-shadow: var(--shadow-hover);
+.project-row {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 56px;
+  align-items: center;
 }
+.project-row--reverse .project-media { order: 2; }
 
-.recent-shot {
-  aspect-ratio: 16 / 11;
+.browser-frame {
+  display: block;
+  position: relative;
+  border-radius: var(--radius);
+  background: #0B0F19;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
   overflow: hidden;
-  background: var(--bg-soft);
-  transform: translateZ(24px);
-  margin-bottom: 24px;
-  border-radius: var(--radius) var(--radius) 0 0;
 }
-.recent-shot img {
+.browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 16px;
+  background: #0B0F19;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}
+.browser-bar i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #334155;
+}
+.browser-bar i:first-child { background: #F87171; }
+.browser-bar i:nth-child(2) { background: #FBBF24; }
+.browser-bar i:last-child { background: #34D399; }
+.browser-frame img {
+  display: block;
   width: 100%;
-  height: 100%;
+  aspect-ratio: 16 / 10.5;
   object-fit: cover;
   object-position: top;
-  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
-.recent-card:hover .recent-shot img { transform: scale(1.06); }
+.browser-frame:hover img { transform: scale(1.04); }
 
-.recent-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
-.recent-meta { display: flex; flex-direction: column; gap: 10px; color: var(--text-muted); font-size: 0.95rem; }
-.recent-meta strong { color: var(--text); font-weight: 600; }
+.project-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+.project-num {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px #475569;
+  letter-spacing: 0.02em;
+}
+.project-desc {
+  color: var(--dark-island-muted);
+  font-size: 1.02rem;
+  line-height: 1.7;
+  margin: 0;
+}
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.project-tags span {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #94A3B8;
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+.project-info .btn { margin-top: 4px; }
 /* ---------- Тёмный остров (для витрины демо) ---------- */
 .dark-island {
   background-color: var(--dark-island-bg);
@@ -679,24 +723,17 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
 .dark-island .section-sub {
   color: var(--dark-island-muted);
 }
-.dark-island .recent-card {
-  background: var(--dark-island-card);
-  border-color: var(--dark-island-border);
-  color: var(--dark-island-text);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
-}
-.dark-island .recent-card:hover {
-  border-color: #6366F1;
-  box-shadow: 0 24px 50px rgba(99, 102, 241, 0.2);
-}
-.dark-island .recent-shot {
-  background: #0B0F19;
-}
-.dark-island .recent-meta {
+.dark-island .project-desc {
   color: var(--dark-island-muted);
 }
-.dark-island .recent-meta strong {
-  color: var(--dark-island-text);
+.dark-island .project-tags span {
+  color: #94A3B8;
+  background: rgba(148, 163, 184, 0.12);
+  border-color: rgba(148, 163, 184, 0.2);
+}
+.dark-island .project-num {
+  -webkit-text-stroke: 1.5px #818CF8;
+  opacity: 0.85;
 }
 .dark-island .section-label {
   color: #818CF8;
@@ -1123,8 +1160,11 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
    Адаптивность
    ========================================================================= */
 @media (max-width: 1024px) {
-  .recent-grid, .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
   .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+  .project-row { grid-template-columns: 1fr; gap: 32px; }
+  .project-row--reverse .project-media { order: 0; }
+  .project-num { font-size: 2.1rem; }
   .hero-inner { grid-template-columns: 1fr; gap: 40px; }
   .hero-visual { width: 100%; max-width: 480px; margin-inline: auto; }
 }
@@ -1136,7 +1176,7 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
 
   .logo { padding: 10px 0; }
 
-  .recent-body .btn { width: 100%; min-height: 48px; }
+  .project-info .btn { width: 100%; min-height: 48px; }
   .lead-form .btn { min-height: 48px; }
 
   .contact-links { gap: 8px; }
@@ -1149,7 +1189,7 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
   .contact-inner { grid-template-columns: 1fr; gap: 32px; }
   .section { padding: 56px 0; }
 
-  .service-card > p, .why-card p, .timeline-body p, .faq-item p, .recent-meta { font-size: 1rem; }
+  .service-card > p, .why-card p, .timeline-body p, .faq-item p, .project-desc { font-size: 1rem; }
   .field label { font-size: 0.9rem; }
   .hero-trust, .price-desc, .pricing-note, .contact-alt { font-size: 0.92rem; }
   .field input, .field textarea { font-size: 16px; }
@@ -1160,9 +1200,10 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
 }
 
 @media (max-width: 560px) {
-  .recent-grid, .services-grid, .why-grid, .pricing-grid {
+  .services-grid, .why-grid, .pricing-grid {
     grid-template-columns: 1fr;
   }
+  .projects-list { gap: 56px; }
   .hero-actions .btn { flex: 1 1 100%; }
   .footer-inner { flex-direction: column; align-items: flex-start; }
 }
