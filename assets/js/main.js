@@ -21,13 +21,16 @@
     var savedScrollY = 0;
 
     function preventTouch(event) {
-      // Блокируем скролл страницы позади меню, но даём скроллить список внутри меню
-      if (menu.contains(event.target)) return;
+      // Скроллить можно ТОЛЬКО список меню, всё остальное блокируем.
+      // Меню fullscreen — палец всегда внутри него, поэтому проверяем именно ul.
+      var list = menu.querySelector("ul");
+      if (list && list.contains(event.target)) return;
       event.preventDefault();
     }
 
     function preventWheel(event) {
-      if (menu.contains(event.target)) return;
+      var list = menu.querySelector("ul");
+      if (list && list.contains(event.target)) return;
       event.preventDefault();
     }
 
@@ -42,17 +45,19 @@
       doc.addEventListener("wheel", preventWheel, { passive: false });
     }
 
-    function unlockScroll() {
+    function unlockScroll(restore) {
       doc.body.classList.remove("menu-open");
       doc.documentElement.classList.remove("menu-open");
       doc.body.style.top = "";
       doc.removeEventListener("touchmove", preventTouch, { passive: false });
       doc.removeEventListener("wheel", preventWheel, { passive: false });
-      // position:fixed на body сбрасывает позицию в 0 — возвращаем сохранённую
-      window.scrollTo(0, savedScrollY);
+      // position:fixed на body сбрасывает позицию в 0 — возвращаем сохранённую.
+      // restore=false для ссылок меню: якорь сам проскроллит к секции.
+      if (restore) window.scrollTo({ top: savedScrollY, behavior: "auto" });
     }
 
-    function setMenu(next) {
+    function setMenu(next, opts) {
+      opts = opts || {};
       if (open === next) return; // защита от race condition при быстрых кликах
       open = next;
 
@@ -69,7 +74,7 @@
         if (first) first.focus({ preventScroll: true });
       } else {
         menu.classList.remove("is-open");
-        unlockScroll();
+        unlockScroll(opts.restoreScroll !== false);
         // preventScroll: focus() на toggle не должен "отбрасывать" страницу вверх
         toggle.focus({ preventScroll: true });
       }
@@ -81,7 +86,7 @@
 
     menu.querySelectorAll("a").forEach(function (link) {
       link.addEventListener("click", function () {
-        setMenu(false);
+        setMenu(false, { restoreScroll: false });
       });
     });
 

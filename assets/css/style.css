@@ -1169,16 +1169,18 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
   .project-num { font-size: 2.1rem; }
   .hero-inner { grid-template-columns: 1fr; gap: 40px; }
   .hero-visual { width: 100%; max-width: 480px; margin-inline: auto; }
+  .hero-glowing-orb { display: none; }
+  .hero-bg-grid { opacity: 0.2; }
+  .hero-actions .btn-primary { box-shadow: 0 4px 14px rgba(79, 70, 229, 0.25); }
 }
 
 @media (max-width: 768px) {
-  .hero-glowing-orb { display: none; }
   .hero-bg-grid { opacity: 0.25; }
   .mobile-menu { background: rgba(250, 249, 246, 0.98); }
   html.menu-open, body.menu-open { overflow: hidden !important; }
   body.menu-open { position: fixed; left: 0; right: 0; width: 100%; }
   .mobile-menu { overscroll-behavior: contain; }
-  .mobile-menu ul { overflow-y: auto; min-height: 0; }
+  .mobile-menu ul { overflow-y: auto; min-height: 0; overscroll-behavior: contain; }
 
   .site-nav { display: none; }
   .btn-header { display: none; }
