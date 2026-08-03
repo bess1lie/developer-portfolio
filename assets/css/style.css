@@ -608,31 +608,39 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--grid-gap);
+  perspective: 1000px;
 }
 .recent-card {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transform-style: preserve-3d;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  will-change: transform;
 }
-.recent-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.recent-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-hover);
+}
 
 .recent-shot {
   aspect-ratio: 16 / 11;
   overflow: hidden;
   background: var(--bg-soft);
+  transform: translateZ(24px);
+  margin-bottom: 24px;
+  border-radius: var(--radius) var(--radius) 0 0;
 }
 .recent-shot img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: top;
-  transition: transform 0.4s ease;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
-.recent-card:hover .recent-shot img { transform: scale(1.04); }
+.recent-card:hover .recent-shot img { transform: scale(1.06); }
 
 .recent-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
 .recent-meta { display: flex; flex-direction: column; gap: 10px; color: var(--text-muted); font-size: 0.95rem; }

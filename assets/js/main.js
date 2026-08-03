@@ -198,6 +198,31 @@
         });
       });
     }
+
+    // 3D-tilt на демо-карточках
+    var tiltCards = doc.querySelectorAll(".recent-card");
+    if (tiltCards.length) {
+      tiltCards.forEach(function (card) {
+        var rxTo = gsap.quickTo(card, "rotationX", { duration: 0.4, ease: "power3.out" });
+        var ryTo = gsap.quickTo(card, "rotationY", { duration: 0.4, ease: "power3.out" });
+
+        card.addEventListener("mousemove", function (e) {
+          var r = card.getBoundingClientRect();
+          var px = (e.clientX - r.left) / r.width - 0.5;
+          var py = (e.clientY - r.top) / r.height - 0.5;
+          ryTo(px * 16);
+          rxTo(py * -16);
+        });
+        card.addEventListener("mouseleave", function () {
+          gsap.to(card, {
+            rotationX: 0,
+            rotationY: 0,
+            duration: 0.6,
+            ease: "elastic.out(1, 0.5)"
+          });
+        });
+      });
+    }
   }
 
   /* ---------- GSAP Анимации (Премиум) ---------- */
