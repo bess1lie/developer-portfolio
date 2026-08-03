@@ -61,8 +61,8 @@
   --dark-island-text: #F8FAFC;
   --dark-island-muted: #94A3B8;
 
-  --font-display: 'Unbounded', 'Manrope', system-ui, -apple-system, sans-serif;
-  --font-body: 'Manrope', system-ui, -apple-system, sans-serif;
+  --font-display: 'Unbounded', 'Manrope', system-ui, sans-serif;
+  --font-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   --radius: 18px;
   --radius-sm: 12px;
