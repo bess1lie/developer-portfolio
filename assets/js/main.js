@@ -21,28 +21,35 @@
     var savedScrollY = 0;
 
     function preventTouch(event) {
+      // Блокируем скролл страницы позади меню, но даём скроллить список внутри меню
+      if (menu.contains(event.target)) return;
+      event.preventDefault();
+    }
+
+    function preventWheel(event) {
+      if (menu.contains(event.target)) return;
       event.preventDefault();
     }
 
     function lockScroll() {
       savedScrollY = window.scrollY;
-      doc.body.style.overflow = "hidden";
-      // Firefox сдвигает scrollY на доли px при смене overflow:hidden —
-      // принудительно возвращаем позицию напрямую через scrollTop.
-      doc.documentElement.scrollTop = savedScrollY;
-      // overflow:hidden на body не блокирует touch-скролл в мобильных Chrome/Safari.
-      // preventDefault на touchmove с passive:false закрывает этот канал, не трогая layout.
+      doc.body.style.top = -savedScrollY + "px";
+      doc.body.classList.add("menu-open");
+      doc.documentElement.classList.add("menu-open");
+      // overflow:hidden на body не блокирует touch-скролл в мобильных Chrome/Firefox/WebView.
+      // preventDefault на touchmove/wheel с passive:false закрывает этот канал, не трогая layout.
       doc.addEventListener("touchmove", preventTouch, { passive: false });
+      doc.addEventListener("wheel", preventWheel, { passive: false });
     }
 
     function unlockScroll() {
-      doc.body.style.overflow = "";
+      doc.body.classList.remove("menu-open");
+      doc.documentElement.classList.remove("menu-open");
+      doc.body.style.top = "";
       doc.removeEventListener("touchmove", preventTouch, { passive: false });
-      // Firefox при снятии overflow:hidden сдвигает scrollY на доли px —
-      // принудительно возвращаем сохранённую позицию напрямую через scrollTop.
-      if (window.scrollY !== savedScrollY) {
-        doc.documentElement.scrollTop = savedScrollY;
-      }
+      doc.removeEventListener("wheel", preventWheel, { passive: false });
+      // position:fixed на body сбрасывает позицию в 0 — возвращаем сохранённую
+      window.scrollTo(0, savedScrollY);
     }
 
     function setMenu(next) {

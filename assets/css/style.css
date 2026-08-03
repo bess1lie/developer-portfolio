@@ -1172,6 +1172,14 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
 }
 
 @media (max-width: 768px) {
+  .hero-glowing-orb { display: none; }
+  .hero-bg-grid { opacity: 0.25; }
+  .mobile-menu { background: rgba(250, 249, 246, 0.98); }
+  html.menu-open, body.menu-open { overflow: hidden !important; }
+  body.menu-open { position: fixed; left: 0; right: 0; width: 100%; }
+  .mobile-menu { overscroll-behavior: contain; }
+  .mobile-menu ul { overflow-y: auto; min-height: 0; }
+
   .site-nav { display: none; }
   .btn-header { display: none; }
   .nav-toggle { display: flex; width: 44px; height: 44px; padding: 0; align-items: center; justify-content: center; }
