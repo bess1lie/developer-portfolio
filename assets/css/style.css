@@ -310,6 +310,10 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
   border: none;
   padding: 8px;
   cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   z-index: 1001;
 }
 .nav-toggle-line {
@@ -361,7 +365,9 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
 }
 .mobile-menu li { border-bottom: 1px solid var(--border); padding-bottom: 12px; }
 .mobile-menu a {
-  display: block;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
   font-family: var(--font-display);
   font-size: 1.5rem;
   color: var(--text);
@@ -517,12 +523,16 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
 .hero-trust {
   color: var(--text-dim);
   font-size: 0.88rem;
-  letter-spacing: -0.01em;
   font-weight: 500;
   display: flex;
   flex-wrap: wrap;
   gap: 8px 16px;
   align-items: center;
+}
+.hero-trust span:not(:last-child)::after {
+  content: "·";
+  margin-left: 16px;
+  opacity: 0.6;
 }
 .hero-trust::before {
   content: "";
