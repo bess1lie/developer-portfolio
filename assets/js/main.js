@@ -84,8 +84,20 @@
     });
 
     menu.querySelectorAll("a").forEach(function (link) {
-      link.addEventListener("click", function () {
-        setMenu(false, { restoreScroll: false });
+      link.addEventListener("click", function (event) {
+        var href = link.getAttribute("href") || "";
+        if (href.charAt(0) === "#") {
+          event.preventDefault();
+          setMenu(false, { restoreScroll: true });
+          var target = document.getElementById(href.slice(1));
+          if (target) {
+            requestAnimationFrame(function () {
+              target.scrollIntoView({ behavior: "smooth", block: "start" });
+            });
+          }
+        } else {
+          setMenu(false, { restoreScroll: true });
+        }
       });
     });
 
