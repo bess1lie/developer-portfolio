@@ -676,6 +676,25 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
   font-size: 0.82rem;
   font-weight: 600;
 }
+.dark-island .recent-name {
+  color: var(--dark-island-text);
+}
+.dark-island .btn-outline {
+  background: transparent;
+  border-color: #475569;
+  color: #E2E8F0;
+  transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+}
+.dark-island .btn-outline:hover {
+  border-color: transparent;
+  background: var(--accent-gradient);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.35);
+}
+.dark-island .section-head .section-sub {
+  color: #818CF8;
+  font-weight: 600;
+}
 
 /* ---------- Why ---------- */
 .why { background: var(--bg-soft); }
@@ -972,11 +991,12 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
 .contact-links a:hover { color: var(--accent-text); filter: brightness(1.15); }
 .contact-links svg { color: var(--accent-text); }
 
-/* ---------- Footer ---------- */
+/* ---------- Footer (тёмный остров) ---------- */
 .site-footer {
-  border-top: 1px solid var(--border);
-  padding: 28px 0;
-  background: var(--bg-soft);
+  border-top: 1px solid var(--dark-island-border);
+  padding: 40px 0;
+  background: var(--dark-island-bg);
+  color: var(--dark-island-muted);
 }
 .footer-inner {
   display: flex;
@@ -985,21 +1005,21 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
   flex-wrap: wrap;
   gap: 14px;
 }
-.footer-tagline { color: var(--text-muted); font-size: 0.9rem; }
+.footer-tagline { color: var(--dark-island-muted); font-size: 0.9rem; }
 .footer-links {
   display: flex;
   align-items: center;
   gap: 20px;
   font-size: 0.9rem;
 }
-.footer-links a { color: var(--text-muted); }
-.footer-links a:hover { color: var(--text); }
-.footer-year { color: var(--text-dim); }
+.footer-links a { color: var(--dark-island-muted); }
+.footer-links a:hover { color: #fff; }
+.footer-year { color: var(--dark-island-muted); }
 .footer-tech {
   margin-top: 20px;
   padding-top: 16px;
-  border-top: 1px solid var(--border);
-  color: var(--text-dim);
+  border-top: 1px solid var(--dark-island-border);
+  color: var(--dark-island-muted);
   font-size: 0.82rem;
   text-align: center;
   letter-spacing: 0.01em;
