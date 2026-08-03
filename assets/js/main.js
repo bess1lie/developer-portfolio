@@ -192,51 +192,7 @@
       }, 0.5)
       .to(".hero-scroll", { opacity: 0.7, duration: 0.4 }, 0.8);
 
-    // --- 2. Движение светящихся орбов (живое, с параллаксом) ---
-    if (doc.querySelector(".orb-1")) {
-      gsap.to(".orb-1", {
-        x: "+=30",
-        y: "-=20",
-        rotation: 5,
-        duration: 8,
-        yoyo: true,
-        repeat: -1,
-        ease: "sine.inOut"
-      });
-    }
-    if (doc.querySelector(".orb-2")) {
-      gsap.to(".orb-2", {
-        x: "-=25",
-        y: "+=18",
-        rotation: -4,
-        duration: 9,
-        yoyo: true,
-        repeat: -1,
-        ease: "sine.inOut"
-      });
-    }
-    if (doc.querySelector(".orb-3")) {
-      gsap.to(".orb-3", {
-        x: "+=18",
-        y: "+=14",
-        rotation: 6,
-        duration: 7,
-        yoyo: true,
-        repeat: -1,
-        ease: "sine.inOut"
-      });
-    }
-
-    // Параллакс орбов при скролле
-    gsap.to([".orb-1", ".orb-2", ".orb-3"], {
-      y: -50,
-      scrollTrigger: {
-        trigger: ".hero",
-        start: "top top",
-        end: "bottom top",
-        scrub: 1
-      }
-    });
+    // --- 2. Движение орбов: только CSS-drift (transform, без JS) ---
 
     // --- 3. Исчезновение индикатора скролла при прокрутке ---
     gsap.to(".hero-scroll", {
