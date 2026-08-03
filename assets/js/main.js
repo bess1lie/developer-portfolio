@@ -52,7 +52,7 @@
       doc.removeEventListener("wheel", preventWheel, { passive: false });
       // position:fixed на body сбрасывает позицию в 0 — возвращаем сохранённую.
       // restore=false для ссылок меню: якорь сам проскроллит к секции.
-      if (restore) window.scrollTo({ top: savedScrollY, behavior: "auto" });
+      if (restore) window.scrollTo({ top: savedScrollY, behavior: "instant" });
     }
 
     function setMenu(next, opts) {
