@@ -565,7 +565,6 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
   font-size: 0.95rem;
   color: var(--text);
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, border-color 0.4s ease;
-  will-change: transform;
 }
 .mini-card:hover {
   transform: translateY(-5px) scale(1.03) !important;
