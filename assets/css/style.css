@@ -905,9 +905,6 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
   bottom: 0;
   width: 2px;
   background: var(--accent-gradient);
-  transform: scaleY(0);
-  transform-origin: top;
-  will-change: transform;
 }
 .timeline {
   list-style: none;

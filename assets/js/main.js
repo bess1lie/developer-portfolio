@@ -165,32 +165,30 @@
       return;
     }
 
-    // --- 1. Анимация появления Hero блока (общий вход ≤ 1.2с) ---
-    var heroTL = gsap.timeline({ defaults: { ease: "power4.out" } });
+    // --- 1. Анимация появления Hero блока (общий вход ≤ 0.9с) ---
+    var heroTL = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-    gsap.set(".hero-eyebrow", { opacity: 0, y: 20 });
-    gsap.set("#hero-title", { opacity: 0, y: 25 });
-    gsap.set(".hero-sub", { opacity: 0, y: 20 });
-    gsap.set(".hero-actions", { opacity: 0, y: 15 });
+    gsap.set(".hero-eyebrow", { opacity: 0, y: 16 });
+    gsap.set("#hero-title", { opacity: 0, y: 20 });
+    gsap.set(".hero-sub", { opacity: 0, y: 16 });
+    gsap.set(".hero-actions", { opacity: 0, y: 12 });
     gsap.set(".hero-trust", { opacity: 0 });
-    gsap.set(".mini-card", { opacity: 0, scale: 0.8, y: 30 });
+    gsap.set(".mini-card", { opacity: 0, y: 24 });
     gsap.set(".hero-scroll", { opacity: 0 });
 
     heroTL
-      .to(".hero-eyebrow", { opacity: 1, y: 0, duration: 0.5 }, 0)
-      .to("#hero-title", { opacity: 1, y: 0, duration: 0.7 }, 0.1)
-      .to(".hero-sub", { opacity: 1, y: 0, duration: 0.5 }, 0.3)
-      .to(".hero-actions", { opacity: 1, y: 0, duration: 0.5 }, 0.45)
-      .to(".hero-trust", { opacity: 1, duration: 0.4 }, 0.55)
+      .to(".hero-eyebrow", { opacity: 1, y: 0, duration: 0.4 }, 0)
+      .to("#hero-title", { opacity: 1, y: 0, duration: 0.5 }, 0.08)
+      .to(".hero-sub", { opacity: 1, y: 0, duration: 0.4 }, 0.22)
+      .to(".hero-actions", { opacity: 1, y: 0, duration: 0.4 }, 0.32)
+      .to(".hero-trust", { opacity: 1, duration: 0.3 }, 0.42)
       .to(".mini-card", {
         opacity: 1,
-        scale: 1,
         y: 0,
-        stagger: 0.08,
-        ease: "back.out(1.7)",
-        duration: 0.6
-      }, 0.5)
-      .to(".hero-scroll", { opacity: 0.7, duration: 0.4 }, 0.8);
+        stagger: 0.06,
+        duration: 0.5
+      }, 0.35)
+      .to(".hero-scroll", { opacity: 0.7, duration: 0.3 }, 0.55);
 
     // --- 2. Движение орбов: только CSS-drift (transform, без JS) ---
 
@@ -206,22 +204,19 @@
       y: -20
     });
 
-    // --- 4. Разнообразные scroll-reveals по секциям ---
-    function revealBatch(selector, fromVars, stagger, duration, ease) {
+    // --- 4. Единый стиль scroll-reveals: простой fade-up для всех секций ---
+    function revealBatch(selector, stagger, duration) {
       var els = doc.querySelectorAll(selector);
       if (!els.length) return;
-      gsap.set(els, Object.assign({}, fromVars, { opacity: 0 }));
+      gsap.set(els, { opacity: 0, y: 24 });
       ScrollTrigger.batch(els, {
         onEnter: function (batch) {
-          gsap.fromTo(batch, fromVars, {
+          gsap.to(batch, {
             opacity: 1,
-            x: 0,
             y: 0,
-            scale: 1,
-            rotationX: 0,
             duration: duration || 0.7,
             stagger: stagger || 0.1,
-            ease: ease || "power2.out",
+            ease: "power2.out",
             overwrite: "auto"
           });
         },
@@ -230,42 +225,26 @@
       });
     }
 
-    // Демо-проекты: простой reveal, заходят по очереди
-    revealBatch(".project-row", { y: 40 }, 0.12, 0.8);
+    // Демо-проекты
+    revealBatch(".project-row", 0.12, 0.8);
 
-    // Услуги: fade-up, компактный stagger
-    revealBatch(".service-card", { y: 40 }, 0.1, 0.6);
+    // Услуги
+    revealBatch(".service-card", 0.1, 0.6);
 
-    // «Почему я»: заходят СЛЕВА
-    revealBatch(".why-card", { x: -30 }, 0.1, 0.7);
+    // «Почему я»
+    revealBatch(".why-card", 0.1, 0.7);
 
-    // Цены: снизу + scale
-    revealBatch(".price-card", { y: 40, scale: 0.9 }, 0.1, 0.7);
+    // Цены
+    revealBatch(".price-card", 0.1, 0.7);
 
-    // Процесс: timeline поочерёдно + линия-прогресс
-    revealBatch(".timeline-item", { y: 30 }, 0.15, 0.7);
-    var timelineProgress = doc.querySelector(".timeline-progress");
-    if (timelineProgress) {
-      gsap.fromTo(timelineProgress,
-        { scaleY: 0 },
-        {
-          scaleY: 1,
-          transformOrigin: "top",
-          ease: "power1.inOut",
-          scrollTrigger: {
-            trigger: ".timeline",
-            start: "top 80%",
-            end: "bottom 60%",
-            scrub: 0.6
-          }
-        });
-    }
+    // Процесс: timeline
+    revealBatch(".timeline-item", 0.12, 0.7);
 
-    // FAQ: rotationX + fade
-    revealBatch(".faq-item", { rotationX: 5 }, 0.08, 0.7);
+    // FAQ
+    revealBatch(".faq-item", 0.08, 0.7);
 
-    // Контакты: форма заходит СПРАВА
-    revealBatch(".lead-form", { x: 30 }, 0, 0.7);
+    // Контакты: форма
+    revealBatch(".lead-form", 0, 0.7);
   }
 
   /* ---------- Текущий год в футере ---------- */
