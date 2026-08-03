@@ -173,7 +173,7 @@
     gsap.set(".hero-sub", { opacity: 0, y: 16 });
     gsap.set(".hero-actions", { opacity: 0, y: 12 });
     gsap.set(".hero-trust", { opacity: 0 });
-    gsap.set(".mini-card", { opacity: 0, y: 24 });
+    gsap.set(".mini-card", { opacity: 0, y: 24, rotation: function (i) { return [-2, 2.5, -1.5, 2, -2.5][i] || 0; } });
     gsap.set(".hero-scroll", { opacity: 0 });
 
     heroTL
@@ -185,6 +185,7 @@
       .to(".mini-card", {
         opacity: 1,
         y: 0,
+        rotation: function (i) { return [-2, 2.5, -1.5, 2, -2.5][i] || 0; },
         stagger: 0.06,
         duration: 0.5
       }, 0.35)
