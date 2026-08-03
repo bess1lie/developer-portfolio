@@ -443,12 +443,43 @@
     });
   }
 
+  /* ---------- FAQ: плавное открытие ---------- */
+  function initFAQ() {
+    var items = doc.querySelectorAll(".faq-item");
+    if (!items.length) return;
+
+    items.forEach(function (item) {
+      var btn = item.querySelector(".faq-question");
+      var answer = item.querySelector(".faq-answer");
+      if (!btn || !answer) return;
+
+      btn.addEventListener("click", function () {
+        var isOpen = item.classList.contains("is-open");
+
+        items.forEach(function (other) {
+          other.classList.remove("is-open");
+          var a = other.querySelector(".faq-answer");
+          var b = other.querySelector(".faq-question");
+          if (a) a.hidden = true;
+          if (b) b.setAttribute("aria-expanded", "false");
+        });
+
+        if (!isOpen) {
+          item.classList.add("is-open");
+          answer.hidden = false;
+          btn.setAttribute("aria-expanded", "true");
+        }
+      });
+    });
+  }
+
   /* ---------- Инициализация ---------- */
   doc.addEventListener("DOMContentLoaded", function () {
     initLogo();
     initMenu();
     initGSAP();
     initMouseFX();
+    initFAQ();
     initYear();
     initForm();
   });
