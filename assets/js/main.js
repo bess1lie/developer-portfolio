@@ -144,6 +144,62 @@
     els.forEach(function (el) { observer.observe(el); });
   }
 
+  /* ---------- Интерактив мыши (параллакс + магнит) ----------
+     Только на десктопе (pointer: fine) и при включённой анимации. */
+  function initMouseFX() {
+    var fine = window.matchMedia("(pointer: fine)").matches;
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!fine || reduced) return;
+    if (typeof gsap === "undefined") return;
+
+    // Параллакс мини-карточек за курсором
+    var hero = doc.querySelector(".hero");
+    var cards = doc.querySelectorAll(".mini-card");
+    if (hero && cards.length) {
+      var setters = [];
+      cards.forEach(function (card) {
+        var depth = parseFloat(card.getAttribute("data-depth") || "0.4");
+        var xTo = gsap.quickTo(card, "x", { duration: 0.6, ease: "power3.out" });
+        var yTo = gsap.quickTo(card, "y", { duration: 0.6, ease: "power3.out" });
+        setters.push({ x: xTo, y: yTo, depth: depth });
+      });
+
+      var heroRect = hero.getBoundingClientRect();
+      hero.addEventListener("mousemove", function (e) {
+        var cx = (e.clientX - heroRect.left) / heroRect.width - 0.5;
+        var cy = (e.clientY - heroRect.top) / heroRect.height - 0.5;
+        setters.forEach(function (s) {
+          s.x(cx * 30 * s.depth);
+          s.y(cy * 30 * s.depth);
+        });
+      });
+      hero.addEventListener("mouseleave", function () {
+        setters.forEach(function (s) {
+          s.x(0);
+          s.y(0);
+        });
+      });
+    }
+
+    // Магнитные CTA-кнопки
+    var magneticBtns = doc.querySelectorAll(".magnetic");
+    if (magneticBtns.length) {
+      magneticBtns.forEach(function (btn) {
+        var xTo = gsap.quickTo(btn, "x", { duration: 0.4, ease: "power3.out" });
+        var yTo = gsap.quickTo(btn, "y", { duration: 0.4, ease: "power3.out" });
+
+        btn.addEventListener("mousemove", function (e) {
+          var r = btn.getBoundingClientRect();
+          xTo((e.clientX - (r.left + r.width / 2)) * 0.2);
+          yTo((e.clientY - (r.top + r.height / 2)) * 0.25);
+        });
+        btn.addEventListener("mouseleave", function () {
+          gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.5)" });
+        });
+      });
+    }
+  }
+
   /* ---------- GSAP Анимации (Премиум) ---------- */
   function initGSAP() {
     if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
@@ -338,6 +394,7 @@
     initLogo();
     initMenu();
     initGSAP();
+    initMouseFX();
     initYear();
     initForm();
   });
