@@ -331,37 +331,66 @@
       y: -20
     });
 
-    // --- 4. Интерактивные микроанимации карточек на скролле (ScrollTrigger.batch) ---
-    var revealTargets = [
-      { selector: ".recent-card", stagger: 0.15 },
-      { selector: ".why-card", stagger: 0.1 },
-      { selector: ".service-card", stagger: 0.1 },
-      { selector: ".price-card", stagger: 0.1 },
-      { selector: ".timeline-item", stagger: 0.12 },
-      { selector: ".faq-item", stagger: 0.08 }
-    ];
-
-    revealTargets.forEach(function (group) {
-      var els = doc.querySelectorAll(group.selector);
+    // --- 4. Разнообразные scroll-reveals по секциям ---
+    function revealBatch(selector, fromVars, stagger, duration, ease) {
+      var els = doc.querySelectorAll(selector);
       if (!els.length) return;
-
-      gsap.set(els, { opacity: 0, y: 35 });
-
+      gsap.set(els, Object.assign({}, fromVars, { opacity: 0 }));
       ScrollTrigger.batch(els, {
         onEnter: function (batch) {
-          gsap.to(batch, {
+          gsap.fromTo(batch, fromVars, {
             opacity: 1,
+            x: 0,
             y: 0,
-            duration: 0.8,
-            stagger: group.stagger,
-            ease: "power2.out",
+            scale: 1,
+            rotationX: 0,
+            duration: duration || 0.7,
+            stagger: stagger || 0.1,
+            ease: ease || "power2.out",
             overwrite: "auto"
           });
         },
         once: true,
         start: "top 90%"
       });
-    });
+    }
+
+    // Демо-карточки: быстрый fade-up (3D-tilt добавляет жизнь на hover)
+    revealBatch(".recent-card", { y: 30 }, 0.12, 0.6);
+
+    // Услуги: fade-up, компактный stagger
+    revealBatch(".service-card", { y: 40 }, 0.1, 0.6);
+
+    // «Почему я»: заходят СЛЕВА
+    revealBatch(".why-card", { x: -30 }, 0.1, 0.7);
+
+    // Цены: снизу + scale
+    revealBatch(".price-card", { y: 40, scale: 0.9 }, 0.1, 0.7);
+
+    // Процесс: timeline поочерёдно + линия-прогресс
+    revealBatch(".timeline-item", { y: 30 }, 0.15, 0.7);
+    var timelineProgress = doc.querySelector(".timeline-progress");
+    if (timelineProgress) {
+      gsap.fromTo(timelineProgress,
+        { scaleY: 0 },
+        {
+          scaleY: 1,
+          transformOrigin: "top",
+          ease: "power1.inOut",
+          scrollTrigger: {
+            trigger: ".timeline",
+            start: "top 80%",
+            end: "bottom 60%",
+            scrub: 0.6
+          }
+        });
+    }
+
+    // FAQ: rotationX + fade
+    revealBatch(".faq-item", { rotationX: 5 }, 0.08, 0.7);
+
+    // Контакты: форма заходит СПРАВА
+    revealBatch(".lead-form", { x: 30 }, 0, 0.7);
   }
 
   /* ---------- Текущий год в футере ---------- */
