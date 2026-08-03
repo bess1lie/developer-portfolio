@@ -366,6 +366,7 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
   font-size: 1.5rem;
   color: var(--text);
   font-weight: 700;
+  padding: 6px 0;
 }
 .mobile-menu a:hover { color: var(--accent); }
 .mobile-menu .btn {
@@ -1017,6 +1018,7 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
 }
 .contact-cta { text-align: center; padding-top: 20px; }
 .contact-alt { color: var(--text-muted); margin-top: 18px; font-size: 0.95rem; }
+.contact-alt a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 2px; }
 .contact-trust { color: var(--text-dim); font-size: 0.9rem; margin-top: 14px; line-height: 1.5; }
 
 .lead-form {
@@ -1101,7 +1103,13 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
   gap: 20px;
   font-size: 0.9rem;
 }
-.footer-links a { color: var(--dark-island-muted); }
+.footer-links a {
+  color: var(--dark-island-muted);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 0;
+}
 .footer-links a:hover { color: #fff; }
 .footer-year { color: var(--dark-island-muted); }
 .footer-tech {

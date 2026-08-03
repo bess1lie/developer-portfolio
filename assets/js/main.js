@@ -288,6 +288,7 @@
 
       sendLead(data)
         .then(function () {
+          alert("Спасибо, " + name + "! Заявка принята. Я свяжусь с вами в ближайшее время.");
           if (hint) hint.textContent = "Спасибо, " + name + "! Заявка принята. Я свяжусь с вами в ближайшее время.";
           form.reset();
         })
