@@ -116,7 +116,7 @@
     });
   }
 
-  /* ---------- Reveal-анимации при скролле ---------- */
+  /* ---------- Reveal-анимации при скролле (Резервный вариант) ---------- */
   function initReveal() {
     var groups = [
       ".recent-card", ".why-card",
@@ -142,6 +142,122 @@
     }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
 
     els.forEach(function (el) { observer.observe(el); });
+  }
+
+  /* ---------- GSAP Анимации (Премиум) ---------- */
+  function initGSAP() {
+    if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+      initReveal();
+      return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) {
+      var revealGroups = [
+        ".gs-reveal", ".mini-card", ".recent-card", ".why-card",
+        ".service-card", ".price-card", ".timeline-item", ".faq-item"
+      ];
+      doc.querySelectorAll(revealGroups.join(",")).forEach(function (el) {
+        gsap.set(el, { opacity: 1, y: 0, scale: 1 });
+      });
+      return;
+    }
+
+    // --- 1. Анимация появления Hero блока ---
+    var heroTL = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+    gsap.set(".hero-eyebrow", { opacity: 0, y: 20 });
+    gsap.set("#hero-title", { opacity: 0, y: 25 });
+    gsap.set(".hero-sub", { opacity: 0, y: 20 });
+    gsap.set(".hero-actions", { opacity: 0, y: 15 });
+    gsap.set(".hero-trust", { opacity: 0 });
+    gsap.set(".mini-card", { opacity: 0, scale: 0.8, y: 30 });
+    gsap.set(".hero-scroll", { opacity: 0 });
+
+    heroTL
+      .to(".hero-eyebrow", { opacity: 1, y: 0, duration: 0.8, delay: 0.1 })
+      .to("#hero-title", { opacity: 1, y: 0, duration: 1.0 }, "+=0.15")
+      .to(".hero-sub", { opacity: 1, y: 0, duration: 0.8 }, "+=0.15")
+      .to(".hero-actions", { opacity: 1, y: 0, duration: 0.6 }, "+=0.1")
+      .to(".hero-trust", { opacity: 1, duration: 0.5 }, "+=0.1")
+      .to(".mini-card", {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        duration: 1.2,
+        stagger: 0.1,
+        ease: "elastic.out(1, 0.75)"
+      }, "-=0.4")
+      .to(".hero-scroll", {
+        opacity: 0.7,
+        duration: 0.6
+      }, "-=0.3");
+
+    // --- 2. Движение светящихся орбов ---
+    if (doc.querySelector(".orb-1") && doc.querySelector(".orb-2")) {
+      gsap.to(".orb-1", {
+        x: "15%",
+        y: "-12%",
+        duration: 12,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+      });
+      gsap.to(".orb-2", {
+        x: "-12%",
+        y: "15%",
+        duration: 14,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+      });
+    }
+
+    // --- 3. Исчезновение индикатора скролла при прокрутке ---
+    gsap.to(".hero-scroll", {
+      scrollTrigger: {
+        trigger: ".hero",
+        start: "top top",
+        end: "bottom 80%",
+        scrub: true
+      },
+      opacity: 0,
+      y: -20
+    });
+
+    // --- 4. Интерактивные микроанимации карточек на скролле (ScrollTrigger.batch) ---
+    var revealTargets = [
+      { selector: ".recent-card", stagger: 0.15 },
+      { selector: ".why-card", stagger: 0.1 },
+      { selector: ".service-card", stagger: 0.1 },
+      { selector: ".price-card", stagger: 0.1 },
+      { selector: ".timeline-item", stagger: 0.12 },
+      { selector: ".faq-item", stagger: 0.08 }
+    ];
+
+    revealTargets.forEach(function (group) {
+      var els = doc.querySelectorAll(group.selector);
+      if (!els.length) return;
+
+      gsap.set(els, { opacity: 0, y: 35 });
+
+      ScrollTrigger.batch(els, {
+        onEnter: function (batch) {
+          gsap.to(batch, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: group.stagger,
+            ease: "power2.out",
+            overwrite: "auto"
+          });
+        },
+        once: true,
+        start: "top 90%"
+      });
+    });
   }
 
   /* ---------- Текущий год в футере ---------- */
@@ -198,7 +314,7 @@
   doc.addEventListener("DOMContentLoaded", function () {
     initLogo();
     initMenu();
-    initReveal();
+    initGSAP();
     initYear();
     initForm();
   });
