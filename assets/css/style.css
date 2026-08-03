@@ -355,6 +355,13 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
   visibility: visible;
   pointer-events: auto;
 }
+body.menu-open .site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1005;
+}
 .mobile-menu ul {
   list-style: none;
   margin: 0;

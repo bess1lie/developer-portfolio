@@ -22,7 +22,6 @@
 
     function preventTouch(event) {
       // Скроллить можно ТОЛЬКО список меню, всё остальное блокируем.
-      // Меню fullscreen — палец всегда внутри него, поэтому проверяем именно ul.
       var list = menu.querySelector("ul");
       if (list && list.contains(event.target)) return;
       event.preventDefault();
