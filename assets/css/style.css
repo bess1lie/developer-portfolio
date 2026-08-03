@@ -384,7 +384,7 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
   min-height: 100svh;
   display: flex;
   align-items: center;
-  padding: calc(var(--header-h) + 24px) 0 32px;
+  padding: calc(var(--header-h) + 8px) 0 32px;
   position: relative;
   overflow: hidden;
   background-color: var(--bg);
