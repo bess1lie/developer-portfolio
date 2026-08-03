@@ -35,11 +35,14 @@
 
     function lockScroll() {
       savedScrollY = window.scrollY;
+      var scrollbarWidth = window.innerWidth - doc.documentElement.clientWidth;
       doc.body.style.top = -savedScrollY + "px";
+      doc.body.style.paddingRight = scrollbarWidth + "px";
       doc.body.classList.add("menu-open");
       doc.documentElement.classList.add("menu-open");
-      // overflow:hidden на body не блокирует touch-скролл в мобильных Chrome/Firefox/WebView.
-      // preventDefault на touchmove/wheel с passive:false закрывает этот канал, не трогая layout.
+      if (typeof ScrollTrigger !== "undefined" && ScrollTrigger.getAll) {
+        ScrollTrigger.getAll().forEach(function (t) { t.disable(); });
+      }
       doc.addEventListener("touchmove", preventTouch, { passive: false });
       doc.addEventListener("wheel", preventWheel, { passive: false });
     }
@@ -48,10 +51,13 @@
       doc.body.classList.remove("menu-open");
       doc.documentElement.classList.remove("menu-open");
       doc.body.style.top = "";
+      doc.body.style.paddingRight = "";
       doc.removeEventListener("touchmove", preventTouch, { passive: false });
       doc.removeEventListener("wheel", preventWheel, { passive: false });
-      // position:fixed на body сбрасывает позицию в 0 — возвращаем сохранённую.
-      // restore=false для ссылок меню: якорь сам проскроллит к секции.
+      if (typeof ScrollTrigger !== "undefined" && ScrollTrigger.getAll) {
+        ScrollTrigger.getAll().forEach(function (t) { t.enable(); });
+        ScrollTrigger.refresh();
+      }
       if (restore) window.scrollTo({ top: savedScrollY, behavior: "instant" });
     }
 
