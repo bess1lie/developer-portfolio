@@ -335,25 +335,21 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
   bottom: 0;
   margin: 0;
   background: rgba(250, 249, 246, 0.98);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   padding: calc(var(--header-h) + 24px) 28px 40px;
   z-index: 999;
   opacity: 0;
-  transform: translateY(8px);
   pointer-events: none;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  will-change: transform, opacity;
-  transition: transform .32s cubic-bezier(.4,0,.2,1), opacity .28s ease;
+  will-change: opacity;
+  transition: opacity .25s ease;
 }
 @supports (backdrop-filter: blur(20px)) {
   .mobile-menu { background: rgba(250, 249, 246, 0.92); }
 }
 .mobile-menu.is-open {
   opacity: 1;
-  transform: translateY(0);
   pointer-events: auto;
 }
 body.menu-open .site-header {
