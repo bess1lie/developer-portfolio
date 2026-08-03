@@ -500,6 +500,29 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
   flex-wrap: wrap;
   gap: 16px;
   margin-bottom: 36px;
+  margin-top: -6px;
+}
+.hero-actions .btn-primary {
+  padding: 16px 36px;
+  font-size: 1.05rem;
+  border-radius: var(--radius-full);
+  background: var(--accent-gradient);
+  box-shadow: 0 6px 24px rgba(79, 70, 229, 0.35), 0 0 0 0 rgba(79, 70, 229, 0.4);
+  transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.25s ease;
+  position: relative;
+}
+.hero-actions .btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(79, 70, 229, 0.45), 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+.hero-actions .btn-primary::after {
+  content: "→";
+  margin-left: 10px;
+  font-size: 1.1em;
+  transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.hero-actions .btn-primary:hover::after {
+  transform: translateX(4px);
 }
 
 .hero-trust {
