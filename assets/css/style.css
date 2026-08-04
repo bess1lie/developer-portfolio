@@ -248,9 +248,9 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
   font-family: var(--font-display);
   letter-spacing: -0.02em;
 }
-.logo img {
-  border-radius: 22%;
+.logo img.logo-mark {
   display: block;
+  border-radius: 0;
 }
 .logo:hover { color: var(--text); }
 
