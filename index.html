@@ -29,7 +29,7 @@
   <link rel="preload" href="assets/fonts/manrope-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/unbounded-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 
-  <link rel="stylesheet" href="assets/css/style.css?v=9">
+  <link rel="stylesheet" href="assets/css/style.css?v=10">
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к содержимому</a>
@@ -461,6 +461,10 @@
               <label for="lead-desc">Описание проекта</label>
               <textarea id="lead-desc" name="description" rows="4"></textarea>
             </div>
+            <div class="hp-field" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
+              <label for="lead-website">Не заполняйте это поле</label>
+              <input type="text" id="lead-website" name="website" tabindex="-1" autocomplete="off">
+            </div>
             <button class="btn btn-primary" type="submit">Отправить заявку</button>
             <p class="form-consent">Нажимая «Отправить», вы соглашаетесь на обработку персональных данных. Я использую их только для связи с вами по вашему проекту.</p>
             <p class="form-hint" role="status" aria-live="polite"></p>
@@ -527,7 +531,7 @@
 
   <script src="assets/js/vendor/gsap.min.js"></script>
   <script src="assets/js/vendor/ScrollTrigger.min.js"></script>
-  <script src="assets/js/main.js?v=9"></script>
+  <script src="assets/js/main.js?v=10"></script>
 
   <script type="application/ld+json">
   {

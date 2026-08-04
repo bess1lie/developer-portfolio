@@ -287,12 +287,13 @@
      Единственная точка интеграции: замените реализацию sendLead()
      (например, на fetch в Telegram Bot API) без изменения HTML. */
   function sendLead(data) {
-    return new Promise(function (resolve, reject) {
-      // Здесь будет реальная отправка: fetch('https://api.telegram.org/...', {method:'POST', body: JSON.stringify(data)})
-      setTimeout(function () {
-        resolve({ ok: true });
-      }, 300);
-      // reject(new Error('сеть недоступна')) — в случае ошибки
+    return fetch("/api/lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    }).then(function (res) {
+      if (!res.ok) throw new Error("send failed: " + res.status);
+      return res.json();
     });
   }
 
@@ -308,13 +309,14 @@
       var name = form.elements["name"].value.trim();
       var contact = form.elements["contact"].value.trim();
       var desc = form.elements["description"].value.trim();
+      var website = (form.elements["website"] ? form.elements["website"].value : "");
 
       if (!name || !contact) {
         if (hint) hint.textContent = "Укажите имя и контакт для связи.";
         return;
       }
 
-      var data = { name: name, contact: contact, description: desc };
+      var data = { name: name, contact: contact, description: desc, website: website };
 
       sendLead(data)
         .then(function () {
