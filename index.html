@@ -469,6 +469,12 @@
           </form>
         </div>
 
+        <!--
+          НАСТРОЙКА WEBHOOK БОТА @bess1liebot (одноразово, после деплоя):
+          curl -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/setWebhook" \
+            -d "url=https://developer-portfolio-six-theta.vercel.app/api/bot"
+          Проверить: curl "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/getWebhookInfo"
+        -->
         <ul class="contact-links" aria-label="Контакты">
           <li>
             <a href="https://t.me/bessiliehh" target="_blank" rel="noopener">
