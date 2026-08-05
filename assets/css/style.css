@@ -1116,19 +1116,21 @@ body.menu-open .site-header {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  gap: 12px 20px;
-  font-size: 0.9rem;
+  gap: 8px;
 }
-.footer-links a {
-  color: var(--dark-island-muted);
-  display: inline-flex;
+.footer-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
   align-items: center;
-  min-height: 44px;
-  padding: 8px 0;
+  justify-content: center;
+  color: #94A3B8;
+  border-radius: 12px;
+  transition: color .2s, background .2s;
 }
-.footer-links a:hover { color: #fff; }
-.footer-year { color: var(--dark-island-muted); }
+.footer-icon:hover { color: #FFFFFF; background: rgba(79, 70, 229, .15); }
+.footer-icon svg { width: 22px; height: 22px; display: block; }
+.footer-year { width: 100%; text-align: center; color: var(--dark-island-muted); }
 .footer-tech {
   margin-top: 20px;
   padding-top: 16px;
@@ -1200,12 +1202,10 @@ body.menu-open .site-header {
   .contact-links a { padding: 10px 14px; min-height: 44px; }
   .contact-alt a { padding: 8px 2px; display: inline-block; }
   .oss-strip-links a { padding: 10px 16px; min-height: 44px; }
-  .footer-links a { padding: 10px 0; min-height: 44px; }
 
-  /* Footer: перенос ссылок, без горизонтального скролла */
+  /* Footer: иконки по центру, без горизонтального скролла */
   .site-footer { padding: 24px 16px; text-align: center; }
   .footer-inner { justify-content: center; }
-  .footer-links { justify-content: center; font-size: 14px; }
   .footer-tagline { font-size: 0.85rem; }
   .footer-tech { font-size: 0.78rem; }
 
@@ -1229,7 +1229,6 @@ body.menu-open .site-header {
   }
   .projects-list { gap: 56px; }
   .hero-actions .btn { flex: 1 1 100%; }
-  .footer-inner { flex-direction: column; align-items: flex-start; }
 }
 
 /* Уплотняем hero на маленьких экранах (≤375px), чтобы всё влезло без скролла */
