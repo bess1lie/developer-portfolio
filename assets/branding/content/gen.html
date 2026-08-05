@@ -1,0 +1,684 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'Unbounded';font-style:normal;font-weight:100 900;src:url('/f/unbounded-cyrillic.woff2') format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;}
+@font-face{font-family:'Unbounded';font-style:normal;font-weight:100 900;src:url('/f/unbounded-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:100 900;src:url('/f/manrope-cyrillic.woff2') format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:100 900;src:url('/f/manrope-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+</style></head><body><script>
+'use strict';
+const C = {
+  light: '#FAF9F6', dark: '#0F172A', accent: '#4F46E5',
+  dText: '#1C1917', lText: '#F8FAFC', mute: '#94A3B8',
+  border: '#E7E5E4', soft: '#57534E', frame: '#0B0F19'
+};
+const U = 'Unbounded, sans-serif';
+const M = 'Manrope, sans-serif';
+const E = '"Noto Color Emoji", "Noto Emoji", sans-serif';
+
+function mk(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; }
+function rr(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+function fitFont(c, text, size, maxW, family) {
+  let s = size;
+  c.font = '800 ' + s + 'px ' + family;
+  while (s > 30 && c.measureText(text).width > maxW) { s -= 2; c.font = '800 ' + s + 'px ' + family; }
+  return s;
+}
+function wrapText(c, text, size, maxW, family) {
+  c.font = '500 ' + size + 'px ' + family;
+  const words = text.split(' ');
+  const lines = [];
+  let cur = '';
+  for (const w of words) {
+    const t = cur ? cur + ' ' + w : w;
+    if (cur && c.measureText(t).width > maxW) { lines.push(cur); cur = w; } else cur = t;
+  }
+  if (cur) lines.push(cur);
+  return lines;
+}
+function indicator(ctx, W, H, i, n) {
+  ctx.fillStyle = C.mute;
+  ctx.font = '600 24px ' + M;
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillText(String(i).padStart(2, '0') + ' / ' + String(n).padStart(2, '0'), W - 80, H - 80);
+}
+// ============ ЗНАК (оригинальный mark из проекта, монохромный) ============
+let markImg = null, markWhite = null;
+// белая версия знака (для тёмных фонов): сохраняем альфу, цвет -> белый
+// + индиго-шеврон #4F46E5 поверх (пиксели оригинального mark где (blue - red) > 20)
+function makeWhite(img) {
+  const c = mk(img.naturalWidth, img.naturalHeight);
+  const x = c.getContext('2d');
+  x.drawImage(img, 0, 0);
+  const orig = x.getImageData(0, 0, c.width, c.height);
+  x.globalCompositeOperation = 'source-in';
+  x.fillStyle = '#FFFFFF';
+  x.fillRect(0, 0, c.width, c.height);
+  const data = x.getImageData(0, 0, c.width, c.height).data;
+  for (let i = 0; i < data.length; i += 4) {
+    const r = orig.data[i], g = orig.data[i + 1], b = orig.data[i + 2], a = orig.data[i + 3];
+    if (a > 0 && (b - r) > 20) {
+      data[i] = 0x4F; data[i + 1] = 0x46; data[i + 2] = 0xE5; data[i + 3] = a;
+    }
+  }
+  x.putImageData(new ImageData(data, c.width, c.height), 0, 0);
+  return c;
+}
+// знак по центру квадрата size×size (глиф ≈78% кадра, как в оригинале)
+function drawSign(ctx, cx, cy, size) {
+  const img = markWhite || markImg;
+  if (!img) return;
+  ctx.drawImage(img, cx - size / 2, cy - size / 2, size, size);
+}
+// ============ ОБЩИЕ ============
+function browserFrame(ctx, img, x, y, w, h) {
+  ctx.fillStyle = C.frame;
+  rr(ctx, x, y, w, h, 20); ctx.fill();
+  const dots = ['#FF5F57', '#FEBC2E', '#28C840'];
+  dots.forEach((col, i) => { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x + 36 + i * 26, y + 30, 8, 0, Math.PI * 2); ctx.fill(); });
+  const pad = 16, top = 56;
+  const iw = img.naturalWidth, ih = img.naturalHeight;
+  const iw2 = w - pad * 2, ih2 = h - top - pad;
+  const s = Math.min(iw2 / iw, ih2 / ih);
+  const dw = iw * s, dh = ih * s;
+  ctx.drawImage(img, x + pad + (iw2 - dw) / 2, y + top + (ih2 - dh) / 2, dw, dh);
+}
+function ctaButton(ctx, cx, cy, w, h, label, size) {
+  ctx.fillStyle = C.accent;
+  rr(ctx, cx - w / 2, cy - h / 2, w, h, 40); ctx.fill();
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = '700 ' + size + 'px ' + M;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(label, cx, cy + 2);
+}
+function darkCover(c, title, sub, i, n, markSize) {
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.dark; ctx.fillRect(0, 0, c.width, c.height);
+  drawSign(ctx, c.width / 2, 330 + markSize / 2, markSize);
+  const ts = fitFont(ctx, title, 120, c.width - 160, U);
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = '800 ' + ts + 'px ' + U;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(title, c.width / 2, 870);
+  ctx.fillStyle = C.mute;
+  ctx.font = '600 32px ' + M;
+  ctx.fillText(sub, c.width / 2, 985);
+  indicator(ctx, c.width, c.height, i, n);
+}
+function lightCase(c, img, title, metric, i, n) {
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.light; ctx.fillRect(0, 0, c.width, c.height);
+  browserFrame(ctx, img, 140, 150, 800, 600);
+  const ts = fitFont(ctx, title, 64, c.width - 160, U);
+  ctx.fillStyle = C.dText;
+  ctx.font = '800 ' + ts + 'px ' + U;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(title, c.width / 2, 890);
+  ctx.fillStyle = C.accent;
+  ctx.font = '700 36px ' + M;
+  ctx.fillText(metric, c.width / 2, 990);
+  indicator(ctx, c.width, c.height, i, n);
+}
+function lightCta(c, title, sub, btnLabel) {
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.dark; ctx.fillRect(0, 0, c.width, c.height);
+  const ms = 256;
+  drawSign(ctx, c.width / 2, 300 + ms / 2, ms);
+  const ts = fitFont(ctx, title, 80, c.width - 160, U);
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = '800 ' + ts + 'px ' + U;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(title, c.width / 2, 780);
+  ctx.fillStyle = C.mute;
+  ctx.font = '600 32px ' + M;
+  ctx.fillText(sub, c.width / 2, 880);
+  ctaButton(ctx, c.width / 2, 990, 280, 80, btnLabel, 28);
+}
+function priceSlide(c, price, name, items, i, n) {
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.light; ctx.fillRect(0, 0, c.width, c.height);
+  const ps = fitFont(ctx, price, 180, c.width - 120, U);
+  ctx.fillStyle = C.accent;
+  ctx.font = '800 ' + ps + 'px ' + U;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(price, c.width / 2, 430);
+  const ns = fitFont(ctx, name, 64, c.width - 160, U);
+  ctx.fillStyle = C.dText;
+  ctx.font = '700 ' + ns + 'px ' + U;
+  ctx.fillText(name, c.width / 2, 680);
+  ctx.fillStyle = C.dText;
+  ctx.font = '500 28px ' + M;
+  ctx.textAlign = 'center';
+  let y = 830;
+  for (const it of items) { ctx.fillText(it, c.width / 2, y); y += 56; }
+  indicator(ctx, c.width, c.height, i, n);
+}
+function processSlide(c, emoji, title, desc, i, n) {
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.light; ctx.fillRect(0, 0, c.width, c.height);
+  ctx.font = '96px ' + E;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(emoji, c.width / 2, 360);
+  const ts = fitFont(ctx, title, 64, c.width - 160, U);
+  ctx.fillStyle = C.dText;
+  ctx.font = '700 ' + ts + 'px ' + U;
+  ctx.fillText(title, c.width / 2, 550);
+  const lines = wrapText(ctx, desc, 32, c.width - 200, M);
+  ctx.fillStyle = C.soft;
+  ctx.font = '500 32px ' + M;
+  let y = 690;
+  for (const l of lines) { ctx.fillText(l, c.width / 2, y); y += 52; }
+  indicator(ctx, c.width, c.height, i, n);
+}
+function faqSlide(c, q, a, i, n) {
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.light; ctx.fillRect(0, 0, c.width, c.height);
+  const qs = fitFont(ctx, q, 56, c.width - 160, U);
+  ctx.fillStyle = C.dText;
+  ctx.font = '700 ' + qs + 'px ' + U;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(q, c.width / 2, 430);
+  const lines = wrapText(ctx, a, 32, c.width - 200, M);
+  ctx.fillStyle = C.soft;
+  ctx.font = '500 32px ' + M;
+  let y = 600;
+  for (const l of lines) { ctx.fillText(l, c.width / 2, y); y += 54; }
+  indicator(ctx, c.width, c.height, i, n);
+}
+function postTitle(ctx, title, y, size, color, weight) {
+  const ts = fitFont(ctx, title, size, 920, U);
+  ctx.fillStyle = color || C.dText;
+  ctx.font = (weight || 800) + ' ' + ts + 'px ' + U;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(title, ctx.canvas.width / 2, y);
+}
+function postBody(ctx, text, y, size, color, maxW) {
+  const lines = wrapText(ctx, text, size, maxW || 880, M);
+  ctx.fillStyle = color || C.dText;
+  ctx.font = '500 ' + size + 'px ' + M;
+  ctx.textAlign = 'center';
+  let yy = y;
+  for (const l of lines) { ctx.fillText(l, ctx.canvas.width / 2, yy); yy += size * 1.5; }
+  return yy;
+}
+function wireframe(c, x, y, w, h) {
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#FFFFFF';
+  rr(ctx, x, y, w, h, 16); ctx.fill();
+  ctx.strokeStyle = C.border; ctx.lineWidth = 3;
+  rr(ctx, x, y, w, h, 16); ctx.stroke();
+  const blocks = [
+    [x + 40, y + 40, w - 80, 90],
+    [x + 40, y + 150, (w - 120) * 0.6, 130],
+    [x + 40 + (w - 120) * 0.6 + 40, y + 150, (w - 120) * 0.4, 130],
+    [x + 40, y + 300, (w - 120) / 2, 120],
+    [x + 40 + (w - 120) / 2 + 40, y + 300, (w - 120) / 2, 120],
+    [x + 40, y + 440, (w - 120) / 3, 100],
+    [x + 40 + (w - 120) / 3 + 30, y + 440, (w - 120) / 3, 100],
+    [x + 40 + 2 * ((w - 120) / 3 + 30), y + 440, (w - 120) / 3, 100],
+  ];
+  blocks.forEach((b) => {
+    ctx.fillStyle = '#F5F5F4';
+    rr(ctx, b[0], b[1], b[2], b[3], 10); ctx.fill();
+    ctx.strokeStyle = C.border;
+    rr(ctx, b[0], b[1], b[2], b[3], 10); ctx.stroke();
+  });
+}
+function grayBox(ctx, x, y, w, h, label) {
+  ctx.fillStyle = C.border;
+  rr(ctx, x, y, w, h, 16); ctx.fill();
+  ctx.fillStyle = '#A8A29E';
+  ctx.font = '600 28px ' + M;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(label || 'Скриншот', x + w / 2, y + h / 2);
+}
+
+// ============ ЗАГРУЗКА АССЕТОВ ============
+async function loadAll() {
+  const names = ['cafe', 'barber', 'furniture'];
+  const srcs = { cafe: '/s/cafe.webp', barber: '/s/barbershop.webp', furniture: '/s/furniture.webp' };
+  const out = {};
+  for (const n of names) {
+    const img = new Image();
+    await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = srcs[n]; });
+    out[n] = img;
+  }
+  markImg = new Image();
+  await new Promise((res, rej) => { markImg.onload = res; markImg.onerror = rej; markImg.src = '/l/dark2-512.png'; });
+  markWhite = makeWhite(markImg);
+  return out;
+}
+
+// ============ ХАЙЛАЙТЫ ============
+function genCasesCover(im) { const c = mk(1080, 1920); darkCover(c, 'Кейсы', 'Реальные проекты клиентов', 1, 5, 320); return c; }
+function genCasesCafe(im) { const c = mk(1080, 1920); lightCase(c, im.cafe, 'Кофейня в Каскелене', '+40% звонков за месяц', 2, 5); return c; }
+function genCasesBarber(im) { const c = mk(1080, 1920); lightCase(c, im.barber, 'Барбершоп в Алматы', '70% записей через бота', 3, 5); return c; }
+function genCasesFurniture(im) { const c = mk(1080, 1920); lightCase(c, im.furniture, 'Мебельная мастерская', 'Калькулятор стоимости онлайн', 4, 5); return c; }
+function genCasesCta(im) { const c = mk(1080, 1920); lightCta(c, 'Хотите так же?', 'Напишите @bess1liebot', 'Заказать сайт'); return c; }
+
+function genServicesCover(im) { const c = mk(1080, 1920); darkCover(c, 'Услуги и цены', 'Честные цены без звонков', 1, 5, 320); return c; }
+function genServicesLanding(im) { const c = mk(1080, 1920); priceSlide(c, '45 000\u20B8', 'Лендинг', ['\u2022 Одна страница', '\u2022 5\u201310 дней', '\u2022 Структура + дизайн + в\u0451рстка'], 2, 5); return c; }
+function genServicesCorporate(im) { const c = mk(1080, 1920); priceSlide(c, '75 000\u20B8', 'Корпоративный сайт', ['\u2022 Несколько страниц', '\u2022 2\u20134 недели', '\u2022 Каталог услуг'], 3, 5); return c; }
+function genServicesBot(im) { const c = mk(1080, 1920); priceSlide(c, '100 000\u20B8', 'Сайт + Telegram-бот', ['\u2022 Онлайн-запись', '\u2022 Уведомления в TG', '\u2022 2 недели'], 4, 5); return c; }
+function genServicesCta(im) { const c = mk(1080, 1920); lightCta(c, 'Хотите так же?', 'Заказать: @bess1liebot', 'Заказать сайт'); return c; }
+
+function genBotsCover(im) { const c = mk(1080, 1920); darkCover(c, 'Telegram-боты', 'Клиенты записываются сами', 1, 3, 320); return c; }
+function genBotsHow(im) {
+  const c = mk(1080, 1920);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.light; ctx.fillRect(0, 0, 1080, 1920);
+  const steps = [
+    ['Клиент пишет боту \uD83D\uDCAC', 1],
+    ['Выбирает услугу \uD83D\uDCCB', 2],
+    ['Оставляет контакт \uD83D\uDCDE', 3],
+    ['Вы получаете заявку \uD83D\uDD14', 4],
+  ];
+  let y = 430;
+  for (const [text, num] of steps) {
+    ctx.fillStyle = C.accent;
+    ctx.beginPath(); ctx.arc(230, y, 40, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = '700 32px ' + M;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(String(num), 230, y + 2);
+    ctx.fillStyle = C.dText;
+    ctx.font = '600 32px ' + M;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    ctx.fillText(text, 310, y);
+    y += 190;
+  }
+  indicator(ctx, 1080, 1920, 2, 3);
+  return c;
+}
+function genBotsCta(im) { const c = mk(1080, 1920); lightCta(c, 'Попробуйте: @bess1liebot', 'Telegram-бот для заявок', 'Заказать сайт'); return c; }
+
+function genProcessCover(im) { const c = mk(1080, 1920); darkCover(c, 'Как я работаю', '6 этапов от брифа до запуска', 1, 6, 320); return c; }
+function genProcessBrief(im) { const c = mk(1080, 1920); processSlide(c, '\uD83D\uDCDE', '\u2460 Бриф', '30 минут, обсуждаем бизнес и задачи', 2, 6); return c; }
+function genProcessProto(im) { const c = mk(1080, 1920); processSlide(c, '\uD83C\uDFA8', '\u2461 Прототип', 'Каркас в Figma, согласуем структуру', 3, 6); return c; }
+function genProcessDesign(im) { const c = mk(1080, 1920); processSlide(c, '\uD83D\uDD8C\uFE0F', '\u2462 Дизайн', '2\u20133 варианта главной, дорабатываем', 4, 6); return c; }
+function genProcessDev(im) { const c = mk(1080, 1920); processSlide(c, '\uD83D\uDCBB', '\u2463 Разработка', 'Собираю сайт, даю доступ к тестовой', 5, 6); return c; }
+function genProcessLaunch(im) { const c = mk(1080, 1920); processSlide(c, '\uD83D\uDE80', '\u2464\u2465 Запуск + поддержка', 'Домен, аналитика, обучение, 2 недели бесплатно', 6, 6); return c; }
+
+function genReviewsSoon(im) {
+  const c = mk(1080, 1920);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.dark; ctx.fillRect(0, 0, 1080, 1920);
+  drawSign(ctx, 540, 320 + 512 / 2, 512);
+  const ts = fitFont(ctx, 'Отзывы', 96, 920, U);
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = '800 ' + ts + 'px ' + U;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('Отзывы', 540, 1020);
+  ctx.fillStyle = C.mute;
+  ctx.font = '500 28px ' + M;
+  ctx.fillText('Скоро появятся после первых клиентов', 540, 1110);
+  return c;
+}
+
+function genFaqCover(im) { const c = mk(1080, 1920); darkCover(c, 'Частые вопросы', 'Отвечаю на то, что спрашивают чаще всего', 1, 5, 320); return c; }
+function genFaqPrice(im) { const c = mk(1080, 1920); faqSlide(c, 'Сколько стоит сайт?', 'Лендинг от 45 000\u20B8, корпоративный от 75 000\u20B8, сайт+бот от 100 000\u20B8', 2, 5); return c; }
+function genFaqTime(im) { const c = mk(1080, 1920); faqSlide(c, 'Сколько длится?', 'Лендинг 5\u201310 дней, корпоративный 2\u20134 недели', 3, 5); return c; }
+function genFaqPayment(im) { const c = mk(1080, 1920); faqSlide(c, 'Как оплатить?', 'Предоплата 50%, остаток после при\u0451мки', 4, 5); return c; }
+function genFaqSupport(im) { const c = mk(1080, 1920); faqSlide(c, 'Что с поддержкой?', '2 недели бесплатно после запуска, дальше по договор\u0451нности', 5, 5); return c; }
+
+// ============ ПОСТЫ ============
+function postCase1(im, metric, sub, shot) {
+  const c = mk(1080, 1350);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.light; ctx.fillRect(0, 0, 1080, 1350);
+  const lines = wrapText(ctx, metric, 96, 920, U);
+  let y = 190;
+  for (const l of lines) { const ts = fitFont(ctx, l, 96, 920, U); ctx.fillStyle = C.accent; ctx.font = '800 ' + ts + 'px ' + U; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(l, 540, y); y += 128; }
+  ctx.fillStyle = C.dText;
+  ctx.font = '600 36px ' + M;
+  ctx.fillText(sub, 540, y + 40);
+  browserFrame(ctx, shot, 240, 640, 600, 450);
+  return c;
+}
+function postBodySlide(im, title, body, shot) {
+  const c = mk(1080, 1350);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.light; ctx.fillRect(0, 0, 1080, 1350);
+  postTitle(ctx, title, 290, 64, C.dText, 700);
+  const y = postBody(ctx, body, 440, 28, C.dText, 880);
+  if (shot) browserFrame(ctx, shot, 240, Math.max(y + 80, 700), 600, 450);
+  return c;
+}
+function postListSlide(im, title, items) {
+  const c = mk(1080, 1350);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.light; ctx.fillRect(0, 0, 1080, 1350);
+  postTitle(ctx, title, 290, 64, C.dText, 700);
+  ctx.fillStyle = C.dText;
+  ctx.font = '500 28px ' + M;
+  ctx.textAlign = 'left';
+  let y = 470;
+  for (const it of items) { ctx.fillText('\u2022 ' + it, 140, y); y += 66; }
+  return c;
+}
+function postCtaSlide(im, title, sub) {
+  const c = mk(1080, 1350);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.dark; ctx.fillRect(0, 0, 1080, 1350);
+  drawSign(ctx, 540, 260 + 224 / 2, 224);
+  const ts = fitFont(ctx, title, 80, 920, U);
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = '800 ' + ts + 'px ' + U;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(title, 540, 660);
+  ctx.fillStyle = C.mute;
+  ctx.font = '600 32px ' + M;
+  ctx.fillText(sub, 540, 760);
+  ctaButton(ctx, 540, 880, 280, 80, 'Заказать сайт', 28);
+  return c;
+}
+function checklistSquare(im) {
+  const c = mk(1080, 1080);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.light; ctx.fillRect(0, 0, 1080, 1080);
+  postTitle(ctx, '5 вопросов перед заказом сайта', 250, 72, C.dText, 800);
+  const items = [
+    '\u2713 Какие задачи решает сайт?',
+    '\u2713 Кто ваша целевая аудитория?',
+    '\u2713 Какие страницы нужны?',
+    '\u2713 Есть ли примеры сайтов, которые нравятся?',
+    '\u2713 Какой бюджет и сроки?',
+  ];
+  let y = 480;
+  ctx.fillStyle = C.dText;
+  ctx.font = '500 28px ' + M;
+  ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  for (const it of items) { ctx.fillText(it, 160, y); y += 66; }
+  ctx.fillStyle = C.mute;
+  ctx.font = '600 24px ' + M;
+  ctx.textAlign = 'center';
+  ctx.fillText('Сохраните, чтобы не забыть', 540, 1000);
+  return c;
+}
+function processSquare(im) {
+  const c = mk(1080, 1080);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.light; ctx.fillRect(0, 0, 1080, 1080);
+  postTitle(ctx, 'Как рождается структура сайта', 210, 64, C.dText, 800);
+  wireframe(c, 140, 380, 800, 600);
+  ctx.fillStyle = C.mute;
+  ctx.font = '500 24px ' + M;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('\u041F\u0440\u043E\u0442\u043E\u0442\u0438\u043F \u0432 Figma \u2192 \u0441\u043E\u0433\u043B\u0430\u0441\u043E\u0432\u0430\u043D\u0438\u0435 \u2192 \u0434\u0438\u0437\u0430\u0439\u043D', 540, 1030);
+  return c;
+}
+function errorsPost(im) {
+  const c = mk(1080, 1350);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.light; ctx.fillRect(0, 0, 1080, 1350);
+  postTitle(ctx, '5 ошибок сайта малого бизнеса', 240, 72, C.dText, 800);
+  const items = [
+    '\u2717 Нет цен на сайте',
+    '\u2717 Форма заявки не работает',
+    '\u2717 Сайт не адаптирован под мобильные',
+    '\u2717 Нет призыва к действию',
+    '\u2717 Медленная загрузка',
+  ];
+  ctx.fillStyle = C.dText;
+  ctx.font = '500 28px ' + M;
+  ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  let y = 470;
+  for (const it of items) { ctx.fillText(it, 180, y); y += 74; }
+  ctx.fillStyle = C.accent;
+  ctx.font = '700 28px ' + M;
+  ctx.textAlign = 'center';
+  ctx.fillText('Пришлите ваш сайт \u2014 разберу бесплатно', 540, 1040);
+  return c;
+}
+function pricingPost(im, price, name, items) {
+  const c = mk(1080, 1350);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.light; ctx.fillRect(0, 0, 1080, 1350);
+  const ps = fitFont(ctx, price, 180, 960, U);
+  ctx.fillStyle = C.accent;
+  ctx.font = '800 ' + ps + 'px ' + U;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(price, 540, 380);
+  const ns = fitFont(ctx, name, 64, 920, U);
+  ctx.fillStyle = C.dText;
+  ctx.font = '700 ' + ns + 'px ' + U;
+  ctx.fillText(name, 540, 620);
+  ctx.fillStyle = C.dText;
+  ctx.font = '500 28px ' + M;
+  let y = 770;
+  for (const it of items) { ctx.fillText(it, 540, y); y += 56; }
+  return c;
+}
+function reelCover(im) {
+  const c = mk(1080, 1920);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.dark; ctx.fillRect(0, 0, 1080, 1920);
+  drawSign(ctx, 540, 220 + 400 / 2, 400);
+  const lines = wrapText(ctx, '1 секунда этого сайта = 5 часов кода', 72, 920, U);
+  let y = 840;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  for (const l of lines) { const ts = fitFont(ctx, l, 72, 920, U); ctx.fillStyle = '#FFFFFF'; ctx.font = '800 ' + ts + 'px ' + U; ctx.fillText(l, 540, y); y += 96; }
+  ctx.fillStyle = C.accent;
+  ctx.beginPath(); ctx.arc(540, 1120, 90, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#FFFFFF';
+  ctx.beginPath(); ctx.moveTo(510, 1070); ctx.lineTo(510, 1170); ctx.lineTo(590, 1120); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = C.mute;
+  ctx.font = '600 32px ' + M;
+  ctx.fillText('Таймлапс в\u0451рстки', 540, 1290);
+  return c;
+}
+function personalPost(im) {
+  const c = mk(1080, 1080);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.light; ctx.fillRect(0, 0, 1080, 1080);
+  postTitle(ctx, 'Почему я работаю один', 250, 72, C.dText, 800);
+  const text = '\u0426\u0435\u043D\u0430 \u0430\u0433\u0435\u043D\u0442\u0441\u0442\u0432\u0430 \u2014 \u043E\u0442 200 000\u20B8. \u0423 \u043C\u0435\u043D\u044F \u2014 \u043E\u0442 45 000\u20B8. \u0420\u0430\u0437\u043D\u0438\u0446\u0430: \u0431\u0435\u0437 \u0430\u0440\u0435\u043D\u0434\u044B \u043E\u0444\u0438\u0441\u0430, \u0431\u0435\u0437 \u043C\u0435\u043D\u0435\u0434\u0436\u0435\u0440\u043E\u0432, \u0431\u0435\u0437 \u043D\u0430\u043A\u0440\u0443\u0442\u043A\u0438 \u0437\u0430 \u0431\u0440\u0435\u043D\u0434. \u0412\u044B \u043F\u043B\u0430\u0442\u0438\u0442\u0435 \u0437\u0430 \u0440\u0430\u0431\u043E\u0442\u0443, \u0430 \u043D\u0435 \u0437\u0430 overhead';
+  postBody(ctx, text, 470, 28, C.dText, 820);
+  return c;
+}
+
+// ============ TG ============
+function tgCover(im, title, sub) {
+  const c = mk(1280, 720);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.dark; ctx.fillRect(0, 0, 1280, 720);
+  drawSign(ctx, 100 + 200 / 2, 260 + 200 / 2, 200);
+  const ts = fitFont(ctx, title, 96, 760, U);
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = '800 ' + ts + 'px ' + U;
+  ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  ctx.fillText(title, 430, 320);
+  ctx.fillStyle = C.mute;
+  ctx.font = '600 32px ' + M;
+  ctx.fillText(sub, 430, 440);
+  return c;
+}
+function tgTemplateCase(im) {
+  const c = mk(1080, 1080);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.light; ctx.fillRect(0, 0, 1080, 1080);
+  const ms = fitFont(ctx, '+40%', 96, 920, U);
+  ctx.fillStyle = C.accent;
+  ctx.font = '800 ' + ms + 'px ' + U;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('+40%', 540, 220);
+  postTitle(ctx, 'Название кейса', 380, 64, C.dText, 700);
+  grayBox(ctx, 240, 480, 600, 450);
+  return c;
+}
+function tgTemplateReview(im) {
+  const c = mk(1080, 1080);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.light; ctx.fillRect(0, 0, 1080, 1080);
+  postTitle(ctx, 'Разбор сайта', 240, 72, C.dText, 800);
+  const items = ['\u2717 Нет цен на сайте', '\u2717 Форма не работает', '\u2717 Не адаптирован под мобильные', '\u2717 Медленная загрузка'];
+  ctx.fillStyle = C.mute;
+  ctx.font = '500 28px ' + M;
+  ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  let y = 430;
+  for (const it of items) { ctx.fillText(it, 170, y); y += 68; }
+  ctx.fillStyle = C.accent;
+  rr(ctx, 190, 920, 700, 84, 42); ctx.fill();
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = '700 28px ' + M;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('Прислать сайт на разбор', 540, 963);
+  return c;
+}
+function tgTemplateChecklist(im) {
+  const c = mk(1080, 1080);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.light; ctx.fillRect(0, 0, 1080, 1080);
+  postTitle(ctx, 'Чек-лист', 240, 72, C.dText, 800);
+  const items = ['\u2713 Какие задачи решает сайт?', '\u2713 Кто ваша целевая аудитория?', '\u2713 Какие страницы нужны?', '\u2713 Бюджет и сроки?'];
+  ctx.fillStyle = C.dText;
+  ctx.font = '500 28px ' + M;
+  ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  let y = 430;
+  for (const it of items) { ctx.fillText(it, 170, y); y += 68; }
+  ctx.fillStyle = C.mute;
+  ctx.font = '600 24px ' + M;
+  ctx.textAlign = 'center';
+  ctx.fillText('Сохраните', 540, 960);
+  return c;
+}
+function tgTemplateFaq(im) {
+  const c = mk(1080, 1080);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.light; ctx.fillRect(0, 0, 1080, 1080);
+  postTitle(ctx, 'Сколько стоит сайт?', 360, 64, C.dText, 700);
+  ctx.strokeStyle = C.border; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(140, 500); ctx.lineTo(940, 500); ctx.stroke();
+  ctx.fillStyle = C.soft;
+  ctx.font = '500 32px ' + M;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('Лендинг от 45 000\u20B8, корпоративный от 75 000\u20B8, сайт+бот от 100 000\u20B8', 540, 610);
+  return c;
+}
+function tgTemplateKitchen(im) {
+  const c = mk(1080, 1080);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = C.light; ctx.fillRect(0, 0, 1080, 1080);
+  postTitle(ctx, 'Как я делаю сайты', 240, 72, C.dText, 800);
+  grayBox(ctx, 140, 360, 800, 500, 'Процесс \u2014 скриншот');
+  ctx.fillStyle = C.mute;
+  ctx.font = '500 24px ' + M;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('Подпись к скриншоту', 540, 960);
+  return c;
+}
+
+// ============ ЗНАК КАК ФАЙЛЫ (light2-512 / light2-256) ============
+function renderSignFile(size) {
+  const c = mk(size, size);
+  const ctx = c.getContext('2d');
+  drawSign(ctx, size / 2, size / 2, size);
+  return c.toDataURL('image/png');
+}
+
+window.__genAll = async () => {
+  await document.fonts.ready;
+  const checks = [];
+  if (document.characterSet !== 'UTF-8') checks.push('characterSet=' + document.characterSet);
+  if ('Решение'.length !== 7) checks.push('Решение.length=' + 'Решение'.length + ' (битая кириллица)');
+  try {
+    await document.fonts.load('800 32px Unbounded', 'Ж');
+    await document.fonts.load('600 32px Manrope', 'Ж');
+  } catch (e) { checks.push('fonts.load failed: ' + e.message); }
+  const unb = document.fonts.check('800 32px Unbounded', 'Ж');
+  const man = document.fonts.check('600 32px Manrope', 'Ж');
+  if (!unb) checks.push('Unbounded кириллица не загрузилась');
+  if (!man) checks.push('Manrope кириллица не загрузилась');
+  if (checks.length) { document.title = 'GEN_FAIL: ' + checks.join('; '); throw new Error('PRE-CHECK FAILED: ' + checks.join('; ')); }
+  const im = await loadAll();
+  const tasks = [
+    ['ig-highlights/cases/slide-01-cover.png', genCasesCover],
+    ['ig-highlights/cases/slide-02-cafe.png', genCasesCafe],
+    ['ig-highlights/cases/slide-03-barber.png', genCasesBarber],
+    ['ig-highlights/cases/slide-04-furniture.png', genCasesFurniture],
+    ['ig-highlights/cases/slide-05-cta.png', genCasesCta],
+    ['ig-highlights/services/slide-01-cover.png', genServicesCover],
+    ['ig-highlights/services/slide-02-landing.png', genServicesLanding],
+    ['ig-highlights/services/slide-03-corporate.png', genServicesCorporate],
+    ['ig-highlights/services/slide-04-bot.png', genServicesBot],
+    ['ig-highlights/services/slide-05-cta.png', genServicesCta],
+    ['ig-highlights/bots/slide-01-cover.png', genBotsCover],
+    ['ig-highlights/bots/slide-02-how.png', genBotsHow],
+    ['ig-highlights/bots/slide-03-cta.png', genBotsCta],
+    ['ig-highlights/process/slide-01-cover.png', genProcessCover],
+    ['ig-highlights/process/slide-02-brief.png', genProcessBrief],
+    ['ig-highlights/process/slide-03-prototype.png', genProcessProto],
+    ['ig-highlights/process/slide-04-design.png', genProcessDesign],
+    ['ig-highlights/process/slide-05-dev.png', genProcessDev],
+    ['ig-highlights/process/slide-06-launch.png', genProcessLaunch],
+    ['ig-highlights/reviews/slide-01-soon.png', genReviewsSoon],
+    ['ig-highlights/faq/slide-01-cover.png', genFaqCover],
+    ['ig-highlights/faq/slide-02-price.png', genFaqPrice],
+    ['ig-highlights/faq/slide-03-time.png', genFaqTime],
+    ['ig-highlights/faq/slide-04-payment.png', genFaqPayment],
+    ['ig-highlights/faq/slide-05-support.png', genFaqSupport],
+
+    ['ig-posts/case-cafe-slide-01.png', () => postCase1(im, '+40% звонков за месяц', 'Кейс: кофейня в Каскелене', im.cafe)],
+    ['ig-posts/case-cafe-slide-02.png', () => postBodySlide(im, 'Проблема', 'Нет сайта, клиенты находят только через вывеску. Теряют заказы, когда закрыто')],
+    ['ig-posts/case-cafe-slide-03.png', () => postBodySlide(im, 'Решение', 'Лендинг с меню, ценами в \u20B8, картой, кнопкой «Позвонить»', im.cafe)],
+    ['ig-posts/case-cafe-slide-04.png', () => postBodySlide(im, 'Результат', '+40% звонков за первый месяц. Клиенты видят меню и цены до визита')],
+    ['ig-posts/case-cafe-slide-05.png', () => postListSlide(im, 'Что входит', ['Структура и дизайн', 'Адаптив под мобильные', 'Подключение аналитики', '5 дней работы'])],
+    ['ig-posts/case-cafe-slide-06.png', () => postCtaSlide(im, 'Хотите так же?', '@bess1liebot')],
+
+    ['ig-posts/case-barber-slide-01.png', () => postCase1(im, '70% записей через бота', 'Кейс: барбершоп в Алматы', im.barber)],
+    ['ig-posts/case-barber-slide-02.png', () => postBodySlide(im, 'Проблема', 'Запись только по телефону, мастера путаются')],
+    ['ig-posts/case-barber-slide-03.png', () => postBodySlide(im, 'Решение', 'Сайт + Telegram-бот для онлайн-записи', im.barber)],
+    ['ig-posts/case-barber-slide-04.png', () => postBodySlide(im, 'Результат', '70% записей через бота. Клиенты записываются сами в любое время')],
+    ['ig-posts/case-barber-slide-05.png', () => postListSlide(im, 'Что входит', ['Сайт + Telegram-бот', 'Онлайн-запись', 'Уведомления в TG', '2 недели работы'])],
+    ['ig-posts/case-barber-slide-06.png', () => postCtaSlide(im, 'Хотите так же?', '@bess1liebot')],
+
+    ['ig-posts/post-checklist.png', checklistSquare],
+    ['ig-posts/post-process.png', processSquare],
+    ['ig-posts/post-errors.png', errorsPost],
+    ['ig-posts/post-personal.png', personalPost],
+    ['ig-posts/reel-cover.png', reelCover],
+
+    ['ig-posts/case-furniture-slide-01.png', () => postCase1(im, 'Калькулятор стоимости онлайн', 'Кейс: мебельная мастерская', im.furniture)],
+    ['ig-posts/case-furniture-slide-02.png', () => postBodySlide(im, 'Проблема', 'Каталог в Excel, цены считают вручную')],
+    ['ig-posts/case-furniture-slide-03.png', () => postBodySlide(im, 'Решение', 'Сайт с фильтрами + калькулятор', im.furniture)],
+    ['ig-posts/case-furniture-slide-04.png', () => postBodySlide(im, 'Результат', 'Клиенты считают стоимость сами и приходят готовыми к заказу')],
+    ['ig-posts/case-furniture-slide-05.png', () => postCtaSlide(im, 'Хотите так же?', '@bess1liebot')],
+
+    ['ig-posts/pricing-slide-01.png', () => pricingPost(im, '45 000\u20B8', 'Лендинг', ['Одна страница', '5\u201310 дней', 'Структура + дизайн + в\u0451рстка'])],
+    ['ig-posts/pricing-slide-02.png', () => pricingPost(im, '75 000\u20B8', 'Корпоративный сайт', ['Несколько страниц', '2\u20134 недели', 'Каталог услуг'])],
+    ['ig-posts/pricing-slide-03.png', () => pricingPost(im, '100 000\u20B8', 'Сайт + Telegram-бот', ['Онлайн-запись', 'Уведомления в TG', '2 недели'])],
+    ['ig-posts/pricing-slide-04.png', () => postCtaSlide(im, 'Хотите так же?', '@bess1liebot')],
+
+    ['tg-channel/covers/cover-cases.png', () => tgCover(im, 'Кейсы', 'Реальные проекты с цифрами')],
+    ['tg-channel/covers/cover-review.png', () => tgCover(im, 'Разборы сайтов', 'Ошибки и как исправить')],
+    ['tg-channel/covers/cover-checklist.png', () => tgCover(im, 'Чек-листы', 'Полезное для бизнеса')],
+    ['tg-channel/covers/cover-faq.png', () => tgCover(im, 'FAQ', 'Ответы на частые вопросы')],
+    ['tg-channel/covers/cover-kitchen.png', () => tgCover(im, 'Кухня', 'Процесс разработки изнутри')],
+
+    ['tg-channel/templates/template-case.png', tgTemplateCase],
+    ['tg-channel/templates/template-review.png', tgTemplateReview],
+    ['tg-channel/templates/template-checklist.png', tgTemplateChecklist],
+    ['tg-channel/templates/template-faq.png', tgTemplateFaq],
+    ['tg-channel/templates/template-kitchen.png', tgTemplateKitchen],
+
+    ['mark:light2-512.png', () => renderSignFile(512)],
+    ['mark:light2-256.png', () => renderSignFile(256)],
+  ];
+  const out = {};
+  for (const [name, fn] of tasks) {
+    const res = fn(im);
+    const dataURL = typeof res === 'string' ? res : res.toDataURL('image/png');
+    const r = await fetch('/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, dataURL }) });
+    out[name] = (await r.json()).bytes;
+  }
+  return out;
+};
+</script></body></html>

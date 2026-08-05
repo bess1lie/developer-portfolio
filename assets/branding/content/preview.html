@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"></head>
+<body>
+<script>
+// Предпросмотр-сетка всех сгенерированных изображений
+const GROUPS = [
+  { title: 'IG Highlights', files: [
+    'ig-highlights/cases/slide-01-cover.png','ig-highlights/cases/slide-02-cafe.png','ig-highlights/cases/slide-03-barber.png','ig-highlights/cases/slide-04-furniture.png','ig-highlights/cases/slide-05-cta.png',
+    'ig-highlights/services/slide-01-cover.png','ig-highlights/services/slide-02-landing.png','ig-highlights/services/slide-03-corporate.png','ig-highlights/services/slide-04-bot.png','ig-highlights/services/slide-05-cta.png',
+    'ig-highlights/bots/slide-01-cover.png','ig-highlights/bots/slide-02-how.png','ig-highlights/bots/slide-03-cta.png',
+    'ig-highlights/process/slide-01-cover.png','ig-highlights/process/slide-02-brief.png','ig-highlights/process/slide-03-prototype.png','ig-highlights/process/slide-04-design.png','ig-highlights/process/slide-05-dev.png','ig-highlights/process/slide-06-launch.png',
+    'ig-highlights/faq/slide-01-cover.png','ig-highlights/faq/slide-02-price.png','ig-highlights/faq/slide-03-time.png','ig-highlights/faq/slide-04-payment.png','ig-highlights/faq/slide-05-support.png',
+    'ig-highlights/reviews/slide-01-soon.png'
+  ]},
+  { title: 'IG Posts', files: [
+    'ig-posts/reel-cover.png','ig-posts/post-errors.png','ig-posts/post-checklist.png','ig-posts/post-personal.png','ig-posts/post-process.png',
+    'ig-posts/pricing-slide-01.png','ig-posts/pricing-slide-02.png','ig-posts/pricing-slide-03.png','ig-posts/pricing-slide-04.png',
+    'ig-posts/case-cafe-slide-01.png','ig-posts/case-cafe-slide-02.png','ig-posts/case-cafe-slide-03.png','ig-posts/case-cafe-slide-04.png','ig-posts/case-cafe-slide-05.png','ig-posts/case-cafe-slide-06.png',
+    'ig-posts/case-barber-slide-01.png','ig-posts/case-barber-slide-02.png','ig-posts/case-barber-slide-03.png','ig-posts/case-barber-slide-04.png','ig-posts/case-barber-slide-05.png','ig-posts/case-barber-slide-06.png',
+    'ig-posts/case-furniture-slide-01.png','ig-posts/case-furniture-slide-02.png','ig-posts/case-furniture-slide-03.png','ig-posts/case-furniture-slide-04.png','ig-posts/case-furniture-slide-05.png'
+  ]},
+  { title: 'TG Channel', files: [
+    'tg-channel/covers/cover-cases.png','tg-channel/covers/cover-checklist.png','tg-channel/covers/cover-faq.png','tg-channel/covers/cover-kitchen.png','tg-channel/covers/cover-review.png',
+    'tg-channel/templates/template-case.png','tg-channel/templates/template-checklist.png','tg-channel/templates/template-faq.png','tg-channel/templates/template-kitchen.png','tg-channel/templates/template-review.png'
+  ]}
+];
+const CELL = 200, PAD = 20, LABEL = 26, HEADER = 56;
+const FONT = '"Manrope", sans-serif';
+
+function fit(w, h, cw, ch) {
+  const s = Math.min(cw / w, ch / h);
+  return [w * s, h * s];
+}
+
+window.__buildPreview = async () => {
+  const load = f => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = '/' + f; });
+  const cols = 5;
+  const cw = cols * CELL + (cols + 1) * PAD;
+  const images = {};
+  for (const g of GROUPS) for (const f of g.files) images[f] = await load(f);
+  let totalH = PAD;
+  for (const g of GROUPS) { totalH += HEADER; const rows = Math.ceil(g.files.length / cols); totalH += rows * (CELL + LABEL) + PAD; }
+  const c = document.createElement('canvas');
+  c.width = cw; c.height = totalH;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#FAF9F6'; ctx.fillRect(0, 0, cw, totalH);
+  let y = PAD;
+  for (const g of GROUPS) {
+    ctx.fillStyle = '#1C1917';
+    ctx.font = '800 26px ' + FONT;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+    ctx.fillText(g.title, PAD, y + 34);
+    y += HEADER;
+    let x = PAD, idx = 0;
+    for (const f of g.files) {
+      const img = images[f];
+      const [dw, dh] = fit(img.naturalWidth, img.naturalHeight, CELL - 12, CELL - 12);
+      const dx = x + (CELL - dw) / 2, dy = y + (CELL - dh) / 2;
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(x, y, CELL, CELL);
+      ctx.drawImage(img, dx, dy, dw, dh);
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '500 11px ' + FONT;
+      ctx.textAlign = 'center';
+      ctx.fillText(f.split('/').pop(), x + CELL / 2, y + CELL + 16);
+      x += CELL + PAD; idx++;
+      if (idx % cols === 0) { x = PAD; y += CELL + LABEL; }
+    }
+    y += (Math.ceil(g.files.length / cols)) * 0 + (g.files.length % cols === 0 ? 0 : 0);
+    if (g.files.length % cols !== 0) y += CELL + LABEL;
+  }
+  return await new Promise(res => {
+    c.toBlob(async b => {
+      const dataURL = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(b); });
+      const r = await fetch('/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: 'preview-grid.png', dataURL }) });
+      const j = await r.json();
+      res(`${cw}x${totalH} ${j.bytes} bytes`);
+    }, 'image/png');
+  });
+};
+</script>
+</body></html>
