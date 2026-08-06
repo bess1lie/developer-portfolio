@@ -189,6 +189,12 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
 }
 .btn-primary:hover { background: var(--accent-hover); color: #fff; }
 
+.btn-wa {
+  background: #25D366;
+  color: #0B141A;
+}
+.btn-wa:hover { background: #1EBE5D; color: #0B141A; }
+
 .btn-ghost {
   background: transparent;
   border-color: var(--border);
@@ -1032,8 +1038,15 @@ body.menu-open .site-header {
   margin-inline: auto;
 }
 .contact-cta { text-align: center; padding-top: 20px; }
+.contact-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
 .contact-alt { color: var(--text-muted); margin-top: 18px; font-size: 0.95rem; }
 .contact-alt a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 2px; }
+.form-wa-note { margin-top: 14px; text-align: center; }
 .contact-trust { color: var(--text-dim); font-size: 0.9rem; margin-top: 14px; line-height: 1.5; }
 
 .lead-form {
@@ -1129,6 +1142,8 @@ body.menu-open .site-header {
   transition: color .2s, background .2s;
 }
 .footer-icon:hover { color: #FFFFFF; background: rgba(79, 70, 229, .15); }
+.footer-icon-wa { color: #25D366; }
+.footer-icon-wa:hover { color: #25D366; background: rgba(37, 211, 102, .15); }
 .footer-icon svg { width: 22px; height: 22px; display: block; }
 .footer-year { width: 100%; text-align: center; color: var(--dark-island-muted); }
 .footer-tech {
