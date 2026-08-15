@@ -330,6 +330,89 @@
     });
   }
 
+  /* ---------- Форма Security Watch ---------- */
+  function initSecurityForm() {
+    var form = doc.getElementById("security-form");
+    if (!form) return;
+
+    var hint = form.querySelector(".form-hint");
+    var btn = form.querySelector("button[type='submit']");
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      var domain = form.elements["domain"].value.trim();
+      var name = form.elements["name"].value.trim();
+      var contact = form.elements["contact"].value.trim();
+      var website = (form.elements["website"] ? form.elements["website"].value : "");
+
+      if (website) {
+        if (hint) hint.textContent = "Спасибо! Проверка запущена.";
+        return;
+      }
+      if (!domain || !name || !contact) {
+        if (hint) hint.textContent = "Укажите домен, имя и контакт для связи.";
+        return;
+      }
+      if (!/^[a-z0-9\u00a1-\uffff]([a-z0-9\u00a1-\uffff-]*[a-z0-9\u00a1-\uffff])?(\.[a-z0-9\u00a1-\uffff]([a-z0-9\u00a1-\uffff-]*[a-z0-9\u00a1-\uffff])?)+$/i.test(domain)) {
+        if (hint) hint.textContent = "Похоже, это не домен. Пример: example.kz";
+        return;
+      }
+
+      var originalText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = "Проверяем…";
+      var scanFailed = true;
+
+      var done = function (message) {
+        if (hint) hint.textContent = message;
+        btn.disabled = false;
+        btn.textContent = originalText;
+        form.reset();
+      };
+
+      var sendLeadAndFinish = function () {
+        return sendLead({ name: name, contact: contact, description: "Security Watch — домен: " + domain, website: "" })
+          .catch(function () {
+            if (!scanFailed) done("Результат выше, но заявку не удалось отправить — напишите в Telegram.");
+          });
+      };
+
+      fetch("/api/scan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ domain: domain })
+      })
+        .then(function (res) {
+          return res.json().then(function (data) {
+            if (!res.ok) throw new Error(data.error || "scan failed");
+            return data;
+          });
+        })
+        .then(function (data) {
+          var message;
+          if (!data.ok) {
+            message = "Не получилось проверить домен. Попробуйте ещё раз.";
+          } else if (data.issues === 0) {
+            message = "Проблем не обнаружено. Полный отчёт — в боте @trustwatch_kz_bot";
+          } else if (data.severity === "critical" || data.severity === "high") {
+            message = "Нашли серьёзные проблемы (" + data.issues + "). Полный отчёт — в боте @trustwatch_kz_bot";
+          } else if (data.severity === "medium") {
+            message = "Нашли проблемы (" + data.issues + "). Полный отчёт — в боте @trustwatch_kz_bot";
+          } else {
+            message = "Нашли незначительные замечания (" + data.issues + "). Полный отчёт — в боте @trustwatch_kz_bot";
+          }
+          scanFailed = data.ok === false;
+          done(message);
+          return sendLeadAndFinish();
+        })
+        .catch(function () {
+          done("Не получилось проверить. Напишите мне в Telegram.");
+          return sendLeadAndFinish();
+        });
+    });
+  }
+
   /* ---------- FAQ: плавное открытие ---------- */
   function initFAQ() {
     var items = doc.querySelectorAll(".faq-item");
@@ -368,5 +451,6 @@
     initFAQ();
     initYear();
     initForm();
+    initSecurityForm();
   });
 })();

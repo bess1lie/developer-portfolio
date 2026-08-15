@@ -4,3 +4,4 @@ node_modules/
 .env
 .vercel
 screenshot_*.png
+__pycache__/

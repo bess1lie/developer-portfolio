@@ -241,6 +241,49 @@
       </div>
     </section>
 
+    <!-- ============ SECURITY WATCH ============ -->
+    <section class="section security-watch" id="security-watch" aria-labelledby="security-watch-title">
+      <div class="container">
+        <div class="section-head center">
+          <h2 id="security-watch-title" class="section-title">Security Watch</h2>
+          <p class="section-sub">Обнаруживаю изменения и внешние признаки проблем безопасности до того, как их заметит клиент или злоумышленник.</p>
+        </div>
+        <div class="security-inner">
+          <form class="lead-form" id="security-form" novalidate>
+            <h3>Бесплатная проверка сайта</h3>
+            <div class="field">
+              <label for="sw-domain">Домен сайта</label>
+              <input type="text" id="sw-domain" name="domain" placeholder="example.kz" autocomplete="off" required>
+            </div>
+            <div class="field">
+              <label for="sw-name">Имя</label>
+              <input type="text" id="sw-name" name="name" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="sw-contact">Контакт для связи</label>
+              <input type="text" id="sw-contact" name="contact" autocomplete="off" inputmode="text" required>
+            </div>
+            <div class="hp-field" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
+              <label for="sw-website">Не заполняйте это поле</label>
+              <input type="text" id="sw-website" name="website" tabindex="-1" autocomplete="off">
+            </div>
+            <button class="btn btn-primary" type="submit">Проверить</button>
+            <p class="form-consent">Бесплатно и без регистрации. Проверка занимает пару секунд.</p>
+            <p class="form-hint" role="status" aria-live="polite"></p>
+          </form>
+          <div class="security-list">
+            <h3>Что проверяем</h3>
+            <ul>
+              <li>Сертификат TLS: срок действия и версия протокола</li>
+              <li>Заголовки безопасности: CSP, HSTS, X-Frame-Options и другие</li>
+              <li>Открытые файлы: /.git и /.env с ключами и паролями</li>
+            </ul>
+            <p>Полный отчёт и регулярный мониторинг — в Telegram-боте <a href="https://t.me/trustwatch_kz_bot" target="_blank" rel="noopener">@trustwatch_kz_bot</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ ПОЧЕМУ СТОИТ РАБОТАТЬ СО МНОЙ ============ -->
     <section class="section why" id="why" aria-labelledby="why-title">
       <div class="container">

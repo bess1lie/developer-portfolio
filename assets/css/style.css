@@ -1028,6 +1028,27 @@ body.menu-open .site-header {
   transform: translateY(0);
 }
 
+/* ---------- Security Watch ---------- */
+.security-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+  max-width: 900px;
+  margin-inline: auto;
+}
+.security-list { padding-top: 8px; }
+.security-list h3 { margin-bottom: 14px; }
+.security-list ul {
+  margin: 0 0 16px;
+  padding-left: 20px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+.security-list li { margin-bottom: 8px; }
+.security-list p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; }
+.security-list a { color: var(--accent); }
+
 /* ---------- Contact ---------- */
 .contact-inner {
   display: grid;
@@ -1225,7 +1246,7 @@ body.menu-open .site-header {
   .footer-tech { font-size: 0.78rem; }
 
   .why-grid { grid-template-columns: repeat(2, 1fr); }
-  .contact-inner { grid-template-columns: 1fr; gap: 32px; }
+  .contact-inner, .security-inner { grid-template-columns: 1fr; gap: 32px; }
   .section { padding: 56px 0; }
 
   .service-card > p, .why-card p, .timeline-body p, .faq-item p, .project-desc { font-size: 1rem; }
