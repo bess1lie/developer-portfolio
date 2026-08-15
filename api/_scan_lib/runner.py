@@ -18,13 +18,16 @@ from _scan_lib.scanner import normalize_target
 logger = logging.getLogger("trustwatch.teaser")
 
 
+CHECK_DEADLINE_S = 4.5
+
+
 async def scan(target: str, ctx: ScanContext | None = None) -> Verdict:
     ctx = ctx or ScanContext()
     hostname = normalize_target(target)
     coroutines = [
-        tls.run(hostname, ctx),
-        headers.run(hostname, ctx),
-        exposure_lite.run(hostname, ctx),
+        asyncio.wait_for(tls.run(hostname, ctx), timeout=CHECK_DEADLINE_S),
+        asyncio.wait_for(headers.run(hostname, ctx), timeout=CHECK_DEADLINE_S),
+        asyncio.wait_for(exposure_lite.run(hostname, ctx), timeout=CHECK_DEADLINE_S),
     ]
     results = await asyncio.gather(*coroutines, return_exceptions=True)
     findings: list[Finding] = []

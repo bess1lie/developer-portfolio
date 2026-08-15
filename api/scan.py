@@ -11,9 +11,13 @@ from __future__ import annotations
 import asyncio
 import ipaddress
 import json
+import os
 import re
+import sys
 import time
 from http.server import BaseHTTPRequestHandler
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from _scan_lib import ScanContext, normalize_target
 from _scan_lib.runner import scan as teaser_scan
