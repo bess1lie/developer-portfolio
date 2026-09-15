@@ -10,6 +10,7 @@ const SERVICE_LABELS = {
   landing: "Лендинг (от 45 000₸)",
   corp: "Корпоративный сайт (от 75 000₸)",
   site_bot: "Сайт + Telegram-бот (от 100 000₸)",
+  ai_admin: "AI-админ 24/7 (12 000₸/мес)",
   other: "Другое / задать вопрос",
 };
 
@@ -30,6 +31,7 @@ function menuKeyboard() {
       [{ text: "Лендинг (от 45 000₸)", callback_data: "service:landing" }],
       [{ text: "Корпоративный сайт (от 75 000₸)", callback_data: "service:corp" }],
       [{ text: "Сайт + бот (от 100 000₸)", callback_data: "service:site_bot" }],
+      [{ text: "AI-админ 24/7 (12 000₸/мес)", callback_data: "service:ai_admin" }],
       [{ text: "Другое / задать вопрос", callback_data: "service:other" }],
       [{ text: "Посмотреть портфолио", url: SITE }],
     ],
