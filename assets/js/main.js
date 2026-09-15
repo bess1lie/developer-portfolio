@@ -150,7 +150,7 @@
     var groups = [
       ".project-row", ".why-card",
       ".service-card", ".price-card",
-      ".timeline-item", ".faq-item",
+      ".process-card", ".faq-item",
       ".hero-choice-card", ".chat-demo-wrap", ".ai-admin-steps li", ".ai-admin-compare-item"
     ];
     var els = doc.querySelectorAll(groups.join(","));
@@ -187,7 +187,7 @@
     if (prefersReducedMotion) {
       var revealGroups = [
         ".gs-reveal", ".mini-card", ".project-row", ".why-card",
-        ".service-card", ".price-card", ".timeline-item", ".faq-item"
+        ".service-card", ".price-card", ".process-card", ".faq-item"
       ];
       doc.querySelectorAll(revealGroups.join(",")).forEach(function (el) {
         gsap.set(el, { opacity: 1, y: 0, scale: 1 });
@@ -270,8 +270,8 @@
     // Цены
     revealBatch(".price-card", 0.1, 0.7);
 
-    // Процесс: timeline
-    revealBatch(".timeline-item", 0.12, 0.7);
+    // Процесс: premium grid
+    revealBatch(".process-card", 0.1, 0.6);
 
     // FAQ
     revealBatch(".faq-item", 0.08, 0.7);
