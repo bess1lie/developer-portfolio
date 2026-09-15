@@ -64,7 +64,7 @@ async function sendStart(chatId) {
   states.delete(chatId);
   await tg("sendMessage", {
     chat_id: chatId,
-    text: "Привет! Я бот bess1lie — помогаю заказать сайт или Telegram-бота для бизнеса.\n\nВыберите, что вас интересует:",
+    text: "Привет! Мы — команда bess1lie — помогаем заказать сайт или Telegram-бота для бизнеса.\n\nВыберите, что вас интересует:",
     reply_markup: menuKeyboard(),
   });
 }
@@ -150,7 +150,7 @@ export default async function handler(req, res) {
       const contact = text.slice(0, 500);
       await tg("sendMessage", {
         chat_id: chatId,
-        text: "Спасибо! Передам заявку bess1lie, он свяжется в течение нескольких часов.",
+        text: "Спасибо! Передадим заявку, мы свяжемся в течение нескольких часов.",
         reply_markup: restartKeyboard(),
       });
       await forwardToOwner(

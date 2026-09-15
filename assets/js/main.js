@@ -329,12 +329,12 @@
 
       sendLead(data)
         .then(function () {
-          alert("Спасибо, " + name + "! Заявка принята. Я свяжусь с вами в ближайшее время.");
-          if (hint) hint.textContent = "Спасибо, " + name + "! Заявка принята. Я свяжусь с вами в ближайшее время.";
+          alert("Спасибо, " + name + "! Заявка принята. Мы свяжемся с вами в ближайшее время.");
+          if (hint) hint.textContent = "Спасибо, " + name + "! Заявка принята. Мы свяжемся с вами в ближайшее время.";
           form.reset();
         })
         .catch(function () {
-          if (hint) hint.textContent = "Не получилось отправить. Напишите мне напрямую в Telegram.";
+          if (hint) hint.textContent = "Не получилось отправить. Напишите нам напрямую в Telegram.";
         });
     });
   }
@@ -416,7 +416,7 @@
           return sendLeadAndFinish();
         })
         .catch(function () {
-          done("Не получилось проверить. Напишите мне в Telegram.");
+          done("Не получилось проверить. Напишите нам в Telegram.");
           return sendLeadAndFinish();
         });
     });
