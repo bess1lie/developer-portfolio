@@ -150,7 +150,8 @@
     var groups = [
       ".project-row", ".why-card",
       ".service-card", ".price-card",
-      ".timeline-item", ".faq-item"
+      ".timeline-item", ".faq-item",
+      ".hero-choice-card", ".chat-demo-wrap", ".ai-admin-steps li", ".ai-admin-compare-item"
     ];
     var els = doc.querySelectorAll(groups.join(","));
     if (!els.length) return;
@@ -201,6 +202,7 @@
     gsap.set("#hero-title", { opacity: 0, y: 20 });
     gsap.set(".hero-sub", { opacity: 0, y: 16 });
     gsap.set(".hero-actions", { opacity: 0, y: 12 });
+    gsap.set(".hero-choice-cards", { opacity: 0, y: 12 });
     gsap.set(".hero-trust", { opacity: 0 });
     gsap.set(".mini-card", { opacity: 0, y: 24, rotation: function (i) { return [-2, 2.5, -1.5, 2, -2.5][i] || 0; } });
     gsap.set(".hero-scroll", { opacity: 0 });
@@ -210,6 +212,7 @@
       .to("#hero-title", { opacity: 1, y: 0, duration: 0.5 }, 0.08)
       .to(".hero-sub", { opacity: 1, y: 0, duration: 0.4 }, 0.22)
       .to(".hero-actions", { opacity: 1, y: 0, duration: 0.4 }, 0.32)
+      .to(".hero-choice-cards", { opacity: 1, y: 0, duration: 0.4 }, 0.38)
       .to(".hero-trust", { opacity: 1, duration: 0.3 }, 0.42)
       .to(".mini-card", {
         opacity: 1,
@@ -273,6 +276,11 @@
     // FAQ
     revealBatch(".faq-item", 0.08, 0.7);
 
+    // AI-админ
+    revealBatch(".chat-demo-wrap", 0, 0.7);
+    revealBatch(".ai-admin-steps li", 0.1, 0.6);
+    revealBatch(".ai-admin-compare-item", 0.1, 0.6);
+
     // Контакты: форма
     revealBatch(".lead-form", 0, 0.7);
   }
@@ -309,6 +317,7 @@
       var name = form.elements["name"].value.trim();
       var contact = form.elements["contact"].value.trim();
       var desc = form.elements["description"].value.trim();
+      var interest = form.elements["interest"] ? form.elements["interest"].value : "";
       var website = (form.elements["website"] ? form.elements["website"].value : "");
 
       if (!name || !contact) {
@@ -316,7 +325,7 @@
         return;
       }
 
-      var data = { name: name, contact: contact, description: desc, website: website };
+      var data = { name: name, contact: contact, description: desc, interest: interest, website: website };
 
       sendLead(data)
         .then(function () {

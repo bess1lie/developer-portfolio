@@ -9,6 +9,7 @@ export default async function handler(req, res) {
   const name = String(body.name || "").trim();
   const contact = String(body.contact || "").trim();
   const description = String(body.description || "").trim();
+  const interest = String(body.interest || "").trim();
   const website = String(body.website || "").trim(); // honeypot
 
   // Honeypot: если бот заполнил скрытое поле — молча "принять", в TG не слать
@@ -18,9 +19,11 @@ export default async function handler(req, res) {
   if (!name || !contact) {
     return res.status(400).json({ ok: false, error: "Заполните имя и контакт." });
   }
-  if (name.length > 100 || contact.length > 200 || description.length > 2000) {
+  if (name.length > 100 || contact.length > 200 || description.length > 2000 || interest.length > 50) {
     return res.status(400).json({ ok: false, error: "Слишком длинное значение." });
   }
+  const interestLabels = { site: "Сайт", ai_admin: "AI-админ", both: "И то, и то" };
+  const interestLabel = interestLabels[interest] || interest || "—";
 
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
@@ -36,6 +39,7 @@ export default async function handler(req, res) {
     "\u{1F514} Новая заявка с сайта\n" +
     "\u{1F464} Имя: " + name + "\n" +
     "\u{1F4DE} Контакт: " + contact + "\n" +
+    "\u{1F3AF} Интерес: " + interestLabel + "\n" +
     "\u{1F4DD} Проект: " + (description || "—") + "\n" +
     "\u{1F552} Время: " + time;
 
