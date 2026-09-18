@@ -455,7 +455,7 @@
   /* ---------- Scroll progress fallback (если нет animation-timeline) ---------- */
   function initScrollProgress() {
     var root = doc.documentElement;
-    if (window.CSS && CSS.supports && CSS.supports("animation-timeline: scroll()")) return; // ведёт CSS
+    if (window.CSS && CSS.supports && CSS.supports("animation-timeline: scroll(root block)")) return; // ведёт CSS
     var ticking = false;
     function update() {
       ticking = false;

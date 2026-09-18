@@ -232,8 +232,14 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
   background: var(--accent-gradient);
   transform-origin: left center;
   transform: scaleX(var(--sp, 0));
-  animation: header-progress linear both;
-  animation-timeline: scroll(root block);
+}
+/* Нативный scroll-timeline только там, где поддерживается.
+   Без @supports нулевая анимация перекрывала бы JS-fallback (scaleX(1) всегда). */
+@supports (animation-timeline: scroll()) {
+  .site-header::before {
+    animation: header-progress linear both;
+    animation-timeline: scroll(root block);
+  }
 }
 @keyframes header-progress {
   from { transform: scaleX(0); }
