@@ -452,10 +452,32 @@
     });
   }
 
+  /* ---------- Scroll progress fallback (если нет animation-timeline) ---------- */
+  function initScrollProgress() {
+    var root = doc.documentElement;
+    if (window.CSS && CSS.supports && CSS.supports("animation-timeline: scroll()")) return; // ведёт CSS
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var max = root.scrollHeight - root.clientHeight;
+      var p = max > 0 ? root.scrollTop / max : 0;
+      if (!isFinite(p) || p < 0) p = 0;
+      if (p > 1) p = 1;
+      root.style.setProperty("--sp", p.toFixed(4));
+    }
+    function requestUpdate() {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    update();
+  }
+
   /* ---------- Инициализация ---------- */
   doc.addEventListener("DOMContentLoaded", function () {
     initLogo();
     initMenu();
+    initScrollProgress();
     initGSAP();
     initFAQ();
     initYear();

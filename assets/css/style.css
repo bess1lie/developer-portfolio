@@ -230,6 +230,14 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
   right: 0;
   height: 3px;
   background: var(--accent-gradient);
+  transform-origin: left center;
+  transform: scaleX(var(--sp, 0));
+  animation: header-progress linear both;
+  animation-timeline: scroll(root block);
+}
+@keyframes header-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }
 
 .header-inner {
