@@ -452,13 +452,21 @@
     });
   }
 
-  /* ---------- Scroll progress fallback (если нет animation-timeline) ---------- */
+  /* ---------- Scroll progress ----------
+     Desktop Chromium: нативный animation-timeline.
+     Desktop Firefox без поддержки / mobile (<=767px): JS rAF + --sp.
+     Режимы не работают одновременно: на mobile CSS-анимация отключена
+     через @media, JS включается по matchMedia. */
   function initScrollProgress() {
     var root = doc.documentElement;
-    if (window.CSS && CSS.supports && CSS.supports("animation-timeline: scroll(root block)")) return; // ведёт CSS
+    var mq = window.matchMedia("(max-width: 767px)");
+    var nativeOK = window.CSS && CSS.supports && CSS.supports("animation-timeline: scroll(root block)");
+    var mode = "native";
     var ticking = false;
+    function useJS() { return !nativeOK || mq.matches; }
     function update() {
       ticking = false;
+      if (mode !== "js") return;
       var max = root.scrollHeight - root.clientHeight;
       var p = max > 0 ? root.scrollTop / max : 0;
       if (!isFinite(p) || p < 0) p = 0;
@@ -466,11 +474,18 @@
       root.style.setProperty("--sp", p.toFixed(4));
     }
     function requestUpdate() {
-      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      if (mode !== "js" || ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+    function chooseMode() {
+      mode = useJS() ? "js" : "native";
+      if (mode === "js") update();
     }
     window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
-    update();
+    window.addEventListener("resize", function () { chooseMode(); requestUpdate(); });
+    if (mq.addEventListener) mq.addEventListener("change", chooseMode);
+    chooseMode();
   }
 
   /* ---------- Инициализация ---------- */

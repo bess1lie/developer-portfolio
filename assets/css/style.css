@@ -245,6 +245,11 @@ h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
   from { transform: scaleX(0); }
   to { transform: scaleX(1); }
 }
+/* На mobile — только JS rAF + --sp, без scroll-driven анимаций
+   (идёт после @supports и перекрывает его на малых viewport). */
+@media (max-width: 767px) {
+  .site-header::before { animation: none; }
+}
 
 .header-inner {
   display: flex;
