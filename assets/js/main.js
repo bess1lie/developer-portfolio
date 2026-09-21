@@ -147,17 +147,21 @@
         e.preventDefault();
         window.scrollTo({top: top, behavior: reducedMotion ? 'auto' : 'smooth'});
         history.pushState(null,'',href);
-        // snap-correction: content-visibility / nav-shrink can shift layout mid-scroll
+        // snap-correction: wait until smooth scroll settles, then fix residual drift
         var cancelled = false;
         var cancel = function(){ cancelled = true; };
         window.addEventListener('wheel', cancel, {once:true, passive:true});
         window.addEventListener('touchmove', cancel, {once:true, passive:true});
-        setTimeout(function(){
+        var t0 = Date.now(), lastY = window.scrollY;
+        (function settle(){
           if (cancelled) return;
-          var hh = document.querySelector('.nav') ? document.querySelector('.nav').offsetHeight : 64;
-          var d = h2.getBoundingClientRect().top - hh - 32;
-          if (Math.abs(d) > 2) window.scrollTo({top: window.scrollY + d, behavior: 'instant'});
-        }, 650);
+          var now = Date.now(), y = window.scrollY;
+          if (now - t0 > 3000 || (now - t0 > 500 && Math.abs(y - lastY) < 1)) {
+            var hh = document.querySelector('.nav') ? document.querySelector('.nav').offsetHeight : 64;
+            var d = h2.getBoundingClientRect().top - hh - 32;
+            if (Math.abs(d) > 2) window.scrollTo({top: y + d, behavior: 'instant'});
+          } else { lastY = y; requestAnimationFrame(settle); }
+        })();
         // close mobile menu if open
         var mmenu=document.getElementById('mmenu');
         if(mmenu && mmenu.classList.contains('is-open')){
@@ -196,7 +200,7 @@
     var cur = 0;
     var timer = null;
     var pausedUntil = 0;
-    var results = ["заявка за 30 секунд","заказы без звонков и ожиданий","услуги, цены и запись","ответы за 5 секунд, 24/7","код полностью ваш"];
+    var results = ["заявка в пару кликов","заказы без звонков и ожиданий","услуги, цены и запись","ответы за 5 секунд, 24/7","код полностью ваш"];
     function activate(i){
       cur = i;
       chips.forEach(function(c,k){
@@ -375,9 +379,9 @@
       });
       // panels: show one, hide others via hidden + visibility
       var panelData = [
-        {num:"01", type:"ЛЕНДИНГ", title:"Кофейня «Дәме»", desc:"Меню, отзывы и форма заявки в одном понятном сайте.", tags:["Меню в ₸","Форма заявки"], meta:["от 45 000 ₸","7 дней"], href:"https://bess1lie.github.io/cafe-demo/"},
-        {num:"02", type:"КОРПОРАТИВНЫЙ САЙТ", title:"Барбершоп «Жігіт»", desc:"Услуги, мастера, прайс и онлайн-запись в одном месте.", tags:["Мастера","Онлайн-запись"], meta:["от 75 000 ₸","14 дней"], href:"https://bess1lie.github.io/barbershop-demo/"},
-        {num:"03", type:"САЙТ С КАТАЛОГОМ", title:"Мастерская «Ағаш»", desc:"Каталог изделий, фильтры и калькулятор стоимости.", tags:["Каталог","Калькулятор"], meta:["от 100 000 ₸","20 дней"], href:"https://bess1lie.github.io/furniture-demo/"}
+        {num:"01", type:"ЛЕНДИНГ", title:"Кофейня «Дәме»", desc:"Меню, отзывы и форма заявки в одном понятном сайте.", tags:["Меню в ₸","Адаптив","Форма заявки"], meta:["от 45 000 ₸","5–10 дней"], href:"https://bess1lie.github.io/cafe-demo/"},
+        {num:"02", type:"КОРПОРАТИВНЫЙ САЙТ", title:"Барбершоп «Жігіт»", desc:"Услуги, мастера, прайс и онлайн-запись в одном месте.", tags:["Мастера","Онлайн-запись"], meta:["от 75 000 ₸","от 14 дней"], href:"https://bess1lie.github.io/barbershop-demo/"},
+        {num:"03", type:"САЙТ С КАТАЛОГОМ", title:"Мастерская «Ағаш»", desc:"Каталог изделий, фильтры и калькулятор стоимости.", tags:["Каталог","Калькулятор"], meta:["от 100 000 ₸","от 20 дней"], href:"https://bess1lie.github.io/furniture-demo/"}
       ];
       var panelNum = document.getElementById("work-panel-num");
       var panelType = document.getElementById("work-panel-type");
