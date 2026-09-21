@@ -725,17 +725,6 @@
       return res.json();
     });
   }
-  function formatWebsiteLead(data) {
-    var time = new Intl.DateTimeFormat("ru-RU", {
-      timeZone: "Asia/Almaty", dateStyle: "short", timeStyle: "short"
-    }).format(new Date());
-    return "🔔 Новая заявка с сайта\n" +
-      "👤 Имя: " + data.name + "\n" +
-      "📞 Контакт: " + data.contact + "\n" +
-      "🎯 Интерес: " + data.interest + "\n" +
-      "📝 Проект: " + (data.description || "—") + "\n" +
-      "🕒 Время: " + time;
-  }
   function initForm() {
     var form = doc.getElementById("lead-form");
     if (!form) return;
@@ -761,13 +750,10 @@
         if (hint) hint.textContent = "Заявка отправлена! Ответим в течение нескольких часов.";
         form.reset();
         if (btn) { btn.disabled = false; btn.textContent = "Отправить заявку"; }
-      }).catch(function (err) {
-        // fallback for static hosting 404/405
-        var text = formatWebsiteLead(data);
-        var url = "https://t.me/bess1liebot?text=" + encodeURIComponent(text);
-        window.open(url, "_blank");
-        if (hint) hint.textContent = "Открыли Telegram с готовым сообщением — нажмите Send";
-        if (btn) { btn.disabled = false; btn.textContent = "Отправить заявку"; }
+      }).catch(function () {
+        // The website flow must stay on-site. Telegram is sent only server-side.
+        if (hint) hint.textContent = "Не удалось отправить заявку. Попробуйте ещё раз.";
+        if (btn) { btn.disabled = false; btn.textContent = "Повторить"; }
       });
       // also handle non-ok res
       // if fetch returns 404, it will be caught as error above via res.ok check in sendLead
