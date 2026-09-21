@@ -855,7 +855,7 @@ section { padding: clamp(96px, 12vw, 200px) 0; position: relative; }
 .bento-tile:hover .bento-ico { border-color: rgba(214,58,12,.3); color: var(--accent-strong); }
 .bento-tile h3 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 10px; }
 .bento-tile > p { color: var(--fg-dim); font-size: 1rem; line-height: 1.6; max-width: none; }
-.bento-chip { margin-top: 14px; font-size: 0.92rem; background: var(--bg-alt); border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; color: var(--fg-dim); }
+.bento-chip { display: block; min-width: 0; max-width: 100%; margin-top: 14px; font-size: 0.92rem; line-height: 1.45; background: var(--bg-alt); border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; color: var(--fg-dim); overflow-wrap: anywhere; word-break: break-word; }
 .bento-chip strong { color: var(--fg); }
 .more-line { margin-top: 28px; color: var(--fg-dim); }
 /* legacy svc-list keep for fallback */
@@ -1709,6 +1709,9 @@ h1, h2, h3, .hero-chip-title, .wordmark { font-family: 'Manrope', system-ui, san
   .hero-facts--chips > div { min-width: 0; }
   .sticky-cta { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
   .ai-grid .phone { position: static; }
+  .bento-tile, .bento-chip, .ai-grid, .price-row, .timeline li { min-width: 0; }
+  .bento-chip { border-radius: 14px; }
+  .hero-chip-title, .hero-chip-result { min-width: 0; overflow-wrap: anywhere; word-break: break-word; }
 }
 @media (max-width: 390px) { .hero { padding-top: calc(var(--header-h) + 20px); } .hero h1 { font-size: clamp(1.9rem, 8.5vw, 2.2rem); } .hero-sub { font-size: 1rem; } }
 
