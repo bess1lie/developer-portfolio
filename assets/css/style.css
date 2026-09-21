@@ -1235,6 +1235,9 @@ html body .lead-form .magnetic { transform: none; }
 .lead-form .btn { width: 100%; margin-top: 8px; }
 .form-consent { margin-top: 14px; font-size: 0.78rem; line-height: 1.5; color: var(--fg-dim); }
 .form-hint { margin-top: 12px; font-size: 0.9rem; color: var(--accent); min-height: 1.2em; }
+.form-hint.is-success { color: #287545; font-weight: 600; }
+.form-hint.is-success::before { content: "✓"; display: inline-block; margin-right: 6px; color: #287545; font-weight: 700; }
+.form-hint.is-error { color: var(--accent); }
 
 /* ---------- Футер ---------- */
 .footer { border-top: 1px solid var(--line); padding: 48px 0 32px; overflow: hidden; }

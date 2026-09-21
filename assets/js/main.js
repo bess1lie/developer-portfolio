@@ -740,19 +740,34 @@
         website: form.website.value
       };
       if (!data.name || !data.contact) {
-        if (hint) hint.textContent = "Заполните имя и контакт.";
+        if (hint) {
+          hint.classList.remove("is-success");
+          hint.classList.add("is-error");
+          hint.textContent = "Заполните имя и контакт.";
+        }
         return;
       }
       if (btn) { btn.disabled = true; btn.textContent = "Отправляем…"; }
-      if (hint) hint.textContent = "";
+      if (hint) {
+        hint.classList.remove("is-success", "is-error");
+        hint.textContent = "";
+      }
       sendLead(data).then(function (res) {
         // check if res is json and ok
-        if (hint) hint.textContent = "Заявка отправлена! Ответим в течение нескольких часов.";
+        if (hint) {
+          hint.classList.remove("is-error");
+          hint.classList.add("is-success");
+          hint.textContent = "Заявка отправлена! Ответим в течение нескольких часов.";
+        }
         form.reset();
         if (btn) { btn.disabled = false; btn.textContent = "Отправить заявку"; }
       }).catch(function () {
         // The website flow must stay on-site. Telegram is sent only server-side.
-        if (hint) hint.textContent = "Не удалось отправить заявку. Попробуйте ещё раз.";
+        if (hint) {
+          hint.classList.remove("is-success");
+          hint.classList.add("is-error");
+          hint.textContent = "Не удалось отправить заявку. Попробуйте ещё раз.";
+        }
         if (btn) { btn.disabled = false; btn.textContent = "Повторить"; }
       });
       // also handle non-ok res
