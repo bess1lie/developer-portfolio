@@ -1601,6 +1601,7 @@ section { padding: clamp(72px, 8vw, 120px) 0; }
   .hero-facts > div { padding: 14px 12px; }
   .phone { margin-inline: auto; }
   .price-row { grid-template-columns: 1fr; gap: 10px; }
+  .price-row--accent { margin-left: 0; width: 100%; padding: 20px 18px; border: 1px solid rgba(255,77,28,.25); border-radius: 16px; }
   .svc-arrow { display: none; }
   .bento { grid-template-columns: 1fr; }
   .bento--lendings, .bento--bots, .bento--corp, .bento--auto, .bento--integr { grid-column: auto; }
@@ -1695,7 +1696,7 @@ h1, h2, h3, .hero-chip-title, .wordmark { font-family: 'Manrope', system-ui, san
   .hero-facts { order: 8; }
   .hero-stack-core, .hero-stack-svg { display: none; }
   .hero-stack-marquee { overflow: hidden; width: 100%; }
-  .hero-marquee-track { display: flex; gap: 8px; width: max-content; animation: hero-marquee 30s linear infinite; }
+  .hero-marquee-track { display: flex; gap: 8px; width: max-content; padding-right: 8px; animation: hero-marquee 30s linear infinite; }
   .hero-marquee-track--reverse { display: none; }
   .hero-marquee-chip { min-height: 38px; padding: 8px 12px; font-size: 13px; }
   .hero-marquee-status { font-size: 13px; margin-top: 6px; }
