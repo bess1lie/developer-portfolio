@@ -78,8 +78,11 @@ function forceReply(messageId) {
   return {
     force_reply: true,
     input_field_placeholder: "Введите ответ",
-    ...(messageId ? { reply_parameters: { message_id: messageId } } : {}),
   };
+}
+
+function replyTo(messageId) {
+  return messageId ? { reply_parameters: { message_id: messageId } } : {};
 }
 
 function replyChain(message) {
@@ -187,7 +190,8 @@ export default async function handler(req, res) {
         await tg("sendMessage", {
           chat_id: chatId,
           text: "Отлично! " + (SERVICE_LABELS[service] || service) + ".\n\nРасскажите о проекте: какой у вас бизнес, что нужно сделать?",
-          reply_markup: forceReply(cb.message?.message_id),
+          reply_markup: forceReply(),
+          ...replyTo(cb.message?.message_id),
         });
         return res.status(200).json({ ok: true });
       }
@@ -218,7 +222,8 @@ export default async function handler(req, res) {
       await tg("sendMessage", {
         chat_id: chatId,
         text: "Понял вас. Как с вами связаться? (Telegram/телефон/email)",
-        reply_markup: forceReply(msg.message_id),
+        reply_markup: forceReply(),
+        ...replyTo(msg.message_id),
       });
       return res.status(200).json({ ok: true });
     }
@@ -239,7 +244,8 @@ export default async function handler(req, res) {
         await tg("sendMessage", {
           chat_id: chatId,
           text: "Понял вас. Как с вами связаться? (Telegram/телефон/email)",
-          reply_markup: forceReply(msg.message_id),
+          reply_markup: forceReply(),
+          ...replyTo(msg.message_id),
         });
         return res.status(200).json({ ok: true });
       }
