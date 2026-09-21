@@ -2,7 +2,8 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
   <title>bess1lie — разработка сайтов и автоматизация для малого бизнеса</title>
   <meta name="description" content="Современные сайты, Telegram-боты и автоматизация процессов для малого бизнеса. Понятная стоимость, поддержка после запуска.">
   <link rel="canonical" href="https://developer-portfolio-six-theta.vercel.app/">
@@ -24,551 +25,447 @@
 
   <link rel="shortcut icon" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/branding/favicon-32.png?v=14">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/branding/favicon-light-32.png?v=14" media="(prefers-color-scheme: dark)">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/branding/apple-touch-180.png?v=14">
   <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#FAF9F6">
+  <meta name="theme-color" content="#0A0A0B">
 
-  <link rel="preload" href="assets/fonts/manrope-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/fonts/unbounded-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-
-  <link rel="stylesheet" href="assets/css/style.css?v=15">
+  <link rel="preload" href="assets/fonts/v2/inter-tight-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/v2/inter-tight-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/manrope/manrope-cyrillic-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/style.css?v=70">
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к содержимому</a>
+  <div class="intro" id="intro" aria-hidden="true"><span class="intro-word">bess1lie</span></div>
 
-  <header class="site-header" id="top">
-    <div class="container header-inner">
-      <a class="logo" role="button" tabindex="0" aria-label="bess1lie — на главную">
-        <img class="logo-mark" src="assets/branding/mark-dark-96.png" width="32" height="32" alt="">
-        <span>bess1lie</span>
-      </a>
-
-      <nav class="site-nav" aria-label="Основная навигация">
-        <ul>
-          <li><a href="#recent">Работы</a></li>
-          <li><a href="#services">Услуги</a></li>
-          <li><a href="#pricing">Стоимость</a></li>
-          <li><a href="#faq">FAQ</a></li>
-          <li><a href="#contact">Контакты</a></li>
-        </ul>
+  <header class="nav" id="top">
+    <div class="nav-inner">
+      <a class="wordmark" href="#top" data-scrolltop aria-label="bess1lie — наверх">bess1lie<sup>®</sup></a>
+      <nav class="nav-links" aria-label="Основная навигация">
+        <a href="#work">Работы</a>
+        <a href="#services">Услуги</a>
+        <a href="#ai-admin">AI-админ</a>
+        <a href="#pricing">Стоимость</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Контакты</a>
       </nav>
-
-      <a class="btn btn-ghost btn-header" href="#contact">Обсудить проект</a>
-
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Открыть меню">
-        <span class="nav-toggle-line"></span>
-        <span class="nav-toggle-line"></span>
-        <span class="nav-toggle-line"></span>
-      </button>
+      <div class="nav-right">
+        <a class="btn btn-accent btn-sm magnetic" href="#contact">Обсудить проект</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mmenu" aria-label="Открыть меню">
+          <span></span><span></span>
+        </button>
+      </div>
     </div>
+    <div class="nav-progress" aria-hidden="true"><i></i></div>
   </header>
 
-  <nav class="mobile-menu" id="mobile-menu" aria-label="Мобильная навигация" hidden>
-    <ul>
-      <li><a href="#recent">Работы</a></li>
-      <li><a href="#services">Услуги</a></li>
-      <li><a href="#pricing">Стоимость</a></li>
-      <li><a href="#faq">FAQ</a></li>
-      <li><a href="#contact">Контакты</a></li>
-    </ul>
-    <a class="btn btn-primary" href="#contact">Обсудить проект</a>
+  <nav class="mmenu" id="mmenu" aria-label="Мобильная навигация" hidden>
+    <a href="#work">Работы</a>
+    <a href="#services">Услуги</a>
+    <a href="#ai-admin">AI-админ</a>
+    <a href="#pricing">Стоимость</a>
+    <a href="#faq">FAQ</a>
+    <a href="#contact">Контакты</a>
+    <a class="btn btn-accent" href="#contact">Обсудить проект</a>
     <a class="btn btn-ghost" href="https://t.me/bess1liebot">Telegram</a>
   </nav>
 
   <main id="main">
     <!-- ============ HERO ============ -->
     <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-bg-grid" aria-hidden="true"></div>
-      <div class="hero-glowing-orb orb-1" aria-hidden="true"></div>
-      <div class="hero-glowing-orb orb-2" aria-hidden="true"></div>
-
-      <div class="container hero-inner">
-        <div class="hero-copy">
-          <p class="hero-eyebrow gs-reveal">Разработка для бизнеса · Алматы</p>
-          <h1 id="hero-title" class="gs-reveal">Заявки не теряются: сайт приводит клиентов, AI-админ отвечает за 5 секунд</h1>
-          <p class="hero-sub gs-reveal">Сайт от 45.000₸ + AI-админ 24/7 от 12.000₸/мес (первые 3 дня бесплатно) — для малого бизнеса.</p>
-          <div class="hero-actions gs-reveal">
-            <a class="btn btn-primary btn-lg" href="#contact">Обсудить проект</a>
-            <a class="btn btn-ghost btn-lg" href="#recent">Посмотреть работы</a>
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="wrap hero-main">
+          <div class="hero-copy">
+            <p class="kicker reveal">Разработка для бизнеса · Алматы</p>
+            <h1 id="hero-title">
+              <span class="line"><span>Заявки не теряются:</span></span>
+              <span class="line"><span>сайт приводит <em>клиентов</em>,</span></span>
+              <span class="line"><span>AI-админ отвечает за <em>5 секунд</em></span></span>
+            </h1>
+            <p class="hero-sub reveal">Сайт от 45.000₸ + AI-админ 24/7 от 12.000₸/мес — для малого бизнеса.</p>
+            <div class="hero-cta reveal">
+              <a class="btn btn-accent btn-lg magnetic" href="#contact">Обсудить проект</a>
+              <a class="btn btn-ghost btn-lg" href="#work">Посмотреть работы</a>
+            </div>
+            <div class="hero-choice-cards reveal" aria-label="Быстрый выбор">
+              <a class="hero-choice-card" href="#ai-admin"><span aria-hidden="true">✦</span><span>Как работает AI-админ →</span></a>
+            </div>
+            <p class="hero-note reveal">Не уверены, что нужно? Расскажите о бизнесе в <a href="https://t.me/bess1liebot" target="_blank" rel="noopener">Telegram — подскажем</a>.</p>
+            <dl class="hero-facts hero-facts--chips reveal">
+              <div><dt>От 45 000 ₸</dt><dd>старт</dd></div>
+              <div><dt>5–10 дней</dt><dd>запуск</dd></div>
+              <div><dt>2 недели</dt><dd>поддержки</dd></div>
+              <div><dt>Код ваш</dt><dd>полностью</dd></div>
+            </dl>
           </div>
-          <div class="hero-choice-cards gs-reveal" aria-label="Быстрый выбор">
-            <a class="hero-choice-card" href="#recent">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-              <span>Смотреть сайты →</span>
-            </a>
-            <a class="hero-choice-card" href="#ai-admin">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7a8.5 8.5 0 0 1-.9-3.8A8.38 8.38 0 0 1 12.5 3 8.5 8.5 0 0 1 21 11.5Z"/></svg>
-              <span>Как работает AI-админ →</span>
-            </a>
+          <div class="hero-stack" data-layout="index" aria-hidden="true">
+            <div class="hero-stack-core" id="hero-stack-core">
+              <span class="hero-stack-logo">bess1lie</span>
+              <span class="hero-stack-status"><span class="hero-stack-dot"></span><span id="hero-stack-status-text">Лендинг — заявка за 30 секунд</span></span>
+            </div>
+            <svg class="hero-stack-svg" viewBox="0 0 400 400" aria-hidden="true">
+              <circle cx="200" cy="200" r="120" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="6 6" class="hero-ring hero-ring--1"/>
+              <circle cx="200" cy="200" r="165" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="6 6" class="hero-ring hero-ring--2"/>
+              <g class="hero-connectors">
+                <line x1="200" y1="200" x2="200" y2="30" class="hero-connector" data-conn="0"/>
+                <line x1="200" y1="200" x2="360" y2="150" class="hero-connector" data-conn="1"/>
+                <line x1="200" y1="200" x2="310" y2="340" class="hero-connector" data-conn="2"/>
+                <line x1="200" y1="200" x2="90" y2="340" class="hero-connector" data-conn="3"/>
+                <line x1="200" y1="200" x2="40" y2="150" class="hero-connector" data-conn="4"/>
+              </g>
+            </svg>
+            <button class="hero-chip is-active" data-chip="0" aria-pressed="true" tabindex="0">
+              <span class="hero-chip-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+              <span class="hero-chip-title">Лендинг</span>
+              <span class="hero-chip-result">заявка за 30 секунд</span>
+            </button>
+            <button class="hero-chip" data-chip="1" aria-pressed="false" tabindex="-1">
+              <span class="hero-chip-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7a8.5 8.5 0 0 1-.9-3.8A8.38 8.38 0 0 1 12.5 3 8.5 8.5 0 0 1 21 11.5Z"/></svg></span>
+              <span class="hero-chip-title">Telegram-бот</span>
+              <span class="hero-chip-result">заказы без звонков и ожиданий</span>
+            </button>
+            <button class="hero-chip" data-chip="2" aria-pressed="false" tabindex="-1">
+              <span class="hero-chip-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span>
+              <span class="hero-chip-title">Сайт</span>
+              <span class="hero-chip-result">услуги, цены и запись</span>
+            </button>
+            <button class="hero-chip" data-chip="3" aria-pressed="false" tabindex="-1">
+              <span class="hero-chip-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg></span>
+              <span class="hero-chip-title">AI-админ</span>
+              <span class="hero-chip-result">ответы за 5 секунд, 24/7</span>
+            </button>
+            <button class="hero-chip" data-chip="4" aria-pressed="false" tabindex="-1">
+              <span class="hero-chip-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></span>
+              <span class="hero-chip-title">GitHub</span>
+              <span class="hero-chip-result">код полностью ваш</span>
+            </button>
           </div>
-          <p class="hero-helper gs-reveal">Не уверены, что нужно? Расскажите о бизнесе в <a href="https://t.me/bess1liebot" target="_blank" rel="noopener">Telegram — подскажем</a>.</p>
-          <p class="hero-trust gs-reveal"><span>От 45 000 ₸</span><span>Запуск за 5–10 дней</span><span>2 недели поддержки</span><span>Код полностью ваш</span></p>
-        </div>
-
-        <div class="hero-visual" aria-hidden="true">
-          <div class="mini-card mini-card-1">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-            <span>Лендинг</span>
+          <div class="hero-stack-marquee" aria-hidden="true">
+            <div class="hero-marquee-track">
+              <span class="hero-marquee-chip">Лендинг · заявка за 30 секунд</span>
+              <span class="hero-marquee-chip">Telegram-бот · заказы без звонков</span>
+              <span class="hero-marquee-chip">Сайт · услуги, цены и запись</span>
+              <span class="hero-marquee-chip">AI-админ · ответы за 5 секунд</span>
+              <span class="hero-marquee-chip">GitHub · код полностью ваш</span>
+              <span class="hero-marquee-chip" aria-hidden="true">Лендинг · заявка за 30 секунд</span>
+              <span class="hero-marquee-chip" aria-hidden="true">Telegram-бот · заказы без звонков</span>
+              <span class="hero-marquee-chip" aria-hidden="true">Сайт · услуги, цены и запись</span>
+              <span class="hero-marquee-chip" aria-hidden="true">AI-админ · ответы за 5 секунд</span>
+              <span class="hero-marquee-chip" aria-hidden="true">GitHub · код полностью ваш</span>
+            </div>
+            <div class="hero-marquee-track hero-marquee-track--reverse" aria-hidden="true">
+              <span class="hero-marquee-chip">Лендинг · заявка за 30 секунд</span>
+              <span class="hero-marquee-chip">Telegram-бот · заказы без звонков</span>
+              <span class="hero-marquee-chip">Сайт · услуги, цены и запись</span>
+              <span class="hero-marquee-chip">AI-админ · ответы за 5 секунд</span>
+              <span class="hero-marquee-chip">GitHub · код полностью ваш</span>
+              <span class="hero-marquee-chip" aria-hidden="true">Лендинг · заявка за 30 секунд</span>
+              <span class="hero-marquee-chip" aria-hidden="true">Telegram-бот · заказы без звонков</span>
+              <span class="hero-marquee-chip" aria-hidden="true">Сайт · услуги, цены и запись</span>
+              <span class="hero-marquee-chip" aria-hidden="true">AI-админ · ответы за 5 секунд</span>
+              <span class="hero-marquee-chip" aria-hidden="true">GitHub · код полностью ваш</span>
+            </div>
+            <p class="hero-marquee-status" aria-live="polite" id="hero-marquee-status">Лендинг — заявка за 30 секунд</p>
           </div>
-          <div class="mini-card mini-card-2">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7a8.5 8.5 0 0 1-.9-3.8A8.38 8.38 0 0 1 12.5 3 8.5 8.5 0 0 1 21 11.5Z"/></svg>
-            <span>Telegram-бот</span>
-          </div>
-          <div class="mini-card mini-card-3">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
-            <span>ERP</span>
-          </div>
-          <div class="mini-card mini-card-4">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l14 9-14 9V3Z"/></svg>
-            <span>API</span>
-          </div>
-          <div class="mini-card mini-card-5">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-            <span>GitHub</span>
-          </div>
-        </div>
-      </div>
-
       </div>
     </section>
 
-    <!-- ============ ПОСЛЕДНИЕ ПРОЕКТЫ ============ -->
-    <section class="section recent dark-island" id="recent" aria-labelledby="recent-title">
-      <div class="container">
-        <div class="section-head center">
-          <h2 id="recent-title" class="section-title">Примеры работ</h2>
-          <p class="section-sub">Показательные проекты — так выглядят сайты для кофейни, барбершопа и мебельной мастерской.</p>
-        </div>
-        <div class="projects-list">
-          <article class="project-row">
-            <a class="browser-frame" href="https://bess1lie.github.io/cafe-demo/" target="_blank" rel="noopener" aria-label="Открыть сайт кофейни «Дәме»">
-              <span class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></span>
-              <img src="assets/screenshots/cafe.webp?v=3" alt="Сайт кофейни «Дәме»" width="1024" height="900" loading="eager" decoding="async">
-            </a>
-            <div class="project-info">
-              <span class="project-num" aria-hidden="true">01</span>
-              <h3 class="recent-name">Кофейня «Дәме»</h3>
-              <span class="section-label">Лендинг · от 45 000 ₸ · 7 дней</span>
-              <p class="project-desc">Меню с ценами в ₸, отзывы клиентов, форма заявки — чтобы клиенты находили кофейню онлайн и оставляли заявки без звонков.</p>
-              <div class="project-tags" aria-label="Что внутри">
-                <span>Меню в ₸</span><span>Адаптив под телефон</span><span>Форма заявки</span>
-              </div>
-              <a class="btn btn-outline btn-sm" href="https://bess1lie.github.io/cafe-demo/" target="_blank" rel="noopener">Посмотреть сайт</a>
-            </div>
-          </article>
-          <article class="project-row project-row--reverse">
-            <a class="browser-frame" href="https://bess1lie.github.io/barbershop-demo/" target="_blank" rel="noopener" aria-label="Открыть сайт барбершопа «Жігіт»">
-              <span class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></span>
-              <img src="assets/screenshots/barbershop.webp?v=3" alt="Сайт барбершопа «Жігіт»" width="1024" height="900" loading="lazy" decoding="async">
-            </a>
-            <div class="project-info">
-              <span class="project-num" aria-hidden="true">02</span>
-              <h3 class="recent-name">Барбершоп «Жігіт»</h3>
-              <span class="section-label">Корпоративный сайт · от 75 000 ₸ · 14 дней</span>
-              <p class="project-desc">Карточки мастеров с фото, прайс-лист по услугам, форма онлайн-записи — клиенты записываются сами в любое время.</p>
-              <div class="project-tags" aria-label="Что внутри">
-                <span>Карточки мастеров</span><span>Прайс-лист</span><span>Онлайн-запись</span>
-              </div>
-              <a class="btn btn-outline btn-sm" href="https://bess1lie.github.io/barbershop-demo/" target="_blank" rel="noopener">Посмотреть сайт</a>
-            </div>
-          </article>
-          <article class="project-row">
-            <a class="browser-frame" href="https://bess1lie.github.io/furniture-demo/" target="_blank" rel="noopener" aria-label="Открыть сайт мастерской «Ағаш»">
-              <span class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></span>
-              <img src="assets/screenshots/furniture.webp?v=3" alt="Сайт столярной мастерской «Ағаш»" width="1024" height="900" loading="lazy" decoding="async">
-            </a>
-            <div class="project-info">
-              <span class="project-num" aria-hidden="true">03</span>
-              <h3 class="recent-name">Мастерская «Ағаш»</h3>
-              <span class="section-label">Сайт с каталогом · от 100 000 ₸ · 12 дней</span>
-              <p class="project-desc">Каталог + фильтры + калькулятор — цена за минуту, без звонка мастеру.</p>
-              <div class="project-tags" aria-label="Что внутри">
-                <span>Каталог</span><span>Фильтры</span><span>Калькулятор</span>
-              </div>
-              <a class="btn btn-outline btn-sm" href="https://bess1lie.github.io/furniture-demo/" target="_blank" rel="noopener">Посмотреть сайт</a>
-            </div>
-          </article>
-        </div>
+    <!-- ============ РАБОТЫ ============ -->
+    <section class="work" id="work" data-theme="dark" aria-labelledby="work-title">
+      <div class="wrap">
+        <h2 id="work-title" class="h-display reveal">Сайты, которые <em>продают</em></h2>
+        <p class="lede reveal">Три проекта под разные задачи бизнеса.</p>
       </div>
+      <div class="wrap work-block">
+          <div class="work-tabs" role="tablist" aria-label="Проекты">
+            <button class="work-tab is-active" data-work="0" role="tab" aria-selected="true" tabindex="0">
+              <span class="work-tab-num">01</span>
+              <span class="work-tab-title">Кофейня «Дәме»</span>
+            </button>
+            <button class="work-tab" data-work="1" role="tab" aria-selected="false" tabindex="-1">
+              <span class="work-tab-num">02</span>
+              <span class="work-tab-title">Барбершоп «Жігіт»</span>
+            </button>
+            <button class="work-tab" data-work="2" role="tab" aria-selected="false" tabindex="-1">
+              <span class="work-tab-num">03</span>
+              <span class="work-tab-title">Мастерская «Ағаш»</span>
+            </button>
+          </div>
+          <div class="work-scene">
+            <div class="work-panel" id="work-panel">
+              <span class="work-panel-num" id="work-panel-num">01</span>
+              <span class="work-panel-type mono" id="work-panel-type">ЛЕНДИНГ</span>
+              <h3 id="work-panel-title">Кофейня «Дәме»</h3>
+              <p id="work-panel-desc">Меню, отзывы и форма заявки в одном понятном сайте.</p>
+              <ul class="tags" id="work-panel-tags"><li>Меню в ₸</li><li>Адаптив</li><li>Форма заявки</li></ul>
+              <div class="work-panel-meta" id="work-panel-meta"><span>от 45 000 ₸</span><span>7 дней</span></div>
+              <a class="btn btn-ghost btn-sm" id="work-panel-link" href="https://bess1lie.github.io/cafe-demo/" target="_blank" rel="noopener">Посмотреть сайт</a>
+            </div>
+            <div class="work-visual reveal-scale" aria-hidden="true">
+              <div class="work-mock">
+                <span class="browser-bar"><i></i><i></i><i></i></span>
+                <div class="work-mock-inner">
+                  <img src="assets/screenshots/cafe.webp?v=3" alt="" width="1024" height="900" loading="eager" decoding="async" data-shot="0">
+                  <img src="assets/screenshots/barbershop.webp?v=3" alt="" width="1024" height="900" loading="lazy" decoding="async" data-shot="1" hidden>
+                  <img src="assets/screenshots/furniture.webp?v=3" alt="" width="1024" height="900" loading="lazy" decoding="async" data-shot="2" hidden>
+                </div>
+
+                <div class="work-progress" aria-hidden="true"><i></i></div>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="work-carousel" aria-label="Проекты — карусель">
+        <div class="work-carousel-track">
+          <article class="work-carousel-card">
+            <div class="work-carousel-mock"><img src="assets/screenshots/cafe.webp?v=3" alt="" width="1024" height="900" loading="lazy"></div>
+            <h3>Кофейня «Дәме»</h3><p class="mono">Лендинг · от 45 000 ₸ · 7 дней</p><p>Меню с ценами в ₸, отзывы, форма заявки.</p><a class="btn btn-ghost btn-sm" href="https://bess1lie.github.io/cafe-demo/" target="_blank" rel="noopener">Посмотреть сайт</a>
+          </article>
+          <article class="work-carousel-card">
+            <div class="work-carousel-mock"><img src="assets/screenshots/barbershop.webp?v=3" alt="" width="1024" height="900" loading="lazy"></div>
+            <h3>Барбершоп «Жігіт»</h3><p class="mono">Корпоративный сайт · от 75 000 ₸ · 14 дней</p><p>Мастера, прайс, онлайн-запись.</p><a class="btn btn-ghost btn-sm" href="https://bess1lie.github.io/barbershop-demo/" target="_blank" rel="noopener">Посмотреть сайт</a>
+          </article>
+          <article class="work-carousel-card">
+            <div class="work-carousel-mock"><img src="assets/screenshots/furniture.webp?v=3" alt="" width="1024" height="900" loading="lazy"></div>
+            <h3>Мастерская «Ағаш»</h3><p class="mono">Сайт с каталогом · от 100 000 ₸ · 20 дней</p><p>Каталог, фильтры, калькулятор.</p><a class="btn btn-ghost btn-sm" href="https://bess1lie.github.io/furniture-demo/" target="_blank" rel="noopener">Посмотреть сайт</a>
+          </article>
+        </div>
+        <div class="work-dots" aria-hidden="true"><span class="is-active"></span><span></span><span></span></div>
+      </div>
+      <p class="sr-only">
+        <a href="https://bess1lie.github.io/cafe-demo/" target="_blank" rel="noopener">Сайт кофейни «Дәме»</a>
+        <a href="https://bess1lie.github.io/barbershop-demo/" target="_blank" rel="noopener">Сайт барбершопа «Жігіт»</a>
+        <a href="https://bess1lie.github.io/furniture-demo/" target="_blank" rel="noopener">Сайт столярной мастерской «Ағаш»</a>
+      </p>
     </section>
 
     <!-- ============ УСЛУГИ ============ -->
-    <section class="section services" id="services" aria-labelledby="services-title">
-      <div class="container">
-        <div class="section-head center">
-          <h2 id="services-title" class="section-title">Услуги</h2>
-          <p class="section-sub">Какие задачи решает разработка</p>
-        </div>
-        <div class="services-grid">
-          <article class="service-card">
-            <div class="service-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-            </div>
+    <section class="services" id="services" aria-labelledby="services-title">
+      <div class="wrap">
+        <h2 id="services-title" class="h-display reveal">Что <em>делаем</em></h2>
+        <p class="lede reveal">Какие задачи решает разработка</p>
+        <div class="bento" data-stagger>
+          <article class="bento-tile bento--lendings reveal">
+            <span class="bento-ico" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
             <h3>Лендинги</h3>
             <p>Одностраничный сайт, который продаёт одну услугу или товар и собирает заявки.</p>
-            <p class="service-outcome"><strong>Результат:</strong> клиенты оставляют заявку за 30 секунд, вам приходит уведомление в Telegram</p>
+            <p class="bento-chip"><strong>Результат:</strong> клиенты оставляют заявку за 30 секунд, вам приходит уведомление в Telegram</p>
           </article>
-          <article class="service-card">
-            <div class="service-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1m-1 4h1m4-4h1m-1 4h1M9 21v-4h6v4"/></svg>
-            </div>
-            <h3>Корпоративные сайты</h3>
-            <p>Многостраничный сайт: услуги, о нас, прайс, контакты, форма заявки.</p>
-            <p class="service-outcome"><strong>Результат:</strong> клиенты находят всю информацию сами, не звоня по мелочам</p>
-          </article>
-          <article class="service-card">
-            <div class="service-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7a8.5 8.5 0 0 1-.9-3.8A8.38 8.38 0 0 1 12.5 3 8.5 8.5 0 0 1 21 11.5Z"/></svg>
-            </div>
+          <article class="bento-tile bento--bots reveal">
+            <span class="bento-ico" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7a8.5 8.5 0 0 1-.9-3.8A8.38 8.38 0 0 1 12.5 3 8.5 8.5 0 0 1 21 11.5Z"/></svg></span>
             <h3>Telegram-боты</h3>
             <p>Бот для записи, заказов, уведомлений или приёма заявок прямо в Telegram.</p>
-            <p class="service-outcome"><strong>Результат:</strong> клиенты оформляют заказы без звонков и ожидания.</p>
+            <p class="bento-chip"><strong>Результат:</strong> клиенты оформляют заказы без звонков и ожидания.</p>
           </article>
-          <article class="service-card">
-            <div class="service-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            </div>
+          <article class="bento-tile bento--corp reveal">
+            <span class="bento-ico" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1m-1 4h1m4-4h1m-1 4h1M9 21v-4h6v4"/></svg></span>
+            <h3>Корпоративные сайты</h3>
+            <p>Многостраничный сайт: услуги, о нас, прайс, контакты, форма заявки.</p>
+            <p class="bento-chip"><strong>Результат:</strong> клиенты находят всю информацию сами, не звоня по мелочам</p>
+          </article>
+          <article class="bento-tile bento--auto reveal">
+            <span class="bento-ico" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg></span>
             <h3>Автоматизация</h3>
             <p>Автоматизируем рутинные процессы: обработку заявок, отчёты, уведомления — без вашего участия.</p>
-            <p class="service-outcome"><strong>Результат:</strong> экономия 10-20 часов в месяц на рутине</p>
+            <p class="bento-chip"><strong>Результат:</strong> экономия 10-20 часов в месяц на рутине</p>
           </article>
-          <article class="service-card">
-            <div class="service-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-            </div>
+          <article class="bento-tile bento--integr reveal">
+            <span class="bento-ico" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
             <h3>Интеграции</h3>
             <p>Связываю сайт с CRM, Telegram, оплатами и другими сервисами.</p>
-            <p class="service-outcome"><strong>Результат:</strong> данные идут в нужные системы автоматически.</p>
+            <p class="bento-chip"><strong>Результат:</strong> данные идут в нужные системы автоматически.</p>
           </article>
         </div>
-        <p class="services-other">Также делаю: ERP / Odoo, сложные интеграции с CRM — обсудим индивидуально.</p>
+        <p class="more-line reveal">Также делаю: ERP / Odoo, сложные интеграции с CRM — обсудим индивидуально.</p>
       </div>
     </section>
 
-    <!-- ============ AI-АДМИН 24/7 ============ -->
-    <section class="section ai-admin-section" id="ai-admin" aria-labelledby="ai-admin-title">
-      <div class="container">
-        <div class="section-head center">
-          <span class="section-label">Новое</span>
-          <h2 id="ai-admin-title" class="section-title">AI-админ, который отвечает вместо вас</h2>
-          <p class="section-sub">28% клиентов уходят, потому что заявка в Direct или WhatsApp висит без ответа 30 минут (данные Нацбанка РК). AI-админ отвечает за 5 секунд, бронирует, а если не уверен — передаёт вам.</p>
-        </div>
+    <!-- ============ AI-АДМИН ============ -->
+    <section class="aiadmin" id="ai-admin" data-theme="dark" aria-labelledby="ai-admin-title">
+      <div class="wrap">
+        <h2 id="ai-admin-title" class="h-display reveal">Отвечает <em>вместо вас</em></h2>
+        <p class="lede reveal">28% клиентов уходят, потому что заявка в Direct или WhatsApp висит без ответа 30 минут (данные Нацбанка РК). AI-админ отвечает за 5 секунд, бронирует, а если не уверен — передаёт вам.</p>
+        <p class="stat-big reveal"><span class="stat-num">28%</span> клиентов теряются из-за медленных ответов</p>
 
-        <div class="chat-demo-wrap" aria-hidden="true">
-          <div class="chat-demo">
-            <div class="chat-demo-header">Пример диалога — как будет у вас</div>
-            <div class="chat-bubble chat-bubble-in">Добрый вечер, есть окно завтра в 15:00 на маникюр?</div>
-            <div class="chat-bubble chat-bubble-out">Да, свободно! Забронировать на завтра 15:00?</div>
-            <div class="chat-bubble chat-bubble-in">А сколько стоит?</div>
-            <div class="chat-bubble chat-bubble-out">Гель-лак — 7.000₸, около 1.5 часов. Подтверждаете?</div>
-            <div class="chat-bubble chat-bubble-typing" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="ai-grid">
+          <div class="iphone phone" aria-hidden="true">
+            <span class="iphone-btn iphone-btn--mute"></span>
+            <span class="iphone-btn iphone-btn--volu"></span>
+            <span class="iphone-btn iphone-btn--vold"></span>
+            <span class="iphone-btn iphone-btn--power"></span>
+            <div class="phone-screen" id="chat-demo">
+              <div class="iphone-statusbar">
+                <span class="iphone-time">9:41</span>
+                <span class="iphone-island"></span>
+                <span class="iphone-icons">
+                  <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="7.5" width="3.2" height="4.5" rx="1"/><rect x="4.9" y="5" width="3.2" height="7" rx="1"/><rect x="9.8" y="2.5" width="3.2" height="9.5" rx="1"/><rect x="14.7" y="0" width="3.2" height="12" rx="1"/></svg>
+                  <svg width="17" height="12" viewBox="0 0 17 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M1.6 4.3a10.4 10.4 0 0 1 13.8 0"/><path d="M4.1 7a6.9 6.9 0 0 1 8.8 0"/><path d="M6.7 9.6a3.3 3.3 0 0 1 3.6 0"/></svg>
+                  <svg width="25" height="12" viewBox="0 0 25 12" fill="none" aria-hidden="true"><rect x=".5" y=".5" width="20" height="11" rx="3.2" stroke="currentColor" opacity=".45"/><rect x="2.2" y="2.2" width="14" height="7.6" rx="1.8" fill="currentColor"/><path d="M22.5 4.2v3.6a2 2 0 0 0 0-3.6Z" fill="currentColor" opacity=".45"/></svg>
+                </span>
+              </div>
+              <div class="phone-header"><span class="phone-avatar">AI</span><div><strong>AI-админ</strong><span class="phone-online">● онлайн</span></div></div>
+              <p class="chat-meta">Пример диалога — как будет у вас</p>
+              <div class="chat-scroll">
+                <div class="msg msg-in" data-chat>Добрый вечер, есть окно завтра в 15:00 на маникюр?<span class="msg-time">15:00</span></div>
+                <div class="typing" data-chat><span></span><span></span><span></span></div>
+                <div class="msg msg-out" data-chat>Да, свободно! Забронировать на завтра 15:00?<span class="msg-time">15:00 ✓✓</span></div>
+                <div class="msg msg-in" data-chat>А сколько стоит?<span class="msg-time">15:01</span></div>
+                <div class="typing" data-chat><span></span><span></span><span></span></div>
+                <div class="msg msg-out" data-chat>Гель-лак — 7.000₸, около 1.5 часов. Подтверждаете?<span class="msg-time">15:01 ✓✓</span></div>
+                <div class="msg msg-ok" data-chat>
+                  <div class="booking-head"><span class="msg-ok-icon">✓</span><strong>Бронь подтверждена</strong></div>
+                  <div class="booking-details"><span>Завтра · 15:00</span><span>Маникюр</span></div>
+                  <div class="booking-price">7 000 ₸</div>
+                </div>
+              </div>
+              <span class="iphone-home"></span>
+            </div>
           </div>
-        </div>
-
-        <ol class="ai-admin-steps">
-          <li><strong>1. Токен и прайс.</strong> Вставляете токен бота из @BotFather и описание услуг/цен.</li>
-          <li><strong>2. Запуск.</strong> Один клик — бот подключён к вашему Telegram.</li>
-          <li><strong>3. Работает 24/7.</strong> Отвечает, бронирует. Если не уверен — передаёт диалог вам в дашборд.</li>
-        </ol>
-
-        <div class="ai-admin-compare">
-          <div class="ai-admin-compare-item">
-            <span class="ai-admin-compare-label">У агентств (пример)</span>
-            <span class="ai-admin-compare-value">от 150.000₸ разово</span>
-            <a href="https://a-lux.kz/chatbots/almaty" target="_blank" rel="noopener">FAQ-бот, A-LUX ↗</a>
+          <div>
+            <ol class="steps" id="ai-steps" data-stagger>
+              <li class="reveal"><span class="mono">01</span><div><strong>Токен и прайс.</strong> Вставляете токен бота из @BotFather и описание услуг/цен.</div></li>
+              <li class="reveal"><span class="mono">02</span><div><strong>Запуск.</strong> Один клик — бот подключён к вашему Telegram.</div></li>
+              <li class="reveal"><span class="mono">03</span><div><strong>Работает 24/7.</strong> Отвечает, бронирует. Если не уверен — передаёт диалог вам в дашборд.</div></li>
+            </ol>
+            <div class="compare reveal">
+              <div class="compare-row compare-hi">
+                <span>У нас</span>
+                <strong>12.000₸/мес</strong>
+                <span>Первые 3 дня бесплатно</span>
+              </div>
+            </div>
+            <a href="#contact" class="btn btn-accent btn-lg magnetic reveal">Подключить AI-админа</a>
           </div>
-          <div class="ai-admin-compare-item ai-admin-compare-highlight">
-            <span class="ai-admin-compare-label">У нас</span>
-            <span class="ai-admin-compare-value">12.000₸/мес</span>
-            <span>Первые 3 дня бесплатно</span>
-          </div>
-        </div>
-
-        <div class="ai-admin-cta">
-          <a href="#contact" class="btn btn-primary btn-xl">Подключить AI-админа</a>
         </div>
       </div>
     </section>
 
-    <!-- ============ ПОЧЕМУ СТОИТ РАБОТАТЬ СО МНОЙ ============ -->
-    <section class="section why" id="why" aria-labelledby="why-title">
-      <div class="container">
-        <div class="section-head center">
-          <h2 id="why-title" class="section-title">Почему выбирают нас</h2>
+    <!-- ============ ПОЧЕМУ МЫ ============ -->
+    <section class="why" id="why" aria-labelledby="why-title">
+      <div class="wrap">
+        <div class="why-panel reveal">
+          <h2 id="why-title" class="h-display">Команда, а не конвейер</h2>
+          <div class="why-cards" data-stagger>
+            <article class="why-card"><span class="why-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><h3>Мы — команда, без посредников</h3><p>Вы общаетесь напрямую с командой, которая делает сайт — без менеджеров, которые накручивают цену.</p></div></article>
+            <article class="why-card"><span class="why-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span><div><h3>Быстрая загрузка</h3><p>Сайты открываются за секунды даже на мобильном интернете — посетители не уходят.</p></div></article>
+            <article class="why-card"><span class="why-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></span><div><h3>Адаптив под все устройства</h3><p>80% клиентов открывают сайт с телефона — у нас сайт отлично выглядит на любом экране.</p></div></article>
+            <article class="why-card"><span class="why-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></span><div><h3>Код полностью ваш</h3><p>Весь код сайта передаем вам через GitHub. Не привязаны ни к какой платформе — можно перенести на любой хостинг.</p></div></article>
+            <article class="why-card"><span class="why-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><div><h3>Поддержка после запуска</h3><p>2 недели бесплатных правок после сдачи, дальше — по 2 000₸ за правку. Правки не ждут неделями.</p></div></article>
+            <article class="why-card"><span class="why-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span><div><h3>Простое развитие проекта</h3><p>Добавить раздел или страницу — быстро и по понятной цене.</p></div></article>
+          </div>
         </div>
-        <ul class="why-grid">
-          <li class="why-card">
-            <span class="why-mark">01</span>
-            <h3>Мы — команда, без посредников</h3>
-            <p>Вы общаетесь напрямую с командой, которая делает сайт — без менеджеров, которые накручивают цену.</p>
-          </li>
-          <li class="why-card">
-            <span class="why-mark">02</span>
-            <h3>Быстрая загрузка</h3>
-            <p>Сайты открываются за секунды даже на мобильном интернете — посетители не уходят.</p>
-          </li>
-          <li class="why-card">
-            <span class="why-mark">03</span>
-            <h3>Адаптив под все устройства</h3>
-            <p>80% клиентов открывают сайт с телефона — у нас сайт отлично выглядит на любом экране.</p>
-          </li>
-          <li class="why-card">
-            <span class="why-mark">04</span>
-            <h3>Код полностью ваш</h3>
-            <p>Весь код сайта передаем вам через GitHub. Не привязаны ни к какой платформе — можно перенести на любой хостинг.</p>
-          </li>
-          <li class="why-card">
-            <span class="why-mark">05</span>
-            <h3>Поддержка после запуска</h3>
-            <p>Нас двое — если один занят, отвечает другой. 2 недели бесплатных правок после сдачи, дальше — по 2 000₸ за правку. Правки не ждут неделями.</p>
-          </li>
-          <li class="why-card">
-            <span class="why-mark">06</span>
-            <h3>Простое развитие проекта</h3>
-            <p>Добавить раздел или страницу — быстро и по понятной цене.</p>
-          </li>
-        </ul>
       </div>
     </section>
 
     <!-- ============ СТОИМОСТЬ ============ -->
-    <section class="section pricing" id="pricing" aria-labelledby="pricing-title">
-      <div class="container">
-        <div class="section-head center">
-          <h2 id="pricing-title" class="section-title">Ориентировочная стоимость</h2>
-          <p class="section-sub">Прозрачные цены, без скрытых платежей.</p>
-          <span class="price-badge">Стартовая цена для первых клиентов</span>
+    <section class="pricing" id="pricing" aria-labelledby="pricing-title">
+      <div class="wrap">
+        <h2 id="pricing-title" class="h-display reveal">Ориентировочная <em>стоимость</em></h2>
+        <p class="lede reveal">Прозрачные цены, без скрытых платежей. <span class="flag">Стартовая цена для первых клиентов</span></p>
+        <div class="price-list" role="list">
+          <div class="price-row reveal" role="listitem">
+            <div class="price-main"><h3>Лендинг <span class="muted">/ базовый</span></h3><p>Одна страница с заявкой. Структура, дизайн, верстка, форма в ТГ, хостинг, домен.</p></div>
+            <div class="price-meta"><p class="price"><span class="price-from">от</span> 45&nbsp;000&nbsp;₸</p></div>
+            <div class="price-side"><p class="mono">7 дней · поддержка 2 недели</p><p class="ex">Пример: Кофейня «Дәме»</p><a class="btn btn-ghost btn-sm" href="https://bess1lie.github.io/cafe-demo/" target="_blank" rel="noopener">Смотреть</a></div>
+          </div>
+          <div class="price-row reveal" role="listitem">
+            <div class="price-main"><h3>Корпоративный сайт</h3><p>Услуги, команда, прайс, запись. Дизайн, верстка, форма в ТГ, хостинг, домен.</p></div>
+            <div class="price-meta"><p class="price"><span class="price-from">от</span> 75&nbsp;000&nbsp;₸</p></div>
+            <div class="price-side"><p class="mono">14 дней · поддержка 2 недели</p><p class="ex">Пример: Барбершоп «Жігіт»</p><a class="btn btn-ghost btn-sm" href="https://bess1lie.github.io/barbershop-demo/" target="_blank" rel="noopener">Смотреть</a></div>
+          </div>
+          <div class="price-row reveal" role="listitem">
+            <div class="price-main"><h3>Сайт с интерактивом</h3><p>Фильтры, каталог, калькулятор. Дизайн, верстка, форма в ТГ, хостинг, домен.</p></div>
+            <div class="price-meta"><p class="price"><span class="price-from">от</span> 100&nbsp;000&nbsp;₸</p></div>
+            <div class="price-side"><p class="mono">20 дней · поддержка 2 недели</p><p class="ex">Пример: Мастерская «Ағаш»</p><a class="btn btn-ghost btn-sm" href="https://bess1lie.github.io/furniture-demo/" target="_blank" rel="noopener">Смотреть</a></div>
+          </div>
+          <div class="price-row reveal" role="listitem">
+            <div class="price-main"><h3>Telegram-бот</h3><p>Запись, заказы и уведомления прямо в Telegram. Кнопки, оплата, заявки вам в личку.</p></div>
+            <div class="price-meta"><p class="price"><span class="price-from">от</span> 7&nbsp;000&nbsp;₸/мес</p></div>
+            <div class="price-side"><p class="mono">запуск от 7 дней</p><a class="btn btn-ghost btn-sm" href="#contact">Обсудить</a></div>
+          </div>
+          <div class="price-row price-row--accent reveal" role="listitem">
+            <div class="price-main"><h3>AI-админ 24/7 <span class="flag">Новое</span></h3><p>Токены до 80% лимита, передача владельцу, дашборд диалогов. Первые 3 дня бесплатно.</p></div>
+            <div class="price-meta"><p class="price">12.000&nbsp;₸/мес</p></div>
+            <div class="price-side"><p class="mono">3 дня бесплатно</p><a class="btn btn-accent btn-sm" href="#contact">Подключить</a></div>
+          </div>
         </div>
-        <div class="pricing-grid">
-          <article class="price-card">
-            <h3>Лендинг (Базовый)</h3>
-            <p class="price-value">от 45 000 ₸ · 7 дней</p>
-            <p class="price-desc">Одна страница с заявкой.<br>Структура, дизайн, верстка, форма в ТГ, хостинг, домен.</p>
-            <p class="price-meta"><span class="price-badge">2 недели бесплатной поддержки</span> <em>Пример: Кофейня «Дәме»</em></p>
-          </article>
-          <article class="price-card price-card-highlight">
-            <h3>Корпоративный сайт</h3>
-            <p class="price-value">от 75 000 ₸ · 14 дней</p>
-            <p class="price-desc">Услуги, команда, прайс, запись.<br>Дизайн, верстка, форма в ТГ, хостинг, домен.</p>
-            <p class="price-meta"><span class="price-badge">2 недели бесплатной поддержки</span> <em>Пример: Барбершоп «Жігіт»</em></p>
-          </article>
-          <article class="price-card">
-            <h3>Сайт с интерактивом</h3>
-            <p class="price-value">от 100 000 ₸ · 12 дней</p>
-            <p class="price-desc">Фильтры, каталог, калькулятор.<br>Дизайн, верстка, форма в ТГ, хостинг, домен.</p>
-            <p class="price-meta"><span class="price-badge">2 недели бесплатной поддержки</span> <em>Пример: Мастерская «Ағаш»</em></p>
-          </article>
-          <article class="price-card price-card-highlight">
-            <h3>AI-админ 24/7</h3>
-            <p class="price-value">12.000₸/мес</p>
-            <p class="price-desc">Токены до 80% лимита, передача владельцу, дашборд диалогов.<br><em>Первые 3 дня бесплатно.</em></p>
-            <span class="price-badge">3 дня бесплатно</span>
-          </article>
-        </div>
-        <p class="pricing-note">Стартовые цены действуют для первых проектов. Финальная стоимость зависит от объёма работ и обсуждается после оценки задачи.</p>
-        <div class="pricing-note">
-          💰 Домен оплачивается отдельно: от 10 000₸/год
-          <br><small>Вы покупаете сами (Kaspi.kz, PS.kz) или мы купим за вас —
-          +10 000₸ к стоимости сайта.</small>
-        </div>
+        <p class="fine reveal">Стартовые цены действуют для первых проектов. Финальная стоимость зависит от объёма работ и обсуждается после оценки задачи.</p>
+        <p class="fine reveal">Домен оплачивается отдельно: от 10&nbsp;000&nbsp;₸/год. Вы покупаете сами (Kaspi.kz, PS.kz) или мы купим за вас — +10&nbsp;000&nbsp;₸ к стоимости сайта.</p>
       </div>
     </section>
 
-    <!-- ============ КАК ПРОХОДИТ РАБОТА ============ -->
-    <section class="section process" id="process" aria-labelledby="process-title">
-      <div class="container">
-        <div class="section-head center">
-          <h2 id="process-title" class="section-title">Как проходит работа</h2>
-          <p class="section-sub">Прозрачно, по шагам. Вы видите каждый этап и контролируете результат — без сюрпризов.</p>
+    <!-- ============ ПРОЦЕСС ============ -->
+    <section class="process" id="process" aria-labelledby="process-title">
+      <div class="wrap process-grid">
+        <div class="process-sticky">
+          <h2 id="process-title" class="h-display reveal">Как проходит <em>работа</em></h2>
+          <p class="lede reveal">Прозрачно, по шагам. Вы видите каждый этап и контролируете результат — без сюрпризов.</p>
         </div>
-        <div class="process-grid">
-          <article class="process-card">
-            <div class="process-head">
-              <span class="process-num">01</span>
-              <span class="process-icon" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7a8.5 8.5 0 0 1-.9-3.8A8.38 8.38 0 0 1 12.5 3 8.5 8.5 0 0 1 21 11.5Z"/></svg>
-              </span>
-            </div>
-            <h3>Заявка</h3>
-            <p>Пишете в Telegram или оставляете заявку на сайте. Отвечаем в тот же день.</p>
-          </article>
-          <article class="process-card">
-            <div class="process-head">
-              <span class="process-num">02</span>
-              <span class="process-icon" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a2.5 2.5 0 0 1-2.5 2.5H12l-3 3v-3H7a2.5 2.5 0 0 1-2.5-2.5V7A2.5 2.5 0 0 1 7 4.5h11.5A2.5 2.5 0 0 1 21 7v4.5Z"/><path d="M8 9h8M8 12h6"/></svg>
-              </span>
-            </div>
-            <h3>Обсуждение</h3>
-            <p>Бриф 30 мин текстом или голосом. Уточняем задачу, сроки и фиксируем стоимость.</p>
-          </article>
-          <article class="process-card">
-            <div class="process-head">
-              <span class="process-num">03</span>
-              <span class="process-icon" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 15h6M9 12h6"/></svg>
-              </span>
-            </div>
-            <h3>Проектирование</h3>
-            <p>Присылаем план сайта по экранам и кнопкам. Согласовываем — только потом дизайн.</p>
-          </article>
-          <article class="process-card">
-            <div class="process-head">
-              <span class="process-num">04</span>
-              <span class="process-icon" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z"/></svg>
-              </span>
-            </div>
-            <h3>Разработка</h3>
-            <p>2–3 варианта дизайна. Тестовая ссылка <code>yourcafe.vercel.app</code> — правим за 1–2 дня.</p>
-          </article>
-          <article class="process-card">
-            <div class="process-head">
-              <span class="process-num">05</span>
-              <span class="process-icon" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>
-              </span>
-            </div>
-            <h3>Запуск</h3>
-            <p>Публикуем, подключаем домен, форма → ваш Telegram, инструкция как менять тексты.</p>
-          </article>
-          <article class="process-card">
-            <div class="process-head">
-              <span class="process-num">06</span>
-              <span class="process-icon" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-6 9-6 9h18s-6-2-6-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-              </span>
-            </div>
-            <h3>Поддержка</h3>
-            <p>2 недели бесплатных правок. Дальше — 2 000₸/правка. Нас двое — отвечаем быстро.</p>
-          </article>
-        </div>
+        <ol class="timeline" id="timeline" data-stagger>
+          <li class="reveal"><span class="step-num">01</span><div class="step-card"><h3>Заявка</h3><p>Пишете в Telegram или оставляете заявку на сайте. Отвечаем в тот же день.</p></div></li>
+          <li class="reveal"><span class="step-num">02</span><div class="step-card"><h3>Обсуждение</h3><p>Бриф 30 мин текстом или голосом. Уточняем задачу, сроки и фиксируем стоимость.</p></div></li>
+          <li class="reveal"><span class="step-num">03</span><div class="step-card"><h3>Проектирование</h3><p>Присылаем план сайта по экранам и кнопкам. Согласовываем — только потом дизайн.</p></div></li>
+          <li class="reveal"><span class="step-num">04</span><div class="step-card"><h3>Разработка</h3><p>Готовим 1 вариант дизайна. Присылаем тестовую ссылку <code>yourcafe.vercel.app</code> — смотрите, присылаете правки, вносим за 1–2 дня.</p></div></li>
+          <li class="reveal"><span class="step-num">05</span><div class="step-card"><h3>Запуск</h3><p>Публикуем, подключаем домен, форма → ваш Telegram, инструкция как менять тексты.</p></div></li>
+          <li class="reveal"><span class="step-num">06</span><div class="step-card"><h3>Поддержка</h3><p>2 недели бесплатных правок. Дальше — 2 000₸/правка. Отвечаем быстро.</p></div></li>
+        </ol>
       </div>
     </section>
 
     <!-- ============ FAQ ============ -->
-    <section class="section faq" id="faq" aria-labelledby="faq-title">
-      <div class="container">
-        <div class="section-head center">
-          <h2 id="faq-title" class="section-title">Частые вопросы</h2>
-        </div>
+    <section class="faq" id="faq" aria-labelledby="faq-title">
+      <div class="wrap wrap-narrow">
+        <h2 id="faq-title" class="h-display reveal">Частые <em>вопросы</em></h2>
         <div class="faq-list">
           <div class="faq-item">
-            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a1">
-              <span>Сколько времени занимает разработка сайта?</span>
-              <span class="faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="faq-answer" id="faq-a1" role="region" aria-labelledby="faq-q1" hidden>
-              <div>
-                <p>Лендинг — 5–10 дней, корпоративный сайт — 2–4 недели, сайт с Telegram-ботом — от 2 недель. Точные сроки фиксируем при обсуждении и придерживаемся их.</p>
-              </div>
-            </div>
+            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a1"><span>Сколько времени занимает разработка сайта?</span><span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-a1" role="region" aria-labelledby="faq-q1" hidden><div><p>Лендинг — 5–10 дней, корпоративный сайт — 2–4 недели, сайт с Telegram-ботом — от 2 недель. Точные сроки фиксируем при обсуждении и придерживаемся их.</p></div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a2">
-              <span>Вы используете конструкторы вроде Tilda или WordPress?</span>
-              <span class="faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="faq-answer" id="faq-a2" role="region" aria-labelledby="faq-q2" hidden>
-              <div>
-                <p>Нет. Каждый сайт пишется вручную под вашу задачу: быстрее загружается и не выглядит шаблонно. Менять текст или добавлять раздел — правки вносим мы, навыки программиста вам не нужны.</p>
-              </div>
-            </div>
+            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a2"><span>Вы используете конструкторы вроде Tilda или WordPress?</span><span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-a2" role="region" aria-labelledby="faq-q2" hidden><div><p>Нет. Каждый сайт пишется вручную под вашу задачу: быстрее загружается и не выглядит шаблонно. Менять текст или добавлять раздел — правки вносим мы, навыки программиста вам не нужны.</p></div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a3">
-              <span>Как оплатить и в каком порядке?</span>
-              <span class="faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="faq-answer" id="faq-a3" role="region" aria-labelledby="faq-q3" hidden>
-              <div>
-                <p>Обычно 50% на старте и 50% после сдачи. Для небольших проектов возможна оплата по факту. Условия фиксируем до начала работы.</p>
-              </div>
-            </div>
+            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a3"><span>Как оплатить и в каком порядке?</span><span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-a3" role="region" aria-labelledby="faq-q3" hidden><div><p>Обычно 50% на старте и 50% после сдачи. Для небольших проектов возможна оплата по факту. Условия фиксируем до начала работы.</p></div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a4">
-              <span>Что входит в поддержку после запуска?</span>
-              <span class="faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="faq-answer" id="faq-a4" role="region" aria-labelledby="faq-q4" hidden>
-              <div>
-                <p>Правки контента, помощь с доменом, консультации. Первый месяц после запуска — правки без доплат, дальше — по договорённости. Крупные доработки оцениваются отдельно.</p>
-              </div>
-            </div>
+            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a4"><span>Что входит в поддержку после запуска?</span><span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-a4" role="region" aria-labelledby="faq-q4" hidden><div><p>Правки контента, помощь с доменом, консультации. Первые 2 недели после сдачи — правки без доплат, дальше — 2 000₸ за правку. Крупные доработки оцениваются отдельно.</p></div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a5">
-              <span>А где будет размещаться сайт?</span>
-              <span class="faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="faq-answer" id="faq-a5" role="region" aria-labelledby="faq-q5" hidden>
-              <div>
-                <p>На Vercel — профессиональная облачная платформа, для лендинга бесплатна и надёжна. Код сайта полностью ваш — при желании перенести на другой хостинг можно за 1 день.</p>
-              </div>
-            </div>
+            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a5"><span>А где будет размещаться сайт?</span><span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-a5" role="region" aria-labelledby="faq-q5" hidden><div><p>На Vercel — профессиональная облачная платформа, для лендинга бесплатна и надёжна. Код сайта полностью ваш — при желании перенести на другой хостинг можно за 1 день.</p></div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a6">
-              <span>Сколько стоит домен?</span>
-              <span class="faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="faq-answer" id="faq-a6" role="region" aria-labelledby="faq-q6" hidden>
-              <div>
-                <p>От 10 000₸ в год. Покупается на Kaspi.kz или PS.kz. Можете купить сами — мы подключим бесплатно, или мы купим за вас (+10 000₸ к цене сайта).</p>
-              </div>
-            </div>
+            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a6"><span>Сколько стоит домен?</span><span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-a6" role="region" aria-labelledby="faq-q6" hidden><div><p>От 10 000₸ в год. Покупается на Kaspi.kz или PS.kz. Можете купить сами — мы подключим бесплатно, или мы купим за вас (+10 000₸ к цене сайта).</p></div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a7">
-              <span>Что если бот ошибётся?</span>
-              <span class="faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="faq-answer" id="faq-a7" role="region" aria-labelledby="faq-q7" hidden>
-              <div>
-                <p>Если бот не уверен в ответе, диалог сразу передаётся вам в дашборд — вы отвечаете сами, ничего не потеряется.</p>
-              </div>
-            </div>
+            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a7"><span>Что если бот ошибётся?</span><span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-a7" role="region" aria-labelledby="faq-q7" hidden><div><p>Если бот не уверен в ответе, диалог сразу передаётся вам в дашборд — вы отвечаете сами, ничего не потеряется.</p></div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a8">
-              <span>Куда девается переписка с клиентами?</span>
-              <span class="faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="faq-answer" id="faq-a8" role="region" aria-labelledby="faq-q8" hidden>
-              <div>
-                <p>Переписка хранится в вашем дашборде для истории диалогов. Мы её не продаём и не используем для чего-то ещё.</p>
-              </div>
-            </div>
+            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a8"><span>Куда девается переписка с клиентами?</span><span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-a8" role="region" aria-labelledby="faq-q8" hidden><div><p>Переписка хранится в вашем дашборде для истории диалогов. Мы её не продаём и не используем для чего-то ещё.</p></div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a9">
-              <span>Чем отличается от zapis.kz?</span>
-              <span class="faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="faq-answer" id="faq-a9" role="region" aria-labelledby="faq-q9" hidden>
-              <div>
-                <p>zapis.kz — только запись на услугу. AI-админ ещё отвечает на вопросы о цене, адресе, составе услуги — как живой менеджер.</p>
-              </div>
-            </div>
+            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a9"><span>Чем отличается от zapis.kz?</span><span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-a9" role="region" aria-labelledby="faq-q9" hidden><div><p>zapis.kz — только запись на услугу. AI-админ ещё отвечает на вопросы о цене, адресе, составе услуги — как живой менеджер.</p></div></div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ============ КОНТАКТЫ ============ -->
-    <section class="section contact" id="contact" aria-labelledby="contact-title">
-      <div class="container">
-        <div class="section-head center">
-          <h2 id="contact-title" class="section-title">Обсудим ваш проект?</h2>
-          <p class="section-sub">Напишите в Telegram или оставьте заявку — обсудим вашу задачу.</p>
-        </div>
-
-        <div class="contact-inner">
-          <div class="contact-cta">
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap">
+        <h2 id="contact-title" class="h-display reveal">Обсудим ваш <em>проект?</em></h2>
+        <p class="lede reveal">Напишите в Telegram или оставьте заявку — обсудим вашу задачу.</p>
+        <div class="contact-grid">
+          <div class="contact-left">
             <div class="contact-buttons">
-              <a class="btn btn-primary btn-xl" href="https://t.me/bess1liebot" target="_blank" rel="noopener">
+              <a class="btn btn-accent btn-xl" href="https://t.me/bess1liebot" target="_blank" rel="noopener">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.94 3.32 19.1 19.6c-.18 1.1-.83 1.36-1.7.85l-4.7-3.46-2.26 2.18c-.25.25-.46.46-.94.46l.34-4.76 8.67-7.84c.38-.34-.08-.53-.59-.19L7.38 13.4l-4.6-1.44c-1-.31-1.02-1 .21-1.48l17.98-6.93c.83-.31 1.56.2 1.29 1.77Z"/></svg>
                 Написать в Telegram
               </a>
@@ -578,10 +475,17 @@
               </a>
             </div>
             <p class="contact-trust">Первичная консультация бесплатна · обычно отвечаем в течение нескольких часов</p>
-            <p class="contact-alt">Или по почте: <a href="mailto:bess1liework@gmail.com">bess1liework@gmail.com</a> · в WhatsApp: <a href="https://wa.me/77080278030" target="_blank" rel="noopener">+7 708 027 80 30</a></p>
-            <p class="contact-alt contact-note">Первичная консультация бесплатна — расскажем, как сайт может решить ваши задачи, и назовем точную цену. Обычно отвечаем в течение 2 часов.</p>
+            <p class="contact-alt">Или по почте: <a href="mailto:bess1liework@gmail.com">bess1liework@gmail.com</a> · в WhatsApp: <a href="https://wa.me/77080278030" target="_blank" rel="noopener">+7 708 027 80 30</a> · <a href="tel:+77080278030">Позвонить</a></p>
+            <p class="contact-alt">Первичная консультация бесплатна — расскажем, как сайт может решить ваши задачи, и назовем точную цену. Обычно отвечаем в течение 2 часов.</p>
+            <ul class="contact-links" aria-label="Контакты">
+              <li><a href="https://t.me/bess1liebot" target="_blank" rel="noopener">Telegram</a></li>
+              <li><a href="https://t.me/bess1lie" target="_blank" rel="noopener">Telegram-канал</a></li>
+              <li><a href="https://wa.me/77080278030" target="_blank" rel="noopener">WhatsApp</a></li>
+              <li><a href="mailto:bess1liework@gmail.com">Email</a></li>
+              <li><a href="https://instagram.com/bess1lie" target="_blank" rel="noopener">Instagram</a></li>
+              <li><a href="https://github.com/bess1lie" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
           </div>
-
           <form class="lead-form" id="lead-form" novalidate>
             <h3>Оставить заявку</h3>
             <div class="field">
@@ -593,12 +497,12 @@
               <input type="text" id="lead-contact" name="contact" autocomplete="off" inputmode="text" required>
             </div>
             <div class="field">
-              <label for="lead-interest">Что интересует</label>
-              <select id="lead-interest" name="interest">
-                <option value="site">Сайт</option>
-                <option value="ai_admin">AI-админ</option>
-                <option value="both">И то, и то</option>
-              </select>
+              <fieldset class="radio-group" id="lead-interest-group">
+                <legend>Что интересует</legend>
+                <label class="radio-chip"><input type="radio" name="interest" value="site" checked><span>Сайт</span></label>
+                <label class="radio-chip"><input type="radio" name="interest" value="ai_admin"><span>AI-админ</span></label>
+                <label class="radio-chip"><input type="radio" name="interest" value="both"><span>И то, и то</span></label>
+              </fieldset>
             </div>
             <div class="field">
               <label for="lead-desc">Описание проекта</label>
@@ -608,104 +512,47 @@
               <label for="lead-website">Не заполняйте это поле</label>
               <input type="text" id="lead-website" name="website" tabindex="-1" autocomplete="off">
             </div>
-            <button class="btn btn-primary" type="submit">Отправить заявку</button>
+            <button class="btn btn-accent" type="submit">Отправить заявку</button>
             <p class="form-consent">Нажимая «Отправить», вы соглашаетесь на обработку персональных данных. Мы используем их только для связи с вами по вашему проекту.</p>
             <p class="form-hint" role="status" aria-live="polite"></p>
           </form>
-          <p class="contact-alt form-wa-note">Первичная консультация бесплатна — или напишите в WhatsApp <a href="https://wa.me/77080278030" target="_blank" rel="noopener">+7 708 027 80 30</a></p>
-        </div>
-
-        <!--
-          НАСТРОЙКА WEBHOOK БОТА @bess1liebot (одноразово, после деплоя):
-          curl -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/setWebhook" \
-            -d "url=https://developer-portfolio-six-theta.vercel.app/api/bot"
-          Проверить: curl "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/getWebhookInfo"
-        -->
-        <ul class="contact-links" aria-label="Контакты">
-          <li>
-            <a href="https://t.me/bess1liebot" target="_blank" rel="noopener">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.94 3.32 19.1 19.6c-.18 1.1-.83 1.36-1.7.85l-4.7-3.46-2.26 2.18c-.25.25-.46.46-.94.46l.34-4.76 8.67-7.84c.38-.34-.08-.53-.59-.19L7.38 13.4l-4.6-1.44c-1-.31-1.02-1 .21-1.48l17.98-6.93c.83-.31 1.56.2 1.29 1.77Z"/></svg>
-              Telegram
-            </a>
-          </li>
-          <li>
-            <a href="https://t.me/bess1lie" target="_blank" rel="noopener">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.94 3.32 19.1 19.6c-.18 1.1-.83 1.36-1.7.85l-4.7-3.46-2.26 2.18c-.25.25-.46.46-.94.46l.34-4.76 8.67-7.84c.38-.34-.08-.53-.59-.19L7.38 13.4l-4.6-1.44c-1-.31-1.02-1 .21-1.48l17.98-6.93c.83-.31 1.56.2 1.29 1.77Z"/></svg>
-              Telegram-канал
-            </a>
-          </li>
-          <li>
-            <a href="https://wa.me/77080278030" target="_blank" rel="noopener">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-              WhatsApp
-            </a>
-          </li>
-          <li>
-            <a href="mailto:bess1liework@gmail.com">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
-              Email
-            </a>
-          </li>
-          <li>
-            <a href="https://instagram.com/bess1lie" target="_blank" rel="noopener">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-              Instagram
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/bess1lie" target="_blank" rel="noopener">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-              GitHub
-            </a>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- ============ OPEN SOURCE ============ -->
-    <section class="section oss-strip" id="oss" aria-labelledby="oss-title">
-      <div class="container">
-        <h2 id="oss-title" class="oss-strip-title">Open Source</h2>
-        <p class="oss-strip-text">Пишу инструменты с открытым исходным кодом для поиска уязвимостей и автоматизации в безопасности.</p>
-        <div class="oss-strip-links">
-          <a href="https://github.com/bess1lie/bounthunt" target="_blank" rel="noopener">bounthunt</a>
-          <a href="https://github.com/bess1lie/gqlhunter" target="_blank" rel="noopener">gqlhunter</a>
-          <a href="https://github.com/bess1lie/apihunter" target="_blank" rel="noopener">apihunter</a>
         </div>
       </div>
     </section>
+
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <p class="footer-tagline">Разрабатываем сайты и автоматизацию для малого бизнеса.</p>
-      <div class="footer-links">
-        <a class="footer-icon" href="https://github.com/bess1lie" aria-label="GitHub" target="_blank" rel="noopener">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-        </a>
-        <a class="footer-icon" href="https://t.me/bessiliehh" aria-label="Telegram" target="_blank" rel="noopener">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        </a>
-        <a class="footer-icon footer-icon-wa" href="https://wa.me/77080278030" aria-label="WhatsApp" target="_blank" rel="noopener">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-        </a>
-        <a class="footer-icon" href="https://t.me/bess1lie" aria-label="Telegram-канал" target="_blank" rel="noopener">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
-        </a>
-        <a class="footer-icon" href="https://instagram.com/bess1lie" aria-label="Instagram" target="_blank" rel="noopener">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-        </a>
-        <span class="footer-year">© <span id="year">2026</span> bess1lie</span>
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <p class="footer-tag">Разрабатываем сайты и автоматизацию для малого бизнеса.</p>
+        <div class="footer-oss">
+          <p class="footer-oss-title">Open Source</p>
+          <p class="footer-oss-text">Инструменты с открытым исходным кодом для поиска уязвимостей и автоматизации в безопасности.</p>
+          <div class="footer-oss-links">
+            <a href="https://github.com/bess1lie/bounthunt" target="_blank" rel="noopener">bounthunt</a>
+            <a href="https://github.com/bess1lie/gqlhunter" target="_blank" rel="noopener">gqlhunter</a>
+            <a href="https://github.com/bess1lie/apihunter" target="_blank" rel="noopener">apihunter</a>
+          </div>
+        </div>
+        <div class="footer-social">
+          <a href="https://github.com/bess1lie" aria-label="GitHub" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+          <a href="https://t.me/bessiliehh" aria-label="Telegram" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></a>
+          <a href="https://wa.me/77080278030" aria-label="WhatsApp" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
+          <a href="https://t.me/bess1lie" aria-label="Telegram-канал" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></a>
+          <a href="https://instagram.com/bess1lie" aria-label="Instagram" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+        </div>
       </div>
-    </div>
-    <div class="container">
-      <p class="footer-tech">Python · Odoo · PostgreSQL · JavaScript · HTML5 · CSS3 · Linux · Docker · Git · REST API</p>
+      <div class="footer-word" aria-hidden="true">bess1lie</div>
+      <p class="footer-meta">© <span id="year">2026</span> bess1lie · Python · Odoo · PostgreSQL · JavaScript · HTML5 · CSS3 · Linux · Docker · Git · REST API</p>
     </div>
   </footer>
 
-  <script src="assets/js/vendor/gsap.min.js"></script>
-  <script src="assets/js/vendor/ScrollTrigger.min.js"></script>
-  <script src="assets/js/main.js?v=16"></script>
+  <div class="sticky-cta" id="sticky-cta">
+    <a class="btn btn-accent sticky-cta-btn" href="#contact">Обсудить проект</a>
+  </div>
+
+  <script src="assets/js/main.js?v=69" defer></script>
 
   <script type="application/ld+json">
   {
