@@ -621,13 +621,12 @@
         x=Math.max(-10,Math.min(10,x)); y=Math.max(-10,Math.min(10,y));
         if(raf) cancelAnimationFrame(raf);
         raf=requestAnimationFrame(function(){
-          el.style.transform = "translate(" + x.toFixed(1) + "px," + y.toFixed(1) + "px) scale(1.02)";
-          el.style.boxShadow="0 8px 24px rgba(214,58,12,.18)";
+          el.style.transform = "translate(" + x.toFixed(1) + "px," + y.toFixed(1) + "px) scale(1.01)";
         });
       });
       el.addEventListener("mouseleave", function () {
         if(raf) cancelAnimationFrame(raf);
-        el.style.transform = ""; el.style.boxShadow="";
+        el.style.transform = "";
       });
     });
   }
@@ -819,16 +818,7 @@
         card.style.setProperty("--my", ((e.clientY - r.top))+"px");
       });
     });
-    // subtle scroll parallax for hero grid (capped)
-    var ticking=false;
-    window.addEventListener("scroll", function(){
-      if(ticking) return; ticking=true;
-      requestAnimationFrame(function(){
-        var y=Math.min(window.scrollY * 0.06, 40);
-        if(hero) hero.style.setProperty("--scroll-y", y.toFixed(1)+"px");
-        ticking=false;
-      });
-    }, {passive:true});
+    // Keep the hero pointer treatment local; scrolling should not continuously repaint it.
   }
   function initTextReveal(){
     if(reducedMotion) return;

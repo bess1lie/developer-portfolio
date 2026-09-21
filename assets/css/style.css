@@ -1876,3 +1876,22 @@ h1, h2, h3, .wordmark, .hero-chip-title { font-family: 'Manrope', 'Tenge Fallbac
 @media (prefers-reduced-motion: reduce) {
   .hero-marquee-track, .hero-marquee-track--reverse { animation: none; }
 }
+
+/* Final motion budget: keep movement on the compositor and avoid filter-heavy reveals. */
+.js .reveal,
+.js .reveal-scale,
+.js .reveal-blur { opacity: 0; filter: none; transform: translateY(12px); }
+.js .reveal.is-visible,
+.js .reveal-scale.is-visible,
+.js .reveal-blur.is-visible { animation: fade-up .48s var(--ez) both; }
+.btn, .bento-tile, .why-panel, .work-mock, .phone, .work-carousel-card { transition: transform .22s var(--ez), border-color .2s ease, box-shadow .22s ease; }
+.btn:hover { transform: translateY(-1px); }
+.hero-stack::after { transition: transform .3s var(--ez); }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal, .js .reveal-scale, .js .reveal-blur,
+  .js .reveal.is-visible, .js .reveal-scale.is-visible, .js .reveal-blur.is-visible {
+    animation: none; opacity: 1; filter: none; transform: none;
+  }
+  .btn:hover, .bento-tile:hover, .hero-choice-card:hover { transform: none; }
+}
