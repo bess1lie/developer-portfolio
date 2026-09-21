@@ -1380,8 +1380,9 @@ h1 .line > span { display: block; }
     transition: transform 0.25s ease;
   }
   .sticky-cta.is-visible { transform: translateY(0); }
-  .sticky-cta-btn { width: 100%; min-height: 52px; }
+  .sticky-cta-btn { width: 100%; min-height: 56px; }
   body.menu-open .sticky-cta { transform: translateY(110%); }
+  body:has(#sticky-cta.is-visible) .footer { padding-bottom: 120px; }
 }
 
 /* Hero direction: editorial service index, no generic orbit/cards */
@@ -1610,7 +1611,7 @@ section { padding: clamp(72px, 8vw, 120px) 0; }
   .ai-grid { grid-template-columns: 1fr; }
   .ai-grid .phone { position: static; }
   .contact-buttons .btn { flex: 1 1 100%; }
-  .faq-question { font-size: 1.05rem; padding: 20px 0; }
+  .faq-question { font-size: 1.05rem; padding: 14px 0; min-height: 56px; }
   .field input, .field textarea { font-size: 16px; }
   .footer-word { margin-bottom: 28px; }
 }
@@ -1694,7 +1695,7 @@ h1, h2, h3, .hero-chip-title, .wordmark { font-family: 'Manrope', system-ui, san
   .hero-facts { order: 8; }
   .hero-stack-core, .hero-stack-svg { display: none; }
   .hero-stack-marquee { overflow: hidden; width: 100%; }
-  .hero-marquee-track { display: flex; gap: 8px; width: max-content; animation: hero-marquee 20s linear infinite; }
+  .hero-marquee-track { display: flex; gap: 8px; width: max-content; animation: hero-marquee 30s linear infinite; }
   .hero-marquee-track--reverse { display: none; }
   .hero-marquee-chip { min-height: 38px; padding: 8px 12px; font-size: 13px; }
   .hero-marquee-status { font-size: 13px; margin-top: 6px; }
@@ -1774,11 +1775,73 @@ h1, h2, h3, .hero-chip-title, .wordmark { font-family: 'Manrope', system-ui, san
   .hero-copy { padding-left: 0; }
   .hero-copy .kicker { margin-bottom: 14px; }
   #hero-title { font-size: clamp(2rem, 8.5vw, 2.75rem); line-height: 1.06; letter-spacing: -.035em; }
-  .hero-sub { margin-top: 12px; font-size: clamp(.95rem, .9rem + .8vw, 1.05rem); }
+  .hero-sub { margin-top: 12px; font-size: clamp(.95rem, .9rem + .8vw, 1.05rem); max-width: 32ch; }
+  h2.h-display, .h-display { font-size: clamp(1.65rem, 1.4rem + 3vw, 2rem); line-height: 1.08; }
   .hero-facts--chips { margin-top: 12px; padding: 8px 0; }
   .hero-stack-marquee{ height: 120px; }
-  .hero-marquee-chip{ padding: 8px 12px; font-size: 13px; min-height: 38px; }
+  .hero-marquee-chip{ padding: 7px 11px; font-size: 12.5px; min-height: 34px; }
   .hero-choice-card{ font-size: .88rem; padding: 8px 12px; min-height: 40px; }
+}
+
+/* ============ Mobile-first 320–430: отдельная композиция ============ */
+@media (max-width: 430px) {
+  /* шапка: лого + CTA + бургер */
+  .nav-inner { gap: 10px; }
+  .nav-right { gap: 8px; }
+  .nav-right .btn { display: inline-flex; padding: 8px 14px; min-height: 44px; font-size: 13.5px; white-space: nowrap; }
+  /* hero-факты 2x2 */
+  .hero-facts--chips { grid-template-columns: repeat(2, 1fr); gap: 0; padding: 4px 0; }
+  .hero-facts--chips > div { padding: 10px 12px; }
+  .hero-facts--chips > div:nth-child(odd) { border-left: none; padding-left: 0; }
+  .hero-facts--chips > div:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .hero-facts--chips dt { font-size: .95rem; }
+  .hero-facts--chips dd { font-size: .75rem; }
+  .flag { font-size: .75rem; }
+  /* работы: один проект на экран */
+  .work-carousel-card { flex: 0 0 100%; padding: 20px; }
+  .work-carousel-mock { aspect-ratio: 4/3; margin-bottom: 14px; }
+  .work-carousel-card h3 { font-size: 1.25rem; }
+  .work-carousel-card .btn { width: 100%; }
+  /* stat-карточка */
+  .stat-big { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px; align-items: center; justify-content: center; text-align: center; }
+  /* услуги и преимущества компактно */
+  .bento { gap: 10px; }
+  .bento-tile { padding: 16px; }
+  .bento-tile h3 { font-size: 1.05rem; }
+  .bento-tile > p { font-size: .92rem; }
+  .bento-chip { font-size: .8rem; margin-top: 10px; padding: 6px 12px; }
+  .why-panel { padding: 20px; }
+  .why-cards { gap: 14px; }
+  .why-card { gap: 10px; }
+  .why-card h3 { font-size: 1rem; }
+  .why-card p { font-size: .88rem; }
+  /* цены: крупная цена, кнопка в ширину */
+  .price { font-size: 1.8rem; line-height: 1.2; white-space: nowrap; }
+  .price-row { padding: 20px 0; }
+  .price-side .btn { width: 100%; }
+  /* процесс компактно */
+  .timeline li { grid-template-columns: 40px minmax(0,1fr); gap: 14px; padding-bottom: 12px; }
+  .step-num { width: 40px; height: 40px; }
+  .step-card { padding: 16px; }
+  .step-card::after { font-size: 4rem; }
+  .timeline li:not(:last-child)::before, .timeline li:not(:last-child)::after { left: 19px; top: 44px; height: calc(100% - 44px); }
+  /* форма */
+  .lead-form { padding: 20px; }
+}
+@media (max-width: 360px) {
+  #hero-title { font-size: clamp(1.5rem, 7.5vw, 1.65rem); line-height: 1.08; }
+  .hero-cta .btn { min-height: 52px; padding: 13px 20px; }
+  /* чат: компакт под узкий экран, иначе контент не влезает */
+  .ai-grid .phone.iphone { aspect-ratio: 2/5; }
+  .iphone .chat-scroll { gap: 5px; padding: 6px 10px 4px; }
+  .iphone .msg { font-size: 14px; }
+  .msg { padding: 8px 11px; font-size: 14px; max-width: 88%; }
+  .msg-out { font-size: 15px; }
+  .msg-ok { font-size: 13px; padding: 8px 10px; max-width: 92%; }
+  .typing { padding: 8px 12px; }
+  .phone-header { padding: 6px 12px; }
+  .phone-avatar { width: 32px; height: 32px; font-size: 12px; }
+  .chat-meta { margin-bottom: 0; font-size: .72rem; letter-spacing: .04em; }
 }
 
 /* Final hero art direction: an editorial service index */
@@ -1806,4 +1869,9 @@ h1, h2, h3, .wordmark, .hero-chip-title { font-family: 'Manrope', 'Tenge Fallbac
   .hero-chip.is-active { transform: none; background: rgba(255,77,28,.09); border-color: transparent; box-shadow: inset 2px 0 0 var(--accent); }
   .hero-chip.is-active .hero-chip-title { color: #fff; }
   .hero-chip.is-active .hero-chip-result { color: rgba(255,255,255,.75); }
+}
+
+/* reduced motion — после всех marquee-правил, отключает бегущую строку явно */
+@media (prefers-reduced-motion: reduce) {
+  .hero-marquee-track, .hero-marquee-track--reverse { animation: none; }
 }
