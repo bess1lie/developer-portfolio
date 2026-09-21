@@ -1,10 +1,13 @@
 const SITE = "https://developer-portfolio-six-theta.vercel.app";
 const BOT_NAME = "@bess1liebot";
 
-// In-memory dialog state (chatId -> { step: 'service' | 'project' | 'contact', service })
-// OK for a single-owner bot on Vercel; if an instance is recycled, the user can just
-// start over with /start and any collected text is still forwarded to the owner.
+// Warm-instance state is a fast path. Reply-chain recovery below keeps the wizard
+// working when consecutive Telegram updates hit different serverless instances.
 const states = new Map();
+const seenUpdates = new Map();
+const chatWindows = new Map();
+const RATE_WINDOW_MS = 60_000;
+const MAX_UPDATES_PER_WINDOW = 24;
 
 const SERVICE_LABELS = {
   landing: "Лендинг (от 45 000₸)",
@@ -42,16 +45,73 @@ function menuKeyboard() {
   };
 }
 
-function cancelKeyboard() {
-  return {
-    inline_keyboard: [[{ text: "Отмена", callback_data: "cancel" }]],
-  };
+function shouldDropUpdate(updateId, chatId) {
+  const now = Date.now();
+  for (const [id, timestamp] of seenUpdates) {
+    if (now - timestamp > RATE_WINDOW_MS) seenUpdates.delete(id);
+  }
+  for (const [id, timestamps] of chatWindows) {
+    if (!timestamps.some((timestamp) => now - timestamp < RATE_WINDOW_MS)) chatWindows.delete(id);
+  }
+  if (updateId !== undefined && updateId !== null) {
+    const id = String(updateId);
+    if (seenUpdates.has(id)) return true;
+    seenUpdates.set(id, now);
+  }
+  const recent = (chatWindows.get(chatId) || []).filter((timestamp) => now - timestamp < RATE_WINDOW_MS);
+  if (recent.length >= MAX_UPDATES_PER_WINDOW) {
+    chatWindows.set(chatId, recent);
+    return true;
+  }
+  recent.push(now);
+  chatWindows.set(chatId, recent);
+  return false;
 }
 
 function restartKeyboard() {
   return {
     inline_keyboard: [[{ text: "Новый заказ", callback_data: "restart" }]],
   };
+}
+
+function forceReply(messageId) {
+  return {
+    force_reply: true,
+    input_field_placeholder: "Введите ответ",
+    ...(messageId ? { reply_parameters: { message_id: messageId } } : {}),
+  };
+}
+
+function replyChain(message) {
+  const chain = [];
+  let current = message;
+  for (let i = 0; current && i < 5; i += 1) {
+    chain.push(current);
+    current = current.reply_to_message;
+  }
+  return chain;
+}
+
+function recoverService(message) {
+  for (const item of replyChain(message)) {
+    const text = String(item.text || "");
+    const entry = Object.entries(SERVICE_LABELS).find(([, label]) => text.includes(label));
+    if (entry) return entry[0];
+  }
+  return "";
+}
+
+function recoverProject(message) {
+  for (const item of replyChain(message)) {
+    if (!item.from?.is_bot && item.text && !String(item.text).startsWith("/")) {
+      return String(item.text).slice(0, 2000);
+    }
+  }
+  return "";
+}
+
+function isContactReply(message) {
+  return replyChain(message).some((item) => String(item.text || "").includes("Как с вами связаться?"));
 }
 
 function userLabel(from) {
@@ -77,12 +137,18 @@ async function sendStart(chatId) {
 
 async function forwardToOwner(text) {
   const chatId = process.env.TELEGRAM_CHAT_ID;
-  if (!chatId) return;
+  if (!chatId) throw new Error("Telegram recipient is not configured");
   await tg("sendMessage", { chat_id: chatId, text });
 }
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ ok: false });
+
+  const webhookSecret = process.env.TELEGRAM_WEBHOOK_SECRET;
+  const requestSecret = req.headers?.["x-telegram-bot-api-secret-token"];
+  if (!webhookSecret || requestSecret !== webhookSecret) {
+    return res.status(401).json({ ok: false, error: "Unauthorized" });
+  }
 
   const update = typeof req.body === "object" && req.body ? req.body : {};
   const chatId = String(
@@ -92,6 +158,7 @@ export default async function handler(req, res) {
     ""
   );
   if (!chatId) return res.status(200).json({ ok: true });
+  if (shouldDropUpdate(update.update_id, chatId)) return res.status(200).json({ ok: true });
 
   try {
     // Inline-кнопки
@@ -112,12 +179,15 @@ export default async function handler(req, res) {
       }
       if (data.startsWith("service:")) {
         const service = data.slice("service:".length);
+        if (!Object.prototype.hasOwnProperty.call(SERVICE_LABELS, service)) {
+          return res.status(200).json({ ok: false, error: "Unknown service" });
+        }
         states.set(chatId, { step: "project", service });
         await tg("answerCallbackQuery", { callback_query_id: cb.id });
         await tg("sendMessage", {
           chat_id: chatId,
           text: "Отлично! " + (SERVICE_LABELS[service] || service) + ".\n\nРасскажите о проекте: какой у вас бизнес, что нужно сделать?",
-          reply_markup: cancelKeyboard(),
+          reply_markup: forceReply(cb.message?.message_id),
         });
         return res.status(200).json({ ok: true });
       }
@@ -130,6 +200,8 @@ export default async function handler(req, res) {
     const text = String(msg.text || "").trim();
     const from = msg.from || {};
 
+    if (text.length > 3000) return res.status(200).json({ ok: true });
+
     if (text === "/start" || text === "/start@bess1liebot") {
       await sendStart(chatId);
       return res.status(200).json({ ok: true });
@@ -139,19 +211,52 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true });
     }
 
-    const st = states.get(chatId);
+    let st = states.get(chatId);
 
     if (st && st.step === "project") {
       states.set(chatId, { ...st, step: "contact", project: text.slice(0, 2000) });
       await tg("sendMessage", {
         chat_id: chatId,
         text: "Понял вас. Как с вами связаться? (Telegram/телефон/email)",
-        reply_markup: cancelKeyboard(),
+        reply_markup: forceReply(msg.message_id),
       });
       return res.status(200).json({ ok: true });
     }
 
+    if (!st && isContactReply(msg)) {
+      st = {
+        step: "contact",
+        service: recoverService(msg),
+        project: recoverProject(msg),
+      };
+    }
+
+    if (!st) {
+      const service = recoverService(msg);
+      if (service) {
+        st = { step: "contact", service, project: text.slice(0, 2000) };
+        states.set(chatId, st);
+        await tg("sendMessage", {
+          chat_id: chatId,
+          text: "Понял вас. Как с вами связаться? (Telegram/телефон/email)",
+          reply_markup: forceReply(msg.message_id),
+        });
+        return res.status(200).json({ ok: true });
+      }
+    }
+
     if (st && st.step === "contact") {
+      if (!st.service || !st.project) {
+        st = {
+          step: "contact",
+          service: recoverService(msg),
+          project: recoverProject(msg),
+        };
+      }
+      if (!st.service || !st.project) {
+        await sendStart(chatId);
+        return res.status(200).json({ ok: true });
+      }
       states.delete(chatId);
       const contact = text.slice(0, 500);
       await tg("sendMessage", {
