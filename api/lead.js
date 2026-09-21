@@ -22,8 +22,9 @@ export default async function handler(req, res) {
   if (name.length > 100 || contact.length > 200 || description.length > 2000 || interest.length > 50) {
     return res.status(400).json({ ok: false, error: "Слишком длинное значение." });
   }
-  const interestLabels = { site: "Сайт", ai_admin: "AI-админ", both: "Сайт + AI-админ" };
-  const interestLabel = interestLabels[interest] || interest || "—";
+  // The website sends the displayed canonical label. Keep it unchanged so the
+  // Telegram notification cannot drift from the selected form value.
+  const interestLabel = interest || "—";
 
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;

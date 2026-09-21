@@ -725,6 +725,17 @@
       return res.json();
     });
   }
+  function formatWebsiteLead(data) {
+    var time = new Intl.DateTimeFormat("ru-RU", {
+      timeZone: "Asia/Almaty", dateStyle: "short", timeStyle: "short"
+    }).format(new Date());
+    return "🔔 Новая заявка с сайта\n" +
+      "👤 Имя: " + data.name + "\n" +
+      "📞 Контакт: " + data.contact + "\n" +
+      "🎯 Интерес: " + data.interest + "\n" +
+      "📝 Проект: " + (data.description || "—") + "\n" +
+      "🕒 Время: " + time;
+  }
   function initForm() {
     var form = doc.getElementById("lead-form");
     if (!form) return;
@@ -752,7 +763,7 @@
         if (btn) { btn.disabled = false; btn.textContent = "Отправить заявку"; }
       }).catch(function (err) {
         // fallback for static hosting 404/405
-        var text = "Имя: " + data.name + "\nКонтакт: " + data.contact + "\nИнтерес: " + data.interest + "\nОписание: " + data.description;
+        var text = formatWebsiteLead(data);
         var url = "https://t.me/bess1liebot?text=" + encodeURIComponent(text);
         window.open(url, "_blank");
         if (hint) hint.textContent = "Открыли Telegram с готовым сообщением — нажмите Send";
