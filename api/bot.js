@@ -123,6 +123,76 @@ function userLabel(from) {
   return name + " (" + nick + ")";
 }
 
+// --- Webhook self-healing (auxiliary: чинит доставку callback_query,
+// никогда не ломает основной flow; идемпотентно, не чаще раза в час) ---
+const WEBHOOK_CHECK_INTERVAL_MS = 3_600_000;
+const EXPECTED_UPDATES = ["message", "callback_query"];
+let lastWebhookCheck = 0;
+
+function expectedWebhookUrl() {
+  const host = String(process.env.VERCEL_PROJECT_PRODUCTION_URL || "").trim();
+  const base = host ? "https://" + host : SITE;
+  return base.replace(/\/+$/, "") + "/api/bot";
+}
+
+function webhookNeedsRepair(info, expectedUrl) {
+  const reasons = [];
+  if (!info || typeof info !== "object") return { repair: true, reasons: ["no-info"] };
+  if (info.url !== expectedUrl) reasons.push("url-mismatch");
+  if (Array.isArray(info.allowed_updates)) {
+    for (const t of EXPECTED_UPDATES) {
+      if (!info.allowed_updates.includes(t)) reasons.push("missing:" + t);
+    }
+  }
+  return { repair: reasons.length > 0, reasons };
+}
+
+async function tgWithTimeout(method, payload, ms) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), ms);
+  try {
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    if (!token) throw new Error("Telegram token is not configured");
+    const r = await fetch("https://api.telegram.org/bot" + token + "/" + method, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: controller.signal,
+    });
+    const data = await r.json().catch(() => null);
+    if (!r.ok || !data || data.ok !== true) throw new Error("Telegram API request failed");
+    return data.result;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function ensureWebhook() {
+  const now = Date.now();
+  if (now - lastWebhookCheck < WEBHOOK_CHECK_INTERVAL_MS) return;
+  lastWebhookCheck = now;
+  console.log("[bot] webhook_check started");
+  const secret = process.env.TELEGRAM_WEBHOOK_SECRET;
+  if (!secret) {
+    console.log("[bot] webhook_check skipped=no-secret");
+    return;
+  }
+  const expectedUrl = expectedWebhookUrl();
+  const info = await tgWithTimeout("getWebhookInfo", {}, 4000);
+  const { repair, reasons } = webhookNeedsRepair(info, expectedUrl);
+  if (!repair) {
+    console.log("[bot] webhook status correct");
+    return;
+  }
+  console.log(`[bot] webhook repair required reasons=${reasons.join(",")}`);
+  await tgWithTimeout("setWebhook", {
+    url: expectedUrl,
+    allowed_updates: EXPECTED_UPDATES,
+    secret_token: secret,
+  }, 4000);
+  console.log("[bot] webhook repaired");
+}
+
 function nowText() {
   return new Intl.DateTimeFormat("ru-RU", {
     timeZone: "Asia/Almaty", dateStyle: "short", timeStyle: "short",
@@ -144,6 +214,8 @@ async function forwardToOwner(text) {
   await tg("sendMessage", { chat_id: chatId, text });
 }
 
+export { webhookNeedsRepair, expectedWebhookUrl, EXPECTED_UPDATES };
+
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ ok: false });
 
@@ -162,6 +234,16 @@ export default async function handler(req, res) {
   );
   if (!chatId) return res.status(200).json({ ok: true });
   if (shouldDropUpdate(update.update_id, chatId)) return res.status(200).json({ ok: true });
+
+  // Self-healing webhook — только на message-обновлениях, с троттлингом.
+  // Никогда не прерывает основной flow: любая ошибка глушится ниже.
+  if (update.message) {
+    try {
+      await ensureWebhook();
+    } catch (e) {
+      console.log(`[bot] webhook error=${e instanceof Error ? e.message : "unknown"}`);
+    }
+  }
 
   try {
     // Inline-кнопки
