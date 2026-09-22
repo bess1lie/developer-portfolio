@@ -169,8 +169,14 @@ export default async function handler(req, res) {
       const cb = update.callback_query;
       const data = String(cb.data || "");
       const from = cb.from || {};
+      console.log(`[bot] update=${update.update_id} type=callback_query data=${data || "(empty)"}`);
 
-      if (data === "restart") return sendStart(chatId).then(() => res.status(200).json({ ok: true }));
+      if (data === "restart") {
+        await tg("answerCallbackQuery", { callback_query_id: cb.id });
+        await sendStart(chatId);
+        console.log(`[bot] update=${update.update_id} handled=restart`);
+        return res.status(200).json({ ok: true });
+      }
       if (data === "cancel") {
         states.delete(chatId);
         await tg("answerCallbackQuery", { callback_query_id: cb.id });
@@ -183,6 +189,7 @@ export default async function handler(req, res) {
       if (data.startsWith("service:")) {
         const service = data.slice("service:".length);
         if (!Object.prototype.hasOwnProperty.call(SERVICE_LABELS, service)) {
+          console.log(`[bot] update=${update.update_id} handled=unknown-service`);
           return res.status(200).json({ ok: false, error: "Unknown service" });
         }
         states.set(chatId, { step: "project", service });
@@ -193,9 +200,11 @@ export default async function handler(req, res) {
           reply_markup: forceReply(),
           ...replyTo(cb.message?.message_id),
         });
+        console.log(`[bot] update=${update.update_id} handled=service:${service}`);
         return res.status(200).json({ ok: true });
       }
       await tg("answerCallbackQuery", { callback_query_id: cb.id });
+      console.log(`[bot] update=${update.update_id} handled=ack-only`);
       return res.status(200).json({ ok: true });
     }
 
@@ -203,6 +212,7 @@ export default async function handler(req, res) {
     const msg = update.message || {};
     const text = String(msg.text || "").trim();
     const from = msg.from || {};
+    console.log(`[bot] update=${update.update_id} type=message len=${text.length}`);
 
     if (text.length > 3000) return res.status(200).json({ ok: true });
 
@@ -295,6 +305,7 @@ export default async function handler(req, res) {
     );
     return res.status(200).json({ ok: true });
   } catch (e) {
+    console.log(`[bot] update=${update.update_id} error=${e instanceof Error ? e.message : "unknown"}`);
     return res.status(502).json({ ok: false, error: "Telegram delivery failed" });
   }
 }
