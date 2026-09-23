@@ -368,8 +368,8 @@ section { padding: clamp(96px, 12vw, 200px) 0; position: relative; }
   z-index: 1001;
 }
 .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--fg); border-radius: 2px; transition: transform 0.3s var(--ez), opacity 0.3s ease; }
-.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { transform: translateY(-4px) rotate(-45deg); }
 .mmenu {
   position: fixed;
   inset: 0;
