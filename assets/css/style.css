@@ -1628,8 +1628,11 @@ section { padding: clamp(72px, 8vw, 120px) 0; }
   #hero-title { font-size: clamp(2.6rem, 1rem + 3.6vw, 4rem); }
   .hero-sub { margin-top: 12px; }
   .hero-cta { margin-top: 16px; }
-  .hero-main .hero-stack { height: min(520px, calc(100svh - 150px)); min-height: 0; }
 }
+/* Single height formula for the stack panel (beats the 769px twins by
+   specificity, no height media step): full size above 900px, compact 520px
+   floor at/below 800px, linear ramp between. min-height:0 as before. */
+.hero-main .hero-stack { height: min(620px, calc(100svh - 150px), clamp(520px, calc(100svh - 280px), 620px)); min-height: 0; }
 @media (max-height: 760px) {
   #hero-title { font-size: clamp(2.2rem, 1rem + 3vw, 3.8rem); }
   .hero-sub { margin-top: 10px; font-size: 0.98rem; }
@@ -1644,7 +1647,10 @@ html { scroll-behavior: auto; }
 body { font-family: 'Inter Tight', system-ui, sans-serif; }
 h1, h2, h3, .hero-chip-title, .wordmark { font-family: 'Manrope', system-ui, sans-serif; }
 .wrap, .nav-inner { padding-left: max(var(--gutter), env(safe-area-inset-left)); padding-right: max(var(--gutter), env(safe-area-inset-right)); }
-.hero { min-height: calc(100svh - var(--header-h)); padding: calc(var(--header-h) + 28px) 0 24px; justify-content: center; }
+/* Hero starts at y=0 under the fixed nav (padding-top compensates), so its
+   min-height must cover the full viewport; the -64px variant left a 64px
+   dark strip of #work visible on F11. Beats `main > section[id]` by order. */
+main > section.hero { min-height: 100svh; padding: calc(var(--header-h) + 28px) 0 24px; justify-content: center; }
 .hero-main { align-items: center; padding-top: 0; padding-bottom: 0; }
 .hero-copy { justify-content: center; }
 #hero-title { font-size: clamp(2.1rem, .9rem + 3.4vw, 4.2rem); line-height: 1.04; letter-spacing: -.035em; }
@@ -1748,10 +1754,12 @@ h1, h2, h3, .hero-chip-title, .wordmark { font-family: 'Manrope', system-ui, san
 .hero-copy { padding-left: clamp(0px, 1.2vw, 20px); }
 .hero-copy .kicker { display: inline-flex; align-items: center; gap: 10px; width: fit-content; padding: 8px 13px; margin-bottom: 24px; border: 1px solid rgba(214,58,12,.2); border-radius: 999px; color: var(--accent-strong); background: rgba(255,255,255,.62); }
 .hero-copy .kicker::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px rgba(255,77,28,.1); }
-#hero-title { max-width: 14ch; font-size: clamp(2.4rem, 1rem + 3vw, 4rem); line-height: 1.02; letter-spacing: -.04em; }
+/* Height ramp: replaces the max-height:800px step so F11/resize interpolates
+   instead of jumping. Slopes fitted to old endpoints (compact@800 -> base@900). */
+#hero-title { max-width: 14ch; font-size: min(clamp(2.4rem, 1rem + 3vw, 4rem), clamp(3.6rem, calc(3.6rem + (100svh - 800px) * 0.064), 4rem)); line-height: 1.02; letter-spacing: -.04em; }
 #hero-title em { color: var(--accent-strong); }
-.hero-sub { margin-top: 24px; color: #4e4e53; }
-.hero-cta { margin-top: 28px; gap: 14px; }
+.hero-sub { margin-top: clamp(16px, calc(16px + (100svh - 800px) * 0.08), 24px); color: #4e4e53; }
+.hero-cta { margin-top: clamp(20px, calc(20px + (100svh - 800px) * 0.08), 28px); gap: 14px; }
 .hero-cta .btn-accent { box-shadow: 0 12px 28px rgba(214,58,12,.2); }
 .hero-cta .btn-accent::after { content: "→"; font-size: 1.25em; line-height: 0; transition: transform .25s var(--ez); }
 .hero-cta .btn-accent:hover::after { transform: translateX(4px); }
