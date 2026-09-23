@@ -434,9 +434,14 @@
       el.addEventListener("blur", function(){ hovering=false; if(!reducedMotion) restart(); });
     });
     function next(){ activate((cur+1)%tabs.length); }
+    function isMobileCarousel(){
+      return window.matchMedia('(max-width: 900px)').matches;
+    }
     function restart(){
       if (timer) clearInterval(timer);
+      timer = null;
       if (reducedMotion) return;
+      if (isMobileCarousel()) return; // mobile dots follow swipe, not timer
       timer = setInterval(function(){ if(!hovering) next(); }, 6000);
       if (progress && !hovering) {
         progress.classList.remove("is-animating");
@@ -460,6 +465,34 @@
       }
     }
     activate(0);
+    // mobile carousel: single source of truth for dots is real scroll pos
+    var trackCards = carousel ? carousel.querySelectorAll('.work-carousel-card') : [];
+    var scrollTicking = false;
+    function setDots(i){
+      cur = i;
+      if (dots.length) dots.forEach(function(d,k){ d.classList.toggle('is-active', k===i); });
+    }
+    function syncDotsToScroll(){
+      scrollTicking = false;
+      if (!carousel || trackCards.length < 2 || !dots.length) return;
+      var max = carousel.scrollWidth - carousel.clientWidth;
+      var i = max > 0 ? Math.round(carousel.scrollLeft / (max / (trackCards.length - 1))) : 0;
+      setDots(Math.max(0, Math.min(trackCards.length - 1, i)));
+    }
+    if (carousel) {
+      carousel.addEventListener('scroll', function(){
+        if (!scrollTicking) { scrollTicking = true; window.requestAnimationFrame(syncDotsToScroll); }
+      }, { passive: true });
+    }
+    var carouselMq = window.matchMedia('(max-width: 900px)');
+    function onCarouselMq(){
+      if (carouselMq.matches) {
+        if (timer) { clearInterval(timer); timer = null; }
+        syncDotsToScroll();
+      } else if (!reducedMotion) restart();
+    }
+    if (carouselMq.addEventListener) carouselMq.addEventListener('change', onCarouselMq);
+    else if (carouselMq.addListener) carouselMq.addListener(onCarouselMq);
     if (!reducedMotion) restart();
   }
 
