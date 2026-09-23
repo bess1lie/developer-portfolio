@@ -1683,6 +1683,9 @@ main > section.hero { min-height: 100svh; padding: calc(var(--header-h) + 28px) 
 .hero-ring--2 { animation-duration: 120s; }
 .hero-glow { background: radial-gradient(55% 55% at 72% 35%, rgba(255,77,28,.09), transparent 72%); }
 .work, .aiadmin { content-visibility: auto; contain-intrinsic-size: auto 800px; }
+/* Work fills the viewport like hero (line 112 deducts the fixed header, which
+   leaves a light-services strip on F11 when content < 100svh). ID beats it. */
+#work { min-height: 100svh; }
 .work-mock, .work-carousel-card, .bento-tile, .why-card, .price-row { contain: layout paint; }
 .price, .price-meta, .price-row .price { white-space: nowrap; font-variant-numeric: tabular-nums; }
 .reveal { will-change: auto; }
