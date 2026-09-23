@@ -1590,7 +1590,16 @@ section { padding: clamp(72px, 8vw, 120px) 0; }
   .hero-facts > div { padding: 14px 12px; }
   .phone { margin-inline: auto; }
   .price-row { grid-template-columns: 1fr; gap: 10px; }
-  .price-row--accent { margin-left: 0; width: 100%; padding: 20px 18px; border: 1px solid rgba(255,77,28,.25); border-radius: 16px; }
+  /* Mobile pricing cards: price-first layout, dark inverted accent tier. */
+  #pricing .price-row { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px 18px; gap: 8px; margin-bottom: 14px; }
+  #pricing .price-meta { order: -1; text-align: left; }
+  #pricing .price { font-size: 2.6rem; letter-spacing: -.04em; line-height: 1.05; display: flex; align-items: baseline; gap: 10px; }
+  #pricing .price-main h3 { font-size: 1.1rem; }
+  #pricing .price-main p { font-size: .9rem; }
+  #pricing .price-row--accent { margin: 0 0 14px; width: auto; background: #141416; border: 1px solid rgba(255,122,85,.4); border-radius: 20px; padding: 22px 18px; }
+  #pricing .price-row--accent h3, #pricing .price-row--accent .price { color: #f2f0ea; }
+  #pricing .price-row--accent p, #pricing .price-row--accent .mono, #pricing .price-row--accent .ex { color: rgba(242,240,234,.72); }
+  #pricing .price-row--accent .price { color: var(--accent); }
   .svc-arrow { display: none; }
   .bento { grid-template-columns: 1fr; }
   .bento--lendings, .bento--bots, .bento--corp, .bento--auto, .bento--integr { grid-column: auto; }
