@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #1a1a2e;
+    background: #fff;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .page { width: 800px; margin: 0 auto; padding: 40px 48px; }
+  h1 { font-size: 26px; color: #0f3d5c; margin-bottom: 4px; }
+  .subtitle { font-size: 15px; color: #555; margin-bottom: 24px; }
+  .contact { display: flex; gap: 24px; flex-wrap: wrap; background: #eef4f9; padding: 12px 16px; border-radius: 8px; margin-bottom: 28px; font-size: 13px; }
+  .contact b { color: #0f3d5c; }
+  h2 { font-size: 17px; color: #0f3d5c; margin: 24px 0 10px; padding-bottom: 6px; border-bottom: 2px solid #c8dbe8; }
+  p, li { color: #2c2c3a; }
+  ul { padding-left: 22px; margin: 6px 0; }
+  li { margin-bottom: 4px; }
+  .price-table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+  .price-table th, .price-table td { border: 1px solid #d4dde5; padding: 10px 14px; text-align: left; }
+  .price-table th { background: #0f3d5c; color: #fff; font-weight: 600; }
+  .price-table td:nth-child(2) { white-space: nowrap; font-weight: 700; color: #0f3d5c; }
+  .case { display: flex; gap: 16px; margin: 14px 0; }
+  .case img { width: 180px; border-radius: 6px; border: 1px solid #dde3ea; }
+  .case .info { flex: 1; }
+  .case .info a { color: #1167b1; word-break: break-all; }
+  .case h3 { font-size: 15px; color: #0f3d5c; margin-bottom: 4px; }
+  .footer { margin-top: 30px; background: #eef4f9; padding: 14px 16px; border-radius: 8px; text-align: center; font-size: 14px; }
+  .footer b { color: #0f3d5c; }
+  .chip { display: inline-block; background: #dcecf6; color: #0f3d5c; padding: 3px 10px; border-radius: 20px; font-size: 12px; margin: 2px 4px 2px 0; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1>Разработка сайтов и Telegram-ботов</h1>
+  <div class="subtitle">Веб-разработчик · Алматы · работаю по всему Казахстану</div>
+
+  <div class="contact">
+    <span>📬 Telegram: <b>@bess1lie</b></span>
+    <span>📞 WhatsApp: <b>+7 708 027 80 30</b></span>
+    <span>🌐 Сайт: <b>developer-portfolio-six-theta.vercel.app</b></span>
+  </div>
+
+  <h2>Про меня</h2>
+  <p>Делаю сайты и Telegram-ботов для малого бизнеса: кофейни, барбершопы, салоны красоты, мебельные мастерские. Работаю один, без накруток агентства — клиент общается напрямую с разработчиком. Собираю портфолио, поэтому цены ниже обычных.</p>
+  <div style="margin-top:10px">
+    <span class="chip">HTML5</span><span class="chip">CSS3</span><span class="chip">JavaScript</span><span class="chip">Адаптивная вёрстка</span><span class="chip">Telegram Bot API</span><span class="chip">Vercel</span>
+  </div>
+
+  <h2>Цены</h2>
+  <table class="price-table">
+    <tr><th>Услуга</th><th>Цена</th><th>Срок</th></tr>
+    <tr><td>Лендинг (одна страница)</td><td>от 69 000₸</td><td>7 дней</td></tr>
+    <tr><td>Корпоративный сайт (несколько страниц)</td><td>от 129 000₸</td><td>2–4 недели</td></tr>
+    <tr><td>Сайт + AI-админ (онлайн-запись)</td><td>от 69 000₸ + 1-й месяц бесплатно</td><td>2–3 недели</td></tr>
+  </table>
+
+  <h2>Что входит в проект</h2>
+  <ul>
+    <li>Структура + дизайн + вёрстка с нуля</li>
+    <li>Форма заявки в Telegram — вы получаете уведомления на телефон</li>
+    <li>Онлайн-запись через Telegram-бота (клиент сам выбирает время)</li>
+    <li>Размещение и подключение вашего домена — бесплатно</li>
+    <li>Адаптив под телефон</li>
+    <li>2 недели поддержки после запуска</li>
+  </ul>
+
+  <h2>Портфолио</h2>
+
+  <div class="case">
+    <img src="case-cafe-s1.png" alt="Кейс кофейни">
+    <div class="info">
+      <h3>Сайт кофейни</h3>
+      <p>Меню с ценами, часы работы, карта, форма заявки в Telegram. Адаптив под телефон.</p>
+      <p style="margin-top:6px"><a href="https://bess1lie.github.io/cafe-demo/">https://bess1lie.github.io/cafe-demo/</a></p>
+    </div>
+  </div>
+
+  <div class="case">
+    <img src="case-barber-s1.png" alt="Кейс барбершопа">
+    <div class="info">
+      <h3>Сайт барбершопа</h3>
+      <p>Прайс услуг, карточки мастеров, онлайн-запись через Telegram-бота.</p>
+      <p style="margin-top:6px"><a href="https://bess1lie.github.io/barbershop-demo/">https://bess1lie.github.io/barbershop-demo/</a></p>
+    </div>
+  </div>
+
+  <div class="case">
+    <img src="case-furniture-s1.png" alt="Кейс мебельной мастерской">
+    <div class="info">
+      <h3>Сайт мебельной мастерской</h3>
+      <p>Каталог с фильтрами, калькулятор стоимости, форма заявки в Telegram.</p>
+      <p style="margin-top:6px"><a href="https://bess1lie.github.io/furniture-demo/">https://bess1lie.github.io/furniture-demo/</a></p>
+    </div>
+  </div>
+
+  <div class="footer">
+    Полное портфолио и обо мне: <a href="https://developer-portfolio-six-theta.vercel.app/" style="color:#1167b1">developer-portfolio-six-theta.vercel.app</a><br>
+    Соберу сайт под вашу задачу за 7 дней. Пишите в Telegram <b>@bess1lie</b> или WhatsApp <b>+7 708 027 80 30</b>.
+  </div>
+
+</div>
+</body>
+</html>

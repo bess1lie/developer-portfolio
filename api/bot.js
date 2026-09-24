@@ -10,9 +10,9 @@ const RATE_WINDOW_MS = 60_000;
 const MAX_UPDATES_PER_WINDOW = 24;
 
 const SERVICE_LABELS = {
-  landing: "Лендинг (от 45 000₸)",
-  corp: "Корпоративный сайт (от 75 000₸)",
-  site_bot: "Сайт + Telegram-бот (от 100 000₸)",
+  landing: "Лендинг (от 69 000₸)",
+  corp: "Корпоративный сайт (от 129 000₸)",
+  site_bot: "Сайт + AI-админ (от 69 000₸)",
   ai_admin: "AI-админ 24/7 (12 000₸/мес)",
   other: "Другое / задать вопрос",
 };
@@ -35,9 +35,9 @@ async function tg(method, payload) {
 function menuKeyboard() {
   return {
     inline_keyboard: [
-      [{ text: "Лендинг (от 45 000₸)", callback_data: "service:landing" }],
-      [{ text: "Корпоративный сайт (от 75 000₸)", callback_data: "service:corp" }],
-      [{ text: "Сайт + бот (от 100 000₸)", callback_data: "service:site_bot" }],
+      [{ text: "Лендинг (от 69 000₸)", callback_data: "service:landing" }],
+      [{ text: "Корпоративный сайт (от 129 000₸)", callback_data: "service:corp" }],
+      [{ text: "Сайт + AI-админ (от 69 000₸)", callback_data: "service:site_bot" }],
       [{ text: "AI-админ 24/7 (12 000₸/мес)", callback_data: "service:ai_admin" }],
       [{ text: "Другое / задать вопрос", callback_data: "service:other" }],
       [{ text: "Посмотреть портфолио", url: SITE }],
@@ -203,7 +203,7 @@ async function sendStart(chatId) {
   states.delete(chatId);
   await tg("sendMessage", {
     chat_id: chatId,
-    text: "Привет! Мы — команда bess1lie — помогаем заказать сайт или Telegram-бота для бизнеса.\n\nВыберите, что вас интересует:",
+    text: "Привет! bess1lie — сайты и боты для малого бизнеса.\n\nВыберите, что вас интересует:",
     reply_markup: menuKeyboard(),
   });
 }

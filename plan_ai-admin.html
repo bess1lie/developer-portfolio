@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI-админ — план · bess1lie | карта сайтов, демо, ботов</title>
+<meta name="description" content="Краткий план AI-админа: лендинг готов, следующий шаг День 1 — 15 салонов ногами. Хостинг: Vercel + GitHub Pages.">
+<style>
+:root{--cream:#fdf8f3;--line:#f0dcc8;--ink:#1c0f0a;--muted:#6b4a3a;--terracotta:#9a3412;--caramel:#b45309;--olive:#4a5a3a;--dark:#0a0f1e;--gold:#c8a96a;--radius:16px;--shadow:0 8px 22px rgba(28,15,10,.06)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Manrope,system-ui,sans-serif;background:#fff;color:var(--ink);line-height:1.6}
+a{color:var(--terracotta);text-decoration:none}a:hover{text-decoration:underline}
+.container{max-width:1120px;margin:0 auto;padding:0 20px}
+header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{display:flex;justify-content:space-between;align-items:center;min-height:60px;gap:16px}
+.brand{font-weight:800;letter-spacing:-.02em}
+.hero{background:radial-gradient(1000px 500px at 50% -10%, #fff7ed 0%, var(--cream) 60%, #fff 100%);padding:48px 0 28px;border-bottom:1px solid var(--line)}
+.hero h1{font-family:Fraunces, Georgia, serif;font-size:clamp(26px,4.5vw,38px);line-height:1.05;margin:0 0 10px;letter-spacing:-.03em}
+.eyebrow{display:inline-block;padding:6px 12px;border-radius:999px;background:rgba(180,83,9,.08);border:1px solid rgba(180,83,9,.15);color:var(--caramel);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:.74rem;margin-bottom:10px}
+.badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:.76rem;font-weight:700;border:1px solid var(--line);background:var(--cream)}
+.badge.ok{background:#ecfdf5;border-color:#6ee7b7;color:#065f46}.badge.warn{background:#fffbeb;border-color:#fcd34d;color:#92400e}
+.section{padding:32px 0;border-bottom:1px solid var(--line)}
+.section h2{font-family:Fraunces, Georgia, serif;font-size:clamp(20px,3vw,28px);margin:0 0 6px;letter-spacing:-.02em}
+.small{font-size:.88rem}.muted{color:var(--muted)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.card h3{margin:0 0 6px;font-size:1rem}
+.flow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;margin:14px 0}
+.flow .step{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:130px;text-align:center;box-shadow:var(--shadow);font-size:.88rem}
+.flow .arrow{font-weight:800;color:var(--caramel)}
+code{font-family:Fragment Mono, monospace;background:#fdf8f3;border:1px solid var(--line);padding:1px 5px;border-radius:6px;font-size:.82rem}
+.note{background:#fff7ed;border:1px solid #f0dcc8;border-radius:10px;padding:10px 12px}
+@media(max-width:900px){.grid3,.grid2{grid-template-columns:1fr}.flow{flex-direction:column}}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,800&family=Manrope:wght@400;600;700&family=Fragment+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+<header><div class="container nav"><a class="brand" href="https://developer-portfolio-six-theta.vercel.app/">bess1lie — AI-админ план</a><nav style="display:flex;gap:14px"><a href="#status">Статус</a><a href="#sites">Сайты</a><a href="#demo">Демо</a><a href="#next">Далее</a></nav></div></header>
+
+<div class="hero">
+  <div class="container">
+    <span class="eyebrow">Лендинг готов · Следующий шаг — День 1</span>
+    <h1>Сайт приводит, AI-админ отвечает сразу, даже ночью</h1>
+    <p class="small muted">Повторяем на <code>developer-portfolio-six-theta.vercel.app</code> + <code>bess1lie.github.io</code>. Домен нового SaaS пока не покупаем.</p>
+    <div class="flow small"><span class="badge ok">✓ Лендинг задеплоен</span><span>→</span><span class="badge warn">📋 День 1: 15 салонов Алмалы</span><span>→</span><span class="badge">🔒 Код AI-админа — после результата</span></div>
+  </div>
+</div>
+
+<div class="container">
+
+<section class="section" id="status">
+  <h2>Статус 15.09 вечер — проверено curl, не саммари</h2>
+  <div class="note small">Протокол: <code>curl -s https://developer-portfolio-six-theta.vercel.app/ | grep "Заявки не теряются"</code> = 1, <code>curl -I https://bess1lie.github.io/cafe-demo/</code> = 200. Фетч Claude кэшировал этот домен и дважды показал старьё — ему не верить.</div>
+  <div class="grid3" style="margin-top:14px">
+    <div class="card"><b>Лендинг</b> <span class="badge ok">OK</span><br><small class="muted">hero «Заявки не теряются» + #ai-admin + «Мы — команда» — всё живо (твой вставленный HTML это подтверждает)</small></div>
+    <div class="card"><b>cafe/barber</b> <span class="badge ok">200</span><br><small class="muted">cafe x-cache MISS 32933, barber монохром — ок</small></div>
+    <div class="card"><b>furniture</b> <span class="badge warn">проверить</span><br><small class="muted">последний grep обрезан — прогони <code>curl -s .../furniture-demo/ | grep -c Каскелен</code> и <code>grep калькулятор</code> сам</small></div>
+  </div>
+</section>
+
+<section class="section" id="sites">
+  <h2>Карта моделей сайтов — через что хостим и как продаём</h2>
+  <div class="grid3">
+    <div class="card"><span class="badge">Лендинг · 69 000₸ · 7 дней</span><h3>Одна страница с заявкой</h3><p class="small muted">Хостинг: Vercel (free), домен 10к/год, форма → ТГ. Демо:</p><p><a href="https://bess1lie.github.io/cafe-demo/" target="_blank">Кофейня «Дәме» →</a></p></div>
+    <div class="card"><span class="badge">Корп · 129 000₸ · 14 дней</span><h3>Услуги + прайс + запись</h3><p class="small muted">Хостинг: Vercel, CMS нет — код твой. Возражение «самому менять цену?»: да — пишешь новую цену боту в Telegram, он обновляет прайс сам (<code>PATCH /api/cabinet/bots/[botId]</code> на <code>system_prompt</code>, тот же кабинет, без отдельной админки).</p><p><a href="https://bess1lie.github.io/barbershop-demo/" target="_blank">Барбершоп «Жігіт» →</a></p></div>
+    <div class="card"><span class="badge">Интерактив · 189 000₸ · 12 дней</span><h3>Каталог + калькулятор</h3><p class="small muted">Хостинг: Vercel, фильтры + расчёт за минуту.</p><p><a href="https://bess1lie.github.io/furniture-demo/" target="_blank">Ағаш →</a></p></div>
+  </div>
+  <div class="card" style="margin-top:14px;border-color:var(--caramel);background:#fff7ed"><span class="badge" style="background:rgba(200,169,106,.15)">Подписка · 12 000₸/мес · настройка 2 дня + 3 дня free</span><h3>AI-админ 24/7</h3><p class="small">Не отдельный сайт, а подписка поверх любого сайта. Токены до 80% + handoff + дашборд. Хостинг ботов: Vercel serverless + Telegram webhook. Дешевые токены: DeepSeek-flash (primary) + Groq free fallback. Продается бандлом <code>Сайт 69к + AI 0₸ первый мес</code>. <b>Оффер без парадокса кода:</b> «Предоплата 0₸. Настраиваем бота за 2 дня, затем 3 дня бесплатно. Не понравится — отключаем без штрафов» — даёт зазор на кодинг после устного «да».</p></div>
+
+  <div class="card" style="margin-top:14px;border-left:4px solid var(--terracotta);background:#fff">
+    <span class="badge warn">Второй проект Vercel — AI-админ кабинет · после Дня 1</span>
+    <h3 style="margin-top:10px">Где будет крутиться клиентская база ботов</h3>
+    <p class="small"><b>Название везде одинаковое — AI-админ.</b> Репо <code>bess1lie/ai-admin-cabinet</code> → Vercel проект <code>ai-admin-cabinet</code> → домен <code>ai-admin-cabinet.vercel.app</code>. Домен SaaS (.kz / .com) не покупать до валидации &gt;5 согласий кумулятивно на 12к (настройка 2 дня + 3 дня free). На лендинге бренд уже правильный — <code>AI-админ 24/7</code>, ничего не переименовываем.</p>
+    <p class="small"><b>Текущее состояние Vercel (почему нужен чистый проект):</b> у тебя уже дубль — два проекта на одно репо <code>bess1lie/developer-portfolio</code>: проект <code>developer-portfolio</code> → <code>developer-portfolio-gilt-one.vercel.app</code> и проект <code>bess1lie</code> → <code>developer-portfolio-six-theta.vercel.app</code> (реальный прод, тот что показываешь с телефона). Оба собирают один коммит <code>feat(bot)</code>. Каждый <code>git push</code> = две сборки. Проверка привязки: <code>cat .vercel/project.json</code> → поле <code>projectId</code> скажет какой из двух смотрит CLI. Из-за этого <code>vercel inspect</code> 15.09 «не видел» деплой — он был в соседнем проекте. Вывод: <code>gilt-one</code> не переделываем под БД — там могут быть сироты env/алиасов. Потом: Vercel → проект developer-portfolio → Settings → Git → Disconnect. Прод один — <code>six-theta</code>.</p>
+    <div class="grid3 small" style="margin:12px 0">
+      <div class="card" style="padding:12px"><b>Лимиты Hobby — хватит x100</b><br>Факт 30д (скрин Usage): Function Storage 241MB/10GB (2%), Deployment Storage 65MB/10GB, Edge Requests 401/10M (0.004%), Invocations 17/1M, Fast Data Transfer 7MB/100GB, CPU 1с/4ч. Второй проект льётся в тот же аккаунт, но потолок общий — всё равно запас огромный.<br><br><b>Прогноз:</b> 3 пилота × 20 диалогов/день × 30 дней = ~1800 invocations/мес + столько же edge. 30 ботов × 50 диалогов = ~45к invocations/мес = 4.5% лимита 1M. Bandwidth: 1 webhook ~3-5KB → 45к × 5KB = 225MB/100GB = 0.2%. Упремся только на ~500+ активных ботов — тогда Pro $20.</div>
+      <div class="card" style="padding:12px"><b>Хостинг кабинета — что где лежит</b><br>1) Vercel serverless <code>app/api/*</code> (Next.js App Router) — webhook + cabinet CRUD, free, timeout Hobby ~10с.<br>2) Supabase free — отдельный проект (не смешивать с лендингом), 500MB база, таблицы <code>cabinets/bots/dialogs/messages/usage_daily</code>. Пилот: запросы через <code>service_role</code> только server-side + explicit <code>where cabinet_id</code>, RLS — следующим шагом (JWT с cabinet_id в claims).<br>3) Telegram Bot API — free, long-poll нет, только webhook <code>/api/webhook/[botId]</code> + <code>secret_token</code>.<br>4) LLM: DeepSeek <code>deepseek-flash</code> V4.1 primary (off-peak $0.15/1M miss, $0.003/1M кэш-hit, $0.6/1M out) + Groq free fallback. <code>system_prompt</code> первым байт-в-байт — кэш держится со 2-го сообщения. Токены ботов — AES-256-GCM в <code>ENC_KEY</code>, в базе только <code>iv:tag:cipher hex</code>.</div>
+      <div class="card" style="padding:12px"><b>Правила и риски — решение: async webhook</b><br>— Hobby формально non-commercial в ToS: 3 free-клиента ок, платящие 12к/мес → Pro $20/мес, заложить после Дня 1.<br>— <b>Решение зафиксировано:</b> webhook отвечает Telegram <code>200 OK</code> сразу (&lt;1с), LLM крутится уже после ответа. Ответ клиенту — отдельным вызовом <code>sendMessage</code>, не в теле webhook-ответа. Тогда бюджет LLM (DeepSeek 4с → retry → Groq) не давит на 5-секундный ретрай Telegram вообще.<br>— Cold start Vercel ~0.5-1.5с — входит в &lt;1с? Нет — поэтому 200 отдаём до тяжёлой работы (сначала 200, потом Supabase+LLM).<br>— Секреты только в Vercel Env, никогда в гит. <code>.env</code> в <code>.gitignore</code>.</div>
+    </div>
+    <div class="note small" style="margin:12px 0"><b>Расчёт нагрузки (прикидка на салфетке, точное — по usage_daily после пилота):</b> 1 сообщение клиента = 1 invocation webhook. Средний диалог 6 сообщений = 6 вызовов LLM (~2к токенов каждый = ~12к токенов/диалог). Пилот 3 салона × 20 диалогов/день × 30 дней = 1800 диалогов = ~21.6M токенов ≈ ~$5.8/мес. <b>Важно:</b> $48 за 15к диалогов — это совокупный расход десятков ботов (~25 ботов × 600 диалогов ≈ $48 против ~$650 дохода 25 × $25), а не расход одного клиента. Один салон физически не даст 15к диалогов/мес (~500/день). Экономика работает уже на пилоте ($2-6 против $75), не «после масштаба». Кэш системного промпта + короткие ответы + кап по usage_daily. Не считать сметой.</div>
+    <p class="small"><b>Структура репо ai-admin-cabinet (TypeScript + Next.js App Router, без бизнес-логики до Дня 1):</b></p>
+    <div class="note small"><code>ai-admin-cabinet/</code><br>├─ <code>app/(cabinet)/layout.tsx</code> — проверка сессии, редирект на /login<br>├─ <code>app/(cabinet)/page.tsx</code> — список ботов владельца<br>├─ <code>app/(cabinet)/bots/[botId]/page.tsx</code> — диалоги бота + toggle handoff<br>├─ <code>app/(cabinet)/login/page.tsx</code> — Telegram Login Widget<br>├─ <code>app/api/webhook/[botId]/route.ts</code> — async: secret → сразу <code>200 OK</code> → <code>waitUntil(processUpdate)</code>, ответ через <code>sendMessage</code>. TODO<br>├─ <code>app/api/auth/telegram/route.ts</code> — валидация Login Widget, сессионная cookie. TODO<br>├─ <code>app/api/cabinet/bots/route.ts</code> — GET список / POST создать. TODO<br>├─ <code>app/api/cabinet/bots/[botId]/route.ts</code> — PATCH токен/промпт/handoff / DELETE. TODO<br>├─ <code>lib/supabase.ts</code> — клиент service_role, только server-side<br>├─ <code>lib/llm.ts</code> — <code>askBot()</code>: DeepSeek timeout 4с → Groq fallback (время не жмёт — 200 уже отдан)<br>├─ <code>lib/crypto.ts</code> — <code>encrypt()/decrypt()</code> AES-256-GCM, <code>ENC_KEY openssl rand -hex 32</code><br>├─ <code>lib/telegram.ts</code> — <code>sendMessage()/verifySecretHeader()/verifyLoginWidget()</code><br>├─ <code>lib/types.ts</code> — Bot, Dialog, Message, UsageDaily<br>├─ <code>supabase/schema.sql</code> — полная DDL ниже, пишем сразу<br>├─ <code>vercel.json + package.json + tsconfig.json + .env.example + .gitignore</code><br>└─ <code>README.md</code> — «AI админ — инфра готова, логика после &gt;5/15»</div>
+    <p class="small" style="margin-top:12px"><b>Supabase schema.sql:</b> <code>cabinets(id, owner_tg_id unique, owner_tg_username)</code> → <code>bots(id, cabinet_id, bot_token_enc iv:tag:cipher, bot_username, business_name, system_prompt [кэш-префикс], status active|paused|trial, trial_ends_at, token_limit_daily 50000)</code> → <code>dialogs(id, bot_id, client_tg_id, status ai|human|closed, last_msg_at, unique(bot_id,client_tg_id))</code> → <code>messages(id, dialog_id, role user|assistant|system_handoff, content)</code> → <code>usage_daily(bot_id, day PK, tokens_in, tokens_out, msg_count)</code>. Индексы: <code>bots(cabinet_id), dialogs(bot_id), messages(dialog_id,created_at)</code>. RLS осознанно позже: пилот = service_role server-side + where cabinet_id, без кастомного JWT-мостика TG→Supabase Auth.</p>
+    <p class="small"><b>Webhook flow — async waitUntil (решение зафиксировано):</b> клиент → Telegram POST <code>/api/webhook/[botId]</code> → проверка <code>X-Telegram-Bot-Api-Secret-Token</code> (= <code>secret_token</code> из setWebhook, 401 при чужом) → сразу <code>200 OK</code> → <code>waitUntil(processUpdate)</code>: getBot → <code>decrypt(bot_token_enc)</code> → история → <code>askBot(system_prompt, history, text)</code> → <code>sendMessage(token)</code> отдельным вызовом → запись <code>messages + usage_daily</code> → <code>checkHandoffConditions</code>. Владелец → кабинет App Router → <code>/api/cabinet/*</code> → Supabase (боты, диалоги, toggle AI/человек, расход).</p>
+    <div class="grid2 small" style="margin:12px 0">
+      <div class="card" style="padding:12px"><b>.env.example (6 ключей)</b><br><code>SUPABASE_URL</code><br><code>SUPABASE_SERVICE_KEY</code> (только server, не anon в функциях)<br><code>ENC_KEY</code> (<code>openssl rand -hex 32</code>)<br><code>TELEGRAM_WEBHOOK_SECRET</code> (= secret_token в setWebhook → заголовок <code>X-Telegram-Bot-Api-Secret-Token</code>)<br><code>DEEPSEEK_API_KEY</code><br><code>GROQ_API_KEY</code><br><br><b>Handoff:</b> «позови человека» (фразы + LLM-детект) / &gt;2 уточнений подряд / 10 мин тишины → <code>status=human</code> + sendMessage владельцу (решить: тот же бот или отдельный уведомительный). <b>Таймаут 10 мин — НЕ Vercel Cron</b> (Hobby: макс раз в сутки, чаще — реджект деплоя): GitHub Actions <code>schedule */5 * * * *</code> → <code>/api/cron/check-handoff</code> + ленивая проверка при новом сообщении.</div>
+      <div class="card" style="padding:12px"><b>Чеклист перед первым клиентом</b><br>1) <code>curl POST .../api/webhook/test-bot -H "x-telegram-bot-api-secret-token: wrong"</code> → 401.<br>2) Round-trip: <code>encrypt→decrypt</code> совпадает.<br>3) Уронить DeepSeek (неверный ключ) → Groq подхватывает.<br>4) Изоляция: <code>/api/cabinet/bots/[чужой-botId]</code> другим владельцем → 403/404.<br>5) Handoff: молчание 10 мин → статус human + уведомление.<br>6) Гонка: 5 сообщений/сек одному боту — нет дублей/потерь.<br>7) Ручной запуск: пустое репо → каркас локально → push → Vercel Import → <code>projectId</code> новый → env → <code>curl -I .../api/cabinet/bots</code> не 404. Код — после Дня 1.</div>
+    </div>
+    <p class="small muted"><b>Ворота валидации (кумулятивно, не один день):</b> кодить webhook/LLM/handoff только когда наберётся &gt;5 согласий суммарно по походам (День 1 = первая проверка, не вся воронка; холодная конверсия 5-10% — нормально). Если за День 1 будет 0-2 «да» — сначала чинить оффер/скрипт, потом наращивать объём, а не идти по ещё 35 салонам с тем же текстом. <b>Осознанно НЕ делаем:</b> RLS с кастомными JWT (после роста), очередь QStash вместо <code>waitUntil</code> (избыточно для 3 пилотов), отдельный домен SaaS (после &gt;5 согласий).</p>
+  </div>
+</section>
+
+<section class="section" id="demo">
+  <h2>Демо-портфолио — где лежит и как отличить</h2>
+  <p class="small muted">Хостинг демо: <b>GitHub Pages</b> репо <code>bess1lie/bess1lie.github.io</code> (чистая статика, деплой 30-60 сек при пуше в main). Скриншоты на лендинге <code>assets/screenshots/*.webp</code> — переснять только после подтверждения всех 3 демо.</p>
+  <div class="grid3">
+    <div class="card"><h3>Кофейня</h3><p class="small">Тёплая hygge · Fraunces+Caveat · Меню сразу после hero</p><p class="small"><code>cafe-demo/index.html</code></p></div>
+    <div class="card"><h3>Барбершоп</h3><p class="small">Тёмный брутальный · монохром · прайс+длительность · команда Арман/Данияр</p><p class="small"><code>barbershop-demo/index.html</code></p></div>
+    <div class="card"><h3>Ағаш</h3><p class="small">Ремесленная wood · каталог+калькулятор+таймлайн (проверить: если в живом нет — локальный файл не запушен)</p><p class="small"><code>furniture-demo/index.html</code> 608 строк</p></div>
+  </div>
+</section>
+
+<section class="section" id="next">
+  <h2>Что дальше — не код, а проверка</h2>
+  <div class="note"><b>Сайт готов к валидации.</b> Дальше — салоны ногами в Алмалы, не код (День 1 = первая проверка, ворота &gt;5 согласий кумулятивно). Ссылка <code>https://developer-portfolio-six-theta.vercel.app/#ai-admin</code> показываешь с телефона. Оффер: «Предоплата 0₸. Настраиваем за 2 дня, затем 3 дня бесплатно». Только ТГ, кабинет N ботов, авто handoff без подтверждения, 10 мин таймаут — логика уже в плане, но код — после результата.<br><br><b>Скрипт День 1 — финал (3 шага):</b><br><b>Шаг 1. Квалификация — 3 вопроса до показа телефона:</b> 1) «Сколько заявок в неделю теряете, потому что не успеваете ответить в WhatsApp/Instagram?» (боль в цифрах). 2) «Сколько времени в день уходит на одни и те же ответы про цену и адрес?» (потеря ресурса). 3) «Если бот отвечает сразу, даже ночью, бронирует время, 12 000₸/мес — готовы попробовать 3 дня бесплатно? Настроим за 2 дня, предоплаты нет, не понравится — отключим без штрафов».<br><b>Шаг 2. Демо — только если №3 «да/покажите»:</b> телефон → <code>...vercel.app/#ai-admin</code>, демо-боты (скорость, адекватность, пример handoff).<br><b>Шаг 3. Фиксация:</b> берёшь Telegram-контакт, договариваешься когда скинешь ссылку на их бота (через 2 дня) — легальное окно на кодинг под их прайс. Если 0-2 «да» за день — стоп, чинить скрипт/сегмент (не салоны, а автосервис/шиномонтаж), не идти дальше с тем же текстом.</div>
+  <div class="card small" style="margin-top:12px"><b>Чеклист готовности к Дню 1:</b> 1) Лендинг <code>six-theta</code> жив, curl подтверждает. 2) Демо <code>cafe/barber/furniture</code> — 200 OK, без битых ссылок. 3) Скрипт 3 вопроса выучен/записан. 4) Оффер «2 дня настройка → 3 дня free → 12к/мес», без обещаний «работает прямо сейчас». 5) Правило: 0-2 «да» → переписываем скрипт/сегмент, не наращиваем объём. Возвращаться с цифрами (да/нет, на каком вопросе отвал), не с новой версией документа.</div>
+  <h3 style="margin-top:18px">Хостинг итого</h3>
+  <div class="grid3 small">
+    <div class="card"><b>Лендинг + AI-админ MVP</b><br>Vercel (лендинг + api/webhook) — free, Supabase free (cabinets/bots/dialogs), Telegram Bot API (free), LLM DeepSeek платно. Домен нового SaaS пока не покупать — держать план здесь.<br><br><b>Переход на Pro:</b> алерт при 20% лимита Hobby (Invocations/Edge) → Telegram-уведомление → бесшовный апгрейд $20/мес до бана. <b>«Кнопка паники»:</b> <code>PATCH /api/cabinet/bots/[botId] {status:'paused'}</code> — мгновенно глушит бота без правок БД (галлюцинации/перерасход).</div>
+    <div class="card"><b>Демо</b><br>GitHub Pages — free, без build. Проверять всегда <code>curl -I .../cafe-demo/</code> 200, не саммари агента.</div>
+    <div class="card" style="border-style:dashed"><b>Правило после ложных тревог 15.09</b><br>Состояние сайта — только <code>curl</code> с твоего терминала, не <code>web_fetch</code> Claude.</div>
+  </div>
+</section>
+
+<section class="section" style="background:#fdfcf8">
+  <h2>После валидации — архитектура SaaS (не начинать сейчас)</h2>
+  <p class="small muted">Заметки на будущее, пока держи здесь. Начинать кодить только когда наберётся &gt;5 согласий кумулятивно на 12к (настройка 2 дня + 3 дня free). Стек: TypeScript + Next.js App Router, <code>ai-admin-cabinet</code>. Всё ниже — дословно, чтобы не забыть на этапе кодинга.</p>
+  <p class="small"><b>Поток:</b> клиент → Telegram POST <code>/api/webhook/[botId]</code> → secret → сразу <code>200 OK</code> → <code>waitUntil(processUpdate)</code> → Supabase + <code>decrypt</code> → <code>lib/llm.ts askBot</code> (DeepSeek-flash 4с → Groq) → <code>sendMessage</code> отдельным вызовом → <code>messages + usage_daily</code> → handoff (<code>human</code> + уведомление). Владелец → <code>app/(cabinet)</code> → <code>/api/cabinet/*</code> → Supabase.</p>
+  <div class="note small"><b>Архитектура целиком:</b><br>Клиент бизнеса → Telegram → POST /api/webhook/[botId]<br>1. Проверка secret-заголовка<br>2. Быстрый ответ 200 OK<br>3. waitUntil(): фоновая обработка<br>→ Supabase: найти bot по botId, расшифровать токен, взять историю<br>→ lib/llm.ts: DeepSeek primary → timeout 4с → Groq fallback<br>→ Telegram sendMessage (отдельный вызов, не через return вебхука)<br>→ Запись в dialogs + usage_daily<br>→ Handoff: если да, статус=human + уведомление владельцу в личку<br>Владелец → Next.js кабинет (App Router) → /api/cabinet/* → Supabase (боты, диалоги, toggle AI/человек, расход).<br><b>Ключевое:</b> вебхук НЕ ждёт LLM чтобы ответить Telegram. Ответ клиенту — отдельным HTTP к Telegram API из фона. Убирает таймаут и ретраи апдейтов.</div>
+  <p class="small" style="margin-top:12px"><b>Структура репозитория:</b></p>
+  <div class="note small"><code>ai-admin-cabinet/</code><br>├─ <code>app/(cabinet)/layout.tsx</code> — проверка сессии, редирект на /login<br>├─ <code>app/(cabinet)/page.tsx</code> — список ботов владельца<br>├─ <code>app/(cabinet)/bots/[botId]/page.tsx</code> — диалоги + toggle handoff<br>├─ <code>app/(cabinet)/login/page.tsx</code> — Telegram Login Widget<br>├─ <code>app/api/webhook/[botId]/route.ts</code> — апдейты от Telegram<br>├─ <code>app/api/auth/telegram/route.ts</code> — валидация Login Widget, сессионная cookie<br>├─ <code>app/api/cabinet/bots/route.ts</code> — GET / POST<br>├─ <code>app/api/cabinet/bots/[botId]/route.ts</code> — PATCH / DELETE<br>├─ <code>lib/supabase.ts</code> — service_role, только server-side<br>├─ <code>lib/llm.ts</code> — askBot() DeepSeek + Groq<br>├─ <code>lib/crypto.ts</code> — encrypt/decrypt AES-256-GCM<br>├─ <code>lib/telegram.ts</code> — sendMessage, verifySecretHeader, verifyLoginWidget<br>├─ <code>lib/types.ts</code> — Bot, Dialog, Message, UsageDaily (Session убран — вместо него messages)<br>└─ <code>supabase/schema.sql, .env.example, vercel.json, package.json, tsconfig.json</code></div>
+  <p class="small" style="margin-top:12px"><b>Схема БД (Supabase, Postgres — дословно):</b></p>
+  <div class="note small"><pre style="white-space:pre-wrap;margin:0;font-family:Fragment Mono,monospace;font-size:.78rem">create table cabinets (
+  id uuid primary key default gen_random_uuid(),
+  owner_tg_id bigint unique not null,
+  owner_tg_username text,
+  created_at timestamptz default now()
+);
+
+create table bots (
+  id uuid primary key default gen_random_uuid(),
+  cabinet_id uuid references cabinets(id) not null,
+  bot_token_enc text not null,      -- iv:authTag:ciphertext, hex
+  bot_username text,
+  business_name text,
+  system_prompt text not null,      -- прайс/описание — стабильный префикс для кэша LLM
+  status text default 'active',     -- active | paused | trial
+  trial_ends_at timestamptz,
+  token_limit_daily int default 50000,
+  created_at timestamptz default now()
+);
+
+create table dialogs (
+  id uuid primary key default gen_random_uuid(),
+  bot_id uuid references bots(id) not null,
+  client_tg_id bigint not null,
+  status text default 'ai',         -- ai | human | closed
+  last_msg_at timestamptz default now(),
+  created_at timestamptz default now(),
+  unique(bot_id, client_tg_id)
+);
+
+create table messages (
+  id uuid primary key default gen_random_uuid(),
+  dialog_id uuid references dialogs(id) not null,
+  role text not null,               -- user | assistant | system_handoff
+  content text not null,
+  created_at timestamptz default now()
+);
+
+create table usage_daily (
+  bot_id uuid references bots(id) not null,
+  day date not null,
+  tokens_in bigint default 0,
+  tokens_out bigint default 0,
+  msg_count int default 0,
+  primary key (bot_id, day)
+);
+
+create index on bots(cabinet_id);
+create index on dialogs(bot_id);
+create index on dialogs(bot_id, client_tg_id);
+create index on messages(dialog_id, created_at);
+create index on usage_daily(bot_id, day);
+
+create table bookings (
+  id uuid primary key default gen_random_uuid(),
+  bot_id uuid references bots(id) not null,
+  dialog_id uuid references dialogs(id) not null,
+  client_name text,
+  client_contact text,
+  service text,
+  requested_time text,              -- как сказал клиент, текстом
+  status text default 'pending',    -- pending | confirmed | rejected
+  created_at timestamptz default now()
+);
+create index on bookings(bot_id, status);
+create unique index bookings_one_pending_per_dialog on bookings(dialog_id) where status='pending';
+
+create table processed_updates (
+  update_id bigint primary key,     -- анти-дубль ретраев Telegram
+  bot_id uuid references bots(id) not null,
+  created_at timestamptz default now()
+);</pre></div>
+  <div class="note small" style="margin-top:10px"><b>Про RLS — сознательное решение:</b> на пилоте (3 бота, 1 таблица владельцев) все запросы идут через serverless-функции с <code>service_role</code> ключом, который никогда не попадает на клиент. Изоляция между владельцами обеспечивается explicit <code>where cabinet_id = $1</code> в каждом запросе кода, а не политиками БД. Это не "менее безопасно" при условии, что service_role ключ действительно нигде не светится — но это временное упрощение, чтобы не городить кастомный JWT-мостик между Telegram Login и Supabase Auth прямо сейчас. RLS + JWT с <code>cabinet_id</code> в claims — следующий шаг, когда появится больше одного человека, работающего с базой (то есть когда это станет реально важно).</div>
+  <p class="small" style="margin-top:12px"><b>Шифрование токенов ботов (AES-256-GCM — дословно):</b></p>
+  <div class="note small"><pre style="white-space:pre-wrap;margin:0;font-family:Fragment Mono,monospace;font-size:.78rem">import crypto from 'crypto';
+
+const ALGO = 'aes-256-gcm';
+const KEY = Buffer.from(process.env.ENC_KEY!, 'hex'); // 32 байта, сгенерировать: openssl rand -hex 32
+
+export function encrypt(text: string): string {
+  const iv = crypto.randomBytes(12);
+  const cipher = crypto.createCipheriv(ALGO, KEY, iv);
+  const enc = Buffer.concat([cipher.update(text, 'utf8'), cipher.final()]);
+  const tag = cipher.getAuthTag();
+  return `${iv.toString('hex')}:${tag.toString('hex')}:${enc.toString('hex')}`;
+}
+
+export function decrypt(payload: string): string {
+  const [ivHex, tagHex, dataHex] = payload.split(':');
+  const decipher = crypto.createDecipheriv(ALGO, KEY, Buffer.from(ivHex, 'hex'));
+  decipher.setAuthTag(Buffer.from(tagHex, 'hex'));
+  return Buffer.concat([decipher.update(Buffer.from(dataHex, 'hex')), decipher.final()]).toString('utf8');
+}</pre></div>
+  <p class="small" style="margin-top:12px"><b>Вебхук — паттерн "быстрый 200 + фон" (дословно):</b></p>
+  <div class="note small"><pre style="white-space:pre-wrap;margin:0;font-family:Fragment Mono,monospace;font-size:.78rem">// app/api/webhook/[botId]/route.ts
+import { waitUntil } from '@vercel/functions';
+
+export async function POST(req: Request, { params }: { params: { botId: string } }) {
+  const secret = req.headers.get('x-telegram-bot-api-secret-token');
+  if (secret !== process.env.TELEGRAM_WEBHOOK_SECRET) {
+    return new Response('unauthorized', { status: 401 });
+  }
+
+  const update = await req.json();
+
+  waitUntil(processUpdate(params.botId, update)); // не await — вебхук уже отвечает
+
+  return new Response('OK', { status: 200 }); // отвечаем Telegram мгновенно
+}
+
+async function processUpdate(botId: string, update: any) {
+  if (update.callback_query) return handleCallback(botId, update.callback_query); // кнопки Confirm/Reject
+  const bot = await getBotFromSupabase(botId);
+  if (bot.status !== 'active') return; // paused|trial-ended: глушим без LLM
+  if (await alreadyProcessed(update.update_id)) return; // анти-дубль ретраев
+  const token = decrypt(bot.bot_token_enc);
+  const history = await getRecentMessages(update.message.chat.id);
+
+  const reply = await askBot(bot.system_prompt, history, update.message.text);
+
+  await sendTelegramMessage(token, update.message.chat.id, reply.text);
+  await saveMessageAndUsage(botId, update, reply);
+  await markProcessed(update.update_id, botId);
+  await checkHandoffConditions(botId, update, reply);
+}
+
+async function handleCallback(botId: string, cb: any) {
+  await answerCallbackQuery(cb.id);
+  // confirm_booking_ID / reject_booking_ID → update bookings.status → editMessageText (убрать кнопки) → notify client
+}</pre></div>
+  <p class="small">Secret-заголовок <code>X-Telegram-Bot-Api-Secret-Token</code> устанавливается один раз при вызове <code>setWebhook</code> с параметром <code>secret_token</code> — Telegram сам добавляет этот заголовок к каждому апдейту, это встроенная защита от поддельных запросов на твой webhook-URL.</p>
+  <p class="small" style="margin-top:12px"><b>LLM-слой — единый JSON-mode (locked):</b></p>
+  <div class="note small"><pre style="white-space:pre-wrap;margin:0;font-family:Fragment Mono,monospace;font-size:.78rem">// lib/llm.ts — всегда один режим, без two-mode ветки
+// response_format: {type:"json_object"}, схема {reply_text, action nullable {type:'booking', service, time, client_name}}
+export async function askBot(systemPrompt: string, history: Msg[], userMsg: string) {
+  try {
+    return await callWithTimeout(callDeepSeek(systemPrompt, history, userMsg), 4000);
+  } catch {
+    return await callGroq(systemPrompt, history, userMsg); // fallback, без таймаута — уже план Б
+  }
+}
+// bookings: сразу insert без check-then-insert; catch (e.code==='23505') return — дубль уже есть</pre></div>
+  <p class="small">Актуальные цены DeepSeek на сентябрь 2026 (модель <code>deepseek-flash</code>, V4.1): off-peak $0.15/1M входных токенов при промахе кэша, <b>$0.003/1M при попадании в кэш</b>, $0.6/1M выходных. Кэш держится автоматически на неизменном префиксе промпта — то есть <code>system_prompt</code> (описание бизнеса + прайс) должен идти первым и оставаться байт-в-байт одинаковым между вызовами одного бота, а история диалога и новое сообщение — после него. При такой структуре большая часть входных токенов будет попадать в дешёвый тариф уже со второго сообщения в диалоге. <b>429 locked:</b> DeepSeek 4с → Groq; если Groq <code>429</code> — не тишина: <code>{text:"Сейчас большая нагрузка. Передал вопрос владельцу, ответит за 15 минут.", forceHandoff:true}</code> + <code>status=human</code>.</p>
+  <div class="grid2 small" style="margin:12px 0">
+    <div class="card" style="padding:12px"><b>Handoff locked — GitHub Actions, не Vercel Cron</b><br>— «позови человека» (фразы + LLM-детект) / &gt;2 уточнений / 10 мин тишины.<br>— <code>.github/workflows/handoff-check.yml</code>: <code>schedule '*/5 * * * *'</code> → <code>POST /api/cron/check-handoff</code> с <code>Authorization: Bearer EXTERNAL_CRON_SECRET</code>.<br>— Эндпоинт ищет <code>status=ai AND last_msg_at &lt; now-10мин</code> → <code>human</code> + уведомление.<br>— Двойная страховка: ленивая проверка при каждом новом сообщении (<code>last_msg_at</code> старше 10 мин → сразу <code>human</code>, но сначала <code>if paused → return</code>).<br>— Крон <code>/api/cron/check-handoff</code> тоже первой строкой скипает <code>paused</code>-ботов.<br>— <b>Нюанс GA:</b> schedule может опаздывать на минуты, после 60 дней без пушей workflow auto-disabled — раз в 1-2 мес проверять Actions → enabled. Для мягкого 10-мин таймаута не критично.<br>— <b>Кнопка паники locked:</b> вебхук первой строкой <code>if (bot.status==='paused') return 200 OK</code> — глушит без правок БД. Статус: <code>active|paused|trial</code>.</div>
+    <div class="card" style="padding:12px"><b>.env + секреты cron (не путать!)</b><br><pre style="white-space:pre-wrap;margin:0;font-family:Fragment Mono,monospace;font-size:.78rem">SUPABASE_URL=
+SUPABASE_SERVICE_KEY=
+ENC_KEY=              # openssl rand -hex 32
+TELEGRAM_WEBHOOK_SECRET=
+DEEPSEEK_API_KEY=
+GROQ_API_KEY=
+EXTERNAL_CRON_SECRET= # openssl rand -hex 32, свой отдельный</pre><b>Важно:</b> Vercel-переменная <code>CRON_SECRET</code> — только для встроенного Vercel Cron (не используется). Для GitHub Actions свой <code>EXTERNAL_CRON_SECRET</code>: <code>openssl rand -hex 32</code> → положить и в GitHub Secrets, и в Vercel Env под этим именем.</div>
+  </div>
+  <div class="card small" style="padding:12px"><b>Чеклист перед первым реальным клиентом (дословно, 6):</b><br>1) <code>curl -X POST .../api/webhook/test-bot -H "x-telegram-bot-api-secret-token: wrong"</code> → должен быть 401.<br>2) Round-trip шифрования: <code>encrypt(token)</code> → <code>decrypt()</code> → совпадает с оригиналом.<br>3) Симулировать падение DeepSeek (неверный ключ) → убедиться что Groq подхватывает автоматически.<br>4) Проверить изоляцию владельцев: запросить <code>/api/cabinet/bots/[чужой-botId]</code> авторизованным как другой владелец → должен быть 403/404, не чужие данные.<br>5) Проверить handoff-таймаут вручную — написать боту, не отвечать 10 минут, убедиться что статус переключился и пришло уведомление.<br>6) Нагрузочно: отправить 5 сообщений подряд одному боту за секунду — проверить, что нет гонки состояний в Supabase (двойная запись/потеря сообщения).</div>
+  <p class="small muted" style="margin-top:12px"><b>Что осознанно НЕ делаем сейчас (дословно):</b><br>— RLS с кастомными JWT-клеймами — после роста, не для пилота.<br>— Очередь (Upstash QStash) вместо <code>waitUntil</code> — избыточно для объёма 3 пилотных ботов, <code>waitUntil</code> достаточно надёжен на этом масштабе.<br>— Отдельный домен под SaaS — по-прежнему после <code>&gt;5 согласий</code> кумулятивно.</p>
+</section>
+
+<footer class="section small muted" style="border:0;text-align:center">
+  <p>План AI-админа: лендинг, демо-портфолио, кабинет ботов, валидация ногами.</p>
+  <p><a href="https://developer-portfolio-six-theta.vercel.app/">← На сайт</a> · <a href="https://bess1lie.github.io/cafe-demo/">cafe</a> · <a href="https://bess1lie.github.io/barbershop-demo/">barber</a> · <a href="https://bess1lie.github.io/furniture-demo/">furniture</a></p>
+</footer>
+
+</div>
+</body>
+</html>

@@ -200,7 +200,7 @@
     var cur = 0;
     var timer = null;
     var pausedUntil = 0;
-    var results = ["заявка в пару кликов","заказы без звонков и ожиданий","услуги, цены и запись","ответы за 5 секунд, 24/7","код полностью ваш"];
+    var results = ["заявка в пару кликов","заказы без звонков и ожиданий","услуги, цены и запись","отвечает сразу, 24/7","код полностью ваш"];
     function activate(i){
       cur = i;
       chips.forEach(function(c,k){
@@ -379,9 +379,9 @@
       });
       // panels: show one, hide others via hidden + visibility
       var panelData = [
-        {num:"01", type:"ЛЕНДИНГ", title:"Кофейня «Дәме»", desc:"Меню, отзывы и форма заявки в одном понятном сайте.", tags:["Меню в ₸","Адаптив","Форма заявки"], meta:["от 45 000 ₸","5–10 дней"], href:"https://bess1lie.github.io/cafe-demo/"},
-        {num:"02", type:"КОРПОРАТИВНЫЙ САЙТ", title:"Барбершоп «Жігіт»", desc:"Услуги, мастера, прайс и онлайн-запись в одном месте.", tags:["Мастера","Онлайн-запись"], meta:["от 75 000 ₸","от 14 дней"], href:"https://bess1lie.github.io/barbershop-demo/"},
-        {num:"03", type:"САЙТ С КАТАЛОГОМ", title:"Мастерская «Ағаш»", desc:"Каталог изделий, фильтры и калькулятор стоимости.", tags:["Каталог","Калькулятор"], meta:["от 100 000 ₸","от 20 дней"], href:"https://bess1lie.github.io/furniture-demo/"}
+        {num:"01", type:"ЛЕНДИНГ", title:"Кофейня «Дәме»", desc:"Меню, отзывы и форма заявки в одном понятном сайте.", tags:["Меню в ₸","Адаптив","Форма заявки"], meta:["от 69 000 ₸","5–10 дней"], href:"https://bess1lie.github.io/cafe-demo/"},
+        {num:"02", type:"КОРПОРАТИВНЫЙ САЙТ", title:"Барбершоп «Жігіт»", desc:"Услуги, мастера, прайс и онлайн-запись в одном месте.", tags:["Мастера","Онлайн-запись"], meta:["от 129 000 ₸","от 14 дней"], href:"https://bess1lie.github.io/barbershop-demo/"},
+        {num:"03", type:"САЙТ С КАТАЛОГОМ", title:"Мастерская «Ағаш»", desc:"Каталог изделий, фильтры и калькулятор стоимости.", tags:["Каталог","Калькулятор"], meta:["от 189 000 ₸","от 20 дней"], href:"https://bess1lie.github.io/furniture-demo/"}
       ];
       var panelNum = document.getElementById("work-panel-num");
       var panelType = document.getElementById("work-panel-type");
