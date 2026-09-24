@@ -1082,7 +1082,8 @@ html.js .msg-ok {
   letter-spacing: -0.02em;
   color: var(--fg);
   white-space: nowrap;
-  font-variant-numeric: tabular-nums;
+  /* standalone prices: proportional figures read evenly (tabular "1" leaves a visible hole) */
+  font-variant-numeric: proportional-nums;
 }
 .price-from {
   font-family: var(--font-mono);
@@ -1682,7 +1683,7 @@ main > section.hero { min-height: 100svh; padding: calc(var(--header-h) + 28px) 
    leaves a light-services strip on F11 when content < 100svh). ID beats it. */
 #work { min-height: 100svh; }
 .work-mock, .work-carousel-card, .bento-tile, .why-card, .price-row { contain: layout paint; }
-.price, .price-meta, .price-row .price { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.price, .price-meta, .price-row .price { white-space: nowrap; font-variant-numeric: proportional-nums; }
 .reveal { will-change: auto; }
 .js .reveal { opacity: 1; transform: none; }
 .js .reveal.is-visible { animation: fade-up .65s var(--ez) both; }
