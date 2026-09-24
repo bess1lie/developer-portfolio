@@ -10,3 +10,17 @@ pyproject.toml
 uv.lock
 
 leads/proxy-home/*.apk
+
+# local-only, untracked by design
+package.json
+package-lock.json
+system-plan.md
+vercel.new.json
+zimovka.html
+zimovka.backup.2026-09-04.html
+assets/branding/avatar-1024.png
+assets/branding/avatar-512.png
+assets/branding/content/preview-grid.png
+assets/branding/favicon-180.png
+assets/branding/favicon-192.png
+assets/branding/favicon-512.png
