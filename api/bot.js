@@ -203,7 +203,7 @@ async function sendStart(chatId) {
   states.delete(chatId);
   await tg("sendMessage", {
     chat_id: chatId,
-    text: "Привет! bess1lie — сайты и боты для малого бизнеса.\n\nВыберите, что вас интересует:",
+    text: "Привет! Мы — команда bess1lie — помогаем заказать сайт или Telegram-бота для бизнеса.\n\nВыберите, что вас интересует:",
     reply_markup: menuKeyboard(),
   });
 }
