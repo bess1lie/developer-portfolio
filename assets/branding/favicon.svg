@@ -1,4 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect x="1" y="1" width="30" height="30" rx="8" fill="#1D1D1F"/>
-  <circle cx="23.5" cy="8.5" r="3" fill="#FF4D1C"/>
+  <style>
+    .plaque { fill: #1D1D1F; }
+    .rim { fill: none; stroke: rgba(242,240,234,.22); stroke-width: 1; }
+    .dot { fill: #FF4D1C; }
+    @media (prefers-color-scheme: dark) {
+      .plaque { fill: #F2F0EA; }
+      .rim { stroke: rgba(29,29,31,.16); }
+    }
+  </style>
+  <rect class="plaque" x="1" y="1" width="30" height="30" rx="8"/>
+  <rect class="rim" x="1.75" y="1.75" width="28.5" height="28.5" rx="7"/>
+  <circle class="dot" cx="22.8" cy="9.2" r="3.2"/>
 </svg>
