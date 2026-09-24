@@ -8,3 +8,5 @@ screenshot_*.png
 __pycache__/
 pyproject.toml
 uv.lock
+
+leads/proxy-home/*.apk

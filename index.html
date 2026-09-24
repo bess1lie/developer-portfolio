@@ -24,7 +24,7 @@
   <meta name="twitter:image" content="https://developer-portfolio-six-theta.vercel.app/assets/branding/og-1200x630.png">
 
   <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="icon" type="image/svg+xml" href="assets/branding/favicon.svg?v=17">
+  <link rel="icon" type="image/svg+xml" href="assets/branding/favicon.svg?v=18">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/branding/favicon-32.png?v=16">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/branding/apple-touch-180.png?v=16">
   <link rel="manifest" href="manifest.webmanifest">
@@ -33,7 +33,7 @@
   <link rel="preload" href="assets/fonts/v2/inter-tight-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/v2/inter-tight-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/manrope/manrope-cyrillic-800-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/style.css?v=78">
+  <link rel="stylesheet" href="assets/css/style.css?v=79">
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к содержимому</a>
@@ -51,7 +51,7 @@
         <a href="#contact">Контакты</a>
       </nav>
       <div class="nav-right">
-        <a class="btn btn-accent btn-sm magnetic" href="#contact">Обсудить проект</a>
+        <a class="btn btn-accent btn-sm" href="#contact">Обсудить проект</a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mmenu" aria-label="Открыть меню">
           <span></span><span></span>
         </button>
@@ -85,11 +85,11 @@
             </h1>
             <p class="hero-sub reveal">Сайт от 69 000 ₸ + AI-админ 24/7 от 12 000 ₸/мес — для малого бизнеса.</p>
             <div class="hero-cta reveal">
-              <a class="btn btn-accent btn-lg magnetic" href="#contact">Обсудить проект</a>
+              <a class="btn btn-accent btn-lg" href="#contact">Обсудить проект</a>
               <a class="btn btn-ghost btn-lg" href="#work">Посмотреть работы</a>
             </div>
             <div class="hero-choice-cards reveal" aria-label="Быстрый выбор">
-              <a class="hero-choice-card" href="#ai-admin"><span aria-hidden="true">✦</span><span>Как работает AI-админ →</span></a>
+              <a class="hero-choice-card" href="#ai-admin"><span aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg></span><span>Как работает AI-админ →</span></a>
             </div>
             <p class="hero-note reveal">Не уверены, что нужно? Расскажите о бизнесе в <a href="https://t.me/bess1liebot" target="_blank" rel="noopener">Telegram — подскажем</a>.</p>
             <dl class="hero-facts hero-facts--chips reveal">
@@ -174,7 +174,6 @@
                   <img src="assets/screenshots/furniture.webp?v=4" alt="" width="1412" height="817" loading="lazy" decoding="async" data-shot="2" hidden>
                 </div>
 
-                <div class="work-progress" aria-hidden="true"><i></i></div>
               </div>
             </div>
           </div>
@@ -298,7 +297,7 @@
                 <span>Первые 3 дня бесплатно</span>
               </div>
             </div>
-            <a href="#contact" class="btn btn-accent btn-lg magnetic reveal">Подключить AI-админа</a>
+            <a href="#contact" class="btn btn-accent btn-lg reveal">Подключить AI-админа</a>
           </div>
         </div>
       </div>
@@ -381,42 +380,43 @@
     <section class="faq" id="faq" aria-labelledby="faq-title">
       <div class="wrap wrap-narrow">
         <h2 id="faq-title" class="h-display reveal">Частые <em>вопросы</em></h2>
+        <p class="faq-lede reveal">Сроки, оплата и поддержка — коротко и по делу.</p>
         <div class="faq-list">
           <div class="faq-item">
-            <button class="faq-question" id="faq-q1" type="button" aria-expanded="false" aria-controls="faq-a1"><span>Сколько времени занимает разработка сайта?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-            <div class="faq-answer" id="faq-a1" role="region" aria-labelledby="faq-q1" hidden><div><p>Лендинг — 5–10 дней, корпоративный сайт — 2–4 недели, сайт с Telegram-ботом — от 2 недель. Точные сроки фиксируем при обсуждении и придерживаемся их.</p></div></div>
+            <button class="faq-question" id="faq-q1" type="button" aria-expanded="false" aria-controls="faq-a1"><span>Сколько времени займёт мой проект?</span><span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-a1" role="region" aria-labelledby="faq-q1" hidden><div><p>Лендинг — 5–10 дней, корпоративный сайт — 2–4 недели, сайт с ботом — от 2 недель. Срок фиксируем до старта и держим.</p></div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" id="faq-q2" type="button" aria-expanded="false" aria-controls="faq-a2"><span>Вы используете конструкторы вроде Tilda или WordPress?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-            <div class="faq-answer" id="faq-a2" role="region" aria-labelledby="faq-q2" hidden><div><p>Нет. Каждый сайт пишется вручную под вашу задачу: быстрее загружается и не выглядит шаблонно. Менять текст или добавлять раздел — правки вносим мы, навыки программиста вам не нужны.</p></div></div>
+            <button class="faq-question" id="faq-q2" type="button" aria-expanded="false" aria-controls="faq-a2"><span>Сайт не будет похож на шаблон?</span><span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-a2" role="region" aria-labelledby="faq-q2" hidden><div><p>Нет. Проектируем и пишем вручную под вашу задачу — поэтому быстро грузится и не похож на конструктор. Тексты и разделы меняем мы, вам программировать не нужно.</p></div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" id="faq-q3" type="button" aria-expanded="false" aria-controls="faq-a3"><span>Как оплатить и в каком порядке?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-            <div class="faq-answer" id="faq-a3" role="region" aria-labelledby="faq-q3" hidden><div><p>Обычно 50% на старте и 50% после сдачи. Для небольших проектов возможна оплата по факту. Условия фиксируем до начала работы.</p></div></div>
+            <button class="faq-question" id="faq-q3" type="button" aria-expanded="false" aria-controls="faq-a3"><span>Как проходит оплата?</span><span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-a3" role="region" aria-labelledby="faq-q3" hidden><div><p>50% перед стартом, 50% после сдачи. Небольшие задачи — оплата по факту. Все условия — письменно, до начала работы.</p></div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" id="faq-q4" type="button" aria-expanded="false" aria-controls="faq-a4"><span>Что входит в поддержку после запуска?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-            <div class="faq-answer" id="faq-a4" role="region" aria-labelledby="faq-q4" hidden><div><p>Правки контента, помощь с доменом, консультации. Первые 2 недели после сдачи — правки без доплат, дальше — 3 000₸ за правку. Крупные доработки оцениваются отдельно.</p></div></div>
+            <button class="faq-question" id="faq-q4" type="button" aria-expanded="false" aria-controls="faq-a4"><span>Что будет после запуска?</span><span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-a4" role="region" aria-labelledby="faq-q4" hidden><div><p>Две недели правим контент бесплатно. Дальше — 3 000 ₸ за правку, крупные доработки — по оценке. С доменом и вопросами помогаем.</p></div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" id="faq-q5" type="button" aria-expanded="false" aria-controls="faq-a5"><span>А где будет размещаться сайт?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-            <div class="faq-answer" id="faq-a5" role="region" aria-labelledby="faq-q5" hidden><div><p>На Vercel — профессиональная облачная платформа, для лендинга бесплатна и надёжна. Код сайта полностью ваш — при желании перенести на другой хостинг можно за 1 день.</p></div></div>
+            <button class="faq-question" id="faq-q5" type="button" aria-expanded="false" aria-controls="faq-a5"><span>Где будет жить сайт?</span><span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-a5" role="region" aria-labelledby="faq-q5" hidden><div><p>На Vercel — быстром облачном хостинге: для лендинга бесплатно и надёжно. Код полностью ваш — переезд на другой хостинг займёт день.</p></div></div>
           </div>
           <div class="faq-item">
             <button class="faq-question" id="faq-q6" type="button" aria-expanded="false" aria-controls="faq-a6"><span>Сколько стоит домен?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-            <div class="faq-answer" id="faq-a6" role="region" aria-labelledby="faq-q6" hidden><div><p>Домен .kz оплачивается отдельно по фактической стоимости регистратора. Подключение — бесплатно: покупаете сами (Kaspi.kz, PS.kz) или оформляем мы.</p></div></div>
+            <div class="faq-answer" id="faq-a6" role="region" aria-labelledby="faq-q6" hidden><div><p>Домен .kz — по тарифу регистратора, платите отдельно. Подключаем бесплатно: сами через Kaspi.kz или PS.kz — либо оформим мы.</p></div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" id="faq-q7" type="button" aria-expanded="false" aria-controls="faq-a7"><span>Что если бот ошибётся?</span><span class="faq-icon" aria-hidden="true">+</span></button>
+            <button class="faq-question" id="faq-q7" type="button" aria-expanded="false" aria-controls="faq-a7"><span>Что будет, если бот ошибётся?</span><span class="faq-icon" aria-hidden="true">+</span></button>
             <div class="faq-answer" id="faq-a7" role="region" aria-labelledby="faq-q7" hidden><div><p>Если бот не уверен в ответе, диалог сразу передаётся вам в дашборд — вы отвечаете сами, ничего не потеряется.</p></div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" id="faq-q8" type="button" aria-expanded="false" aria-controls="faq-a8"><span>Куда девается переписка с клиентами?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-            <div class="faq-answer" id="faq-a8" role="region" aria-labelledby="faq-q8" hidden><div><p>Переписка хранится в вашем дашборде для истории диалогов. Мы её не продаём и не используем для чего-то ещё.</p></div></div>
+            <button class="faq-question" id="faq-q8" type="button" aria-expanded="false" aria-controls="faq-a8"><span>Кто видит переписку с клиентами?</span><span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-a8" role="region" aria-labelledby="faq-q8" hidden><div><p>Только вы — в вашем дашборде. Не продаём, не передаём и ни на что другое не используем.</p></div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" id="faq-q9" type="button" aria-expanded="false" aria-controls="faq-a9"><span>Чем отличается от zapis.kz?</span><span class="faq-icon" aria-hidden="true">+</span></button>
-            <div class="faq-answer" id="faq-a9" role="region" aria-labelledby="faq-q9" hidden><div><p>zapis.kz — только запись на услугу. AI-админ ещё отвечает на вопросы о цене, адресе, составе услуги — как живой менеджер.</p></div></div>
+            <button class="faq-question" id="faq-q9" type="button" aria-expanded="false" aria-controls="faq-a9"><span>Чем AI-админ лучше обычной записи?</span><span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-answer" id="faq-a9" role="region" aria-labelledby="faq-q9" hidden><div><p>Запись — только слот в календаре. AI-админ ещё консультирует: цены, адрес, услуги — и записывает. Как живой администратор.</p></div></div>
           </div>
         </div>
       </div>
@@ -434,7 +434,7 @@
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.94 3.32 19.1 19.6c-.18 1.1-.83 1.36-1.7.85l-4.7-3.46-2.26 2.18c-.25.25-.46.46-.94.46l.34-4.76 8.67-7.84c.38-.34-.08-.53-.59-.19L7.38 13.4l-4.6-1.44c-1-.31-1.02-1 .21-1.48l17.98-6.93c.83-.31 1.56.2 1.29 1.77Z"/></svg>
                 Написать в Telegram
               </a>
-              <a class="btn btn-wa btn-xl" href="https://wa.me/77080278030" target="_blank" rel="noopener">
+              <a class="btn btn-ghost btn-xl" href="https://wa.me/77080278030" target="_blank" rel="noopener">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
                 Написать в WhatsApp
               </a>
@@ -508,7 +508,7 @@
         </div>
       </div>
       <div class="footer-word" aria-hidden="true">bess1lie</div>
-      <p class="footer-meta">© <span id="year">2026</span> bess1lie · Python · Odoo · PostgreSQL · JavaScript · HTML5 · CSS3 · Linux · Docker · Git · REST API</p>
+      <p class="footer-meta">© <span id="year">2026</span> bess1lie</p>
     </div>
   </footer>
 
