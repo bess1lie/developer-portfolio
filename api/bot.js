@@ -308,6 +308,24 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true });
     }
 
+    if (text === "/prices" || text === "/prices@bess1liebot") {
+      await tg("sendMessage", {
+        chat_id: chatId,
+        text: "Актуальные цены:\n\n• Лендинг — от 69 000₸\n• Корпоративный сайт — от 129 000₸\n• Сайт с интерактивом — от 189 000₸\n• Telegram-бот — от 59 000₸\n• AI-админ 24/7 — 12 000₸/мес\n• Правки — 3 000₸\nДомен — по тарифу регистратора.\nС сайтом первый месяц AI-админа — бесплатно.\n\nВыберите услугу кнопками ниже или нажмите /start.",
+        reply_markup: menuKeyboard(),
+      });
+      return res.status(200).json({ ok: true });
+    }
+
+    if (text === "/demo" || text === "/demo@bess1liebot") {
+      await tg("sendMessage", {
+        chat_id: chatId,
+        text: "Живые примеры — демо-стенды, можно потыкать:\n\n• Кофейня «Дәме» (лендинг) — https://bess1lie.github.io/cafe-demo/\n• Барбершоп «Жігіт» (сайт + запись) — https://bess1lie.github.io/barbershop-demo/\n• Мастерская «Ағаш» (каталог + калькулятор) — https://bess1lie.github.io/furniture-demo/\n\nЗаказать такой же — выберите услугу кнопками ниже или нажмите /start.",
+        reply_markup: menuKeyboard(),
+      });
+      return res.status(200).json({ ok: true });
+    }
+
     if (!text || text.startsWith("/")) {
       return res.status(200).json({ ok: true });
     }
