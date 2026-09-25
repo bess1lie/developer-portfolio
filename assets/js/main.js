@@ -446,34 +446,6 @@
     update();
   }
 
-  /* ---------- Sticky mobile CTA ---------- */
-  function initStickyCta() {
-    var bar = doc.getElementById("sticky-cta");
-    if (!bar) return;
-    var pastHero = false;
-    var atContact = false;
-    function render() {
-      bar.classList.toggle("is-visible", pastHero && !atContact && window.innerWidth <= 768);
-    }
-    if (!("IntersectionObserver" in window)) return;
-    var hero = doc.querySelector(".hero");
-    var contact = doc.getElementById("contact");
-    if (hero) {
-      new IntersectionObserver(function (entries) {
-        pastHero = !entries[0].isIntersecting && entries[0].boundingClientRect.top < 0;
-        render();
-      }, { threshold: 0 }).observe(hero);
-    }
-    if (contact) {
-      new IntersectionObserver(function (entries) {
-        atContact = entries[0].isIntersecting;
-        render();
-      }, { threshold: 0.05 }).observe(contact);
-    }
-    window.addEventListener("resize", render);
-    render();
-  }
-
   /* ---------- FAQ ---------- */
   function initFaq() {
     document.querySelectorAll(".faq-item").forEach(function (item) {
@@ -619,7 +591,6 @@
     initLogo();
     initTextReveal();
     initFormCursorFix();
-    initStickyCta();
     initHero();
     initReveal();
     initWork();
