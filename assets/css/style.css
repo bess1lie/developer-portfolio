@@ -160,6 +160,7 @@ h2[id], section h2 { scroll-margin-top: calc(var(--header-h) + 24px); }
   box-shadow: 0 8px 24px rgba(0,0,0,0.12);
 }
 
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-synthesis-weight: none; font-synthesis-style: none; }
 body {
   margin: 0;
   overflow-x: clip;
@@ -1125,7 +1126,7 @@ html.js .msg-ok {
 .radio-chip:hover { border-color: var(--fg-dim); }
 .lead-form .btn { padding: 16px 24px; font-size: 1rem; box-shadow: 0 14px 34px rgba(214,58,12,.25); }
 .lead-form .btn:disabled { opacity: 0.7; box-shadow: none; }
-.lead-form .field input::placeholder, .lead-form .field textarea::placeholder { color: var(--fg-dim); opacity: 1; }
+.lead-form .field input::placeholder, .lead-form .field textarea::placeholder { color: #3F3F44; opacity: 1; font-weight: 500; }
 .lead-form .field input:hover, .lead-form .field textarea:hover { border-color: var(--fg-dim); }
 .radio-chip:has(input:checked) span.radio-chip-title { color: var(--accent-strong); }
 
