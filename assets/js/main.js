@@ -63,7 +63,7 @@
       window.addEventListener("resize", updateNavTheme, { passive: true });
       updateNavTheme();
     }
-    var secs = ["work", "services", "ai-admin", "why", "pricing", "process", "faq", "contact"].map(function (id) {
+    var secs = ["work", "services", "ai-admin", "why", "pricing", "process", "contact", "faq"].map(function (id) {
       return document.getElementById(id);
     }).filter(Boolean);
     function mark() {
