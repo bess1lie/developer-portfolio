@@ -281,6 +281,8 @@ section { padding: clamp(96px, 12vw, 200px) 0; position: relative; }
 .btn-accent:hover { background: #B8320A; color: #fff; }
 .btn-ghost { background: transparent; border-color: var(--line); color: var(--fg); }
 .btn-ghost:hover { border-color: var(--fg-dim); }
+/* magnetic через Motion: CSS-transition transform мешает пружине — глушим только его */
+.js .mag-motion, .js .mag-motion:hover { transition: none; }
 
 /* ---------- Intro ---------- */
 .intro {
@@ -1008,9 +1010,9 @@ html.js .msg-ok {
   align-items: center;
   padding: 24px 0;
   border-bottom: 1px solid var(--line);
-  transition: background 0.18s;
+  transition: background 0.18s, transform 0.25s var(--ez);
 }
-.price-row:hover { background: rgba(29,29,31,0.02); }
+.price-row:hover { background: rgba(29,29,31,0.02); transform: translateY(-2px); }
 .price-row:hover .price { color: var(--accent-strong); }
 .price-row .price { transition: color .2s; }
 .price-main h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 6px; }
@@ -1766,7 +1768,12 @@ h1, h2, h3, .wordmark { font-family: 'Manrope', 'Tenge Fallback', 'Manrope Fallb
   .hero-stack::after { content: ""; position: absolute; width: 340px; height: 340px; right: -130px; top: -100px; border: 1px solid rgba(255,77,28,.35); border-radius: 50%; box-shadow: 0 0 0 34px rgba(255,77,28,.06), 0 0 0 68px rgba(255,77,28,.035); pointer-events: none; }
   .hero-live { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; justify-content: flex-end; min-height: 0; padding-top: 52px; color: #f2f0ea; }
   .live-head { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; color: rgba(242,240,234,.75); }
-  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: live-pulse 2.2s ease-out infinite; }
+@keyframes live-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255,77,28,.45); }
+  70% { box-shadow: 0 0 0 9px rgba(255,77,28,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,77,28,0); }
+}
   .live-note { margin-left: auto; letter-spacing: .02em; color: rgba(242,240,234,.45); }
   .live-chat { display: flex; flex-direction: column; gap: 8px; margin: 0 0 18px; }
   .live-chat p { margin: 0; max-width: 88%; padding: 10px 14px; border-radius: 14px; font-size: .92rem; line-height: 1.45; }

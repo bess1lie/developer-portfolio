@@ -3,7 +3,18 @@
   "use strict";
   var doc = document;
   doc.documentElement.classList.add("js");
+  window.__blBoot = true;
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Motion (CDN, pinned 11.18.2) — progressive enhancement ---------- */
+  var MOTION_URL = "https://cdn.jsdelivr.net/npm/motion@11.18.2/+esm";
+  var motionSupported = false;
+  try { new Function("return import('')"); motionSupported = true; } catch (e) { motionSupported = false; }
+  var motionPromise = (!reducedMotion && motionSupported)
+    ? Promise.resolve().then(function () {
+        return import(MOTION_URL).then(function (m) { return m; }).catch(function () { return null; });
+      })
+    : Promise.resolve(null);
 
   /* ---------- Якоря — точный скролл ---------- */
   function initAnchors() {
@@ -194,12 +205,37 @@
     }
   }
 
-  /* ---------- Hero stack + mask-reveal ---------- */
-  function initHero() {
-    var lines = doc.querySelectorAll("h1 .line > span");
-    if (lines.length) {
-      lines.forEach(function(s){ s.style.transform='none'; s.style.opacity='1'; });
-    }
+  /* Один Motion-аниматор на элемент: гасит предыдущую анимацию,
+     ставит will-change на время работы и чистит его после финиша */
+  function playMo(m, el, props, opts) {
+    try {
+      if (el._mAnim) { try { el._mAnim.stop(); } catch (e0) {} }
+      el.style.willChange = "transform, opacity";
+      var a = m.animate(el, props, opts);
+      el._mAnim = a;
+      if (a && a.finished) {
+        a.finished.then(function () {
+          if (el._mAnim === a) el.style.willChange = "";
+        }).catch(function () {});
+      }
+      return a;
+    } catch (e) { return null; }
+  }
+  /* ---------- Hero-каскад через Motion (fallback: показать сразу) ---------- */
+  function heroShow() {
+    doc.querySelectorAll("h1 .line > span").forEach(function (s) {
+      s.style.transform = "none"; s.style.opacity = "1"; s.style.willChange = "";
+    });
+  }
+  function heroCascade(m) {
+    var spans = doc.querySelectorAll("#hero-title .line > span");
+    if (!spans.length) return;
+    var allOk = true;
+    spans.forEach(function (s, i) {
+      if (!playMo(m, s, { transform: ["translateY(110%)", "translateY(0px)"], opacity: [0, 1] },
+        { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: i * 0.07 })) allOk = false;
+    });
+    if (!allOk) heroShow();
   }
 
   /* ---------- Reveal — single IO, variants + stagger ---------- */
@@ -286,15 +322,30 @@
         panelTags.innerHTML = panelData[i].tags.map(function(t){return "<li>"+t+"</li>";}).join("");
         if (panelMeta) panelMeta.innerHTML = "<span>"+panelData[i].meta[0]+"</span><span>"+panelData[i].meta[1]+"</span>";
         panelLink.href = panelData[i].href;
-        panelTitle.style.opacity = "0"; panelTitle.style.transform = "translateY(8px)";
-        setTimeout(function(){ panelTitle.style.opacity="1"; panelTitle.style.transform="none"; }, 20);
+        var moT = window.__motion || null;
+        if (moT && !reducedMotion) {
+          if (!playMo(moT, panelTitle, { opacity: [0, 1], transform: ["translateY(8px)", "translateY(0px)"] }, { type: "spring", stiffness: 320, damping: 30 })) {
+            panelTitle.style.opacity = "1"; panelTitle.style.transform = "none";
+          }
+        } else {
+          panelTitle.style.opacity = "1"; panelTitle.style.transform = "none";
+        }
       }
+      var moI = window.__motion || null;
+      var useMotionImg = !!(moI && !reducedMotion);
+      if (useMotionImg) shotsBrowser.forEach(function (s) { s.style.transition = "none"; });
       shotsBrowser.forEach(function(s){
         var on = Number(s.getAttribute("data-shot"))===i;
         if (on) s.removeAttribute("hidden"); else s.setAttribute("hidden","");
-        s.style.opacity = on ? "1" : "0";
-        s.style.transform = on ? "none" : "translateY(10px) scale(.985)";
-        s.style.filter = on ? "blur(0)" : "blur(3px)";
+        if (useMotionImg && on) {
+          if (!playMo(moI, s, { opacity: [0, 1], transform: ["translateY(10px) scale(.985)", "translateY(0px) scale(1)"], filter: ["blur(3px)", "blur(0px)"] }, { duration: 0.55, ease: "easeOut" })) {
+            s.style.opacity = "1"; s.style.transform = "none"; s.style.filter = "blur(0)";
+          }
+        } else {
+          s.style.opacity = on ? "1" : "0";
+          s.style.transform = on ? "none" : "translateY(10px) scale(.985)";
+          s.style.filter = on ? "blur(0)" : "blur(3px)";
+        }
       });
       if (dots.length) {
         dots.forEach(function(d,k){ d.classList.toggle("is-active", k===i); });
@@ -341,33 +392,75 @@
   }
 
   /* ---------- Чат — один компонент, фиксированная высота, классы ---------- */
-  function initChat() {
-    function setupBox(box, steps){
-      if (!box) return;
-      var items = Array.prototype.slice.call(box.querySelectorAll("[data-chat]"));
-      if (!items.length) {
-        // hero compact: 3 msgs
-        items = Array.prototype.slice.call(box.querySelectorAll(".msg"));
-      }
-      // static: full conversation visible at once, no autoplay sequencing
-      items.forEach(function(el){
-        if (el.classList.contains("typing")) return;
-        el.classList.add("chat-item", "is-shown");
-      });
-      // without JS fallback handled via CSS (.js not present)
+  function setupBoxInstant(box) {
+    if (!box) return;
+    var items = Array.prototype.slice.call(box.querySelectorAll("[data-chat]"));
+    if (!items.length) {
+      // hero compact: 3 msgs
+      items = Array.prototype.slice.call(box.querySelectorAll(".msg"));
     }
+    // static: full conversation visible at once, no autoplay sequencing
+    items.forEach(function (el) {
+      if (el.classList.contains("typing")) return;
+      el.classList.add("chat-item", "is-shown");
+    });
+    // without JS fallback handled via CSS (.js not present)
+  }
+  function chatSequence(m, box) {
+    var items = Array.prototype.slice.call(box.querySelectorAll("[data-chat]"));
+    if (!items.length) return;
+    var step;
+    try { step = m.stagger(0.5); }
+    catch (e) { step = function (i) { return i * 0.5; }; }
+    var lastTyping = null;
+    items.forEach(function (el, i) {
+      var at = Math.round(250 + step(i, items.length) * 1000);
+      setTimeout(function () {
+        if (lastTyping && lastTyping !== el) {
+          lastTyping.classList.remove("is-shown");
+          lastTyping = null;
+        }
+        el.classList.add("is-shown");
+        if (el.classList.contains("typing")) lastTyping = el;
+      }, at);
+    });
+    // safety: спрятать висящий typing в конце
+    var endAt = Math.round(250 + step(items.length, items.length) * 1000) + 900;
+    setTimeout(function () {
+      if (lastTyping) { lastTyping.classList.remove("is-shown"); lastTyping = null; }
+    }, endAt);
+  }
+  function initChat() {
     var aiBox = document.getElementById("chat-demo");
     if (aiBox) {
-      var aiSteps = [
-        {idx:0, delay:600}, // client
-        {idx:1, delay:600}, // typing
-        {idx:2, delay:750}, // bot
-        {idx:3, delay:600}, // client
-        {idx:4, delay:600}, // typing
-        {idx:5, delay:750}, // bot
-        {idx:6, delay:600}  // card
-      ];
-      setupBox(aiBox, aiSteps);
+      if (reducedMotion || !("IntersectionObserver" in window)) {
+        setupBoxInstant(aiBox);
+      } else {
+        // hidden prep: только chat-item, is-shown ставит секвенс (или fallback)
+        Array.prototype.slice.call(aiBox.querySelectorAll("[data-chat]")).forEach(function (el) {
+          el.classList.add("chat-item");
+        });
+        motionPromise.then(function (m) {
+          if (!m) { setupBoxInstant(aiBox); return; }
+          var started = false;
+          var stop = null;
+          try {
+            stop = m.inView(aiBox, function () {
+              if (started) return; started = true;
+              try { if (stop) stop(); } catch (e) {}
+              chatSequence(m, aiBox);
+            }, { amount: 0.3 });
+          } catch (e) { setupBoxInstant(aiBox); return; }
+          // safety: если inView не сработал за 6с — показать всё
+          setTimeout(function () {
+            if (!started) {
+              started = true;
+              try { if (stop) stop(); } catch (e) {}
+              setupBoxInstant(aiBox);
+            }
+          }, 6000);
+        });
+      }
     }
     var heroBox = document.querySelector(".phone-mini .phone-screen");
     if (heroBox) {
@@ -402,6 +495,7 @@
       items.forEach(function(li){ li.classList.add('is-done'); li.classList.add('is-active'); li.style.setProperty('--f','1'); });
       return;
     }
+    var motionFill = false;
     var ticking = false;
     function update(){
       var vh = window.innerHeight;
@@ -424,8 +518,8 @@
         }
         items[k].classList.toggle('is-done', isReached && !isActive);
         items[k].classList.toggle('is-active', isActive);
-        // segment k -> k+1
-        if (k < items.length-1) {
+        // segment k -> k+1 (заливка: Motion scroll, иначе ручной расчёт)
+        if (k < items.length-1 && !motionFill) {
           var next = centers[k+1];
           var f = 0;
           if (refY <= cy) f = 0;
@@ -444,6 +538,18 @@
     // also observe font load
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(update);
     update();
+    // заливка --f через Motion scroll (классы остаются на ручной логике выше)
+    motionPromise.then(function (m) {
+      if (!m || reducedMotion) return;
+      motionFill = true;
+      try {
+        items.forEach(function (li, k) {
+          if (k >= items.length - 1) return;
+          m.scroll(m.animate(li, { "--f": [0, 1] }, { ease: "linear" }), { target: li, offset: ["start center", "end center"] });
+        });
+      } catch (e) { motionFill = false; }
+      update();
+    });
   }
 
   /* ---------- FAQ ---------- */
@@ -563,21 +669,33 @@
     setTimeout(function () { intro.remove(); }, 1400);
   }
 
-  function initTextReveal(){
-    if(reducedMotion) return;
-    var h1Lines = doc.querySelectorAll("h1 .line");
-    h1Lines.forEach(function(line,i){
-      line.style.overflow="hidden";
-      var inner=line.firstElementChild;
-      if(inner){
-        inner.style.display="block";
-        inner.style.transform="translateY(110%)";
-        inner.style.transition="transform .7s cubic-bezier(.16,1,.3,1) "+(i*70)+"ms, opacity .6s ease "+(i*70)+"ms";
-        inner.style.opacity="0";
-        requestAnimationFrame(function(){
-          setTimeout(function(){ inner.style.transform="translateY(0)"; inner.style.opacity="1"; }, 80);
+  /* ---------- Magnetic CTA (hero + pricing, только pointer:fine) ---------- */
+  function initMagnetic() {
+    motionPromise.then(function (m) {
+      if (!m || reducedMotion) return;
+      var fine = window.matchMedia && window.matchMedia("(pointer:fine)").matches;
+      if (!fine) return;
+      var els = [];
+      Array.prototype.forEach.call(doc.querySelectorAll(".hero-cta .btn-accent"), function (el) { els.push(el); });
+      Array.prototype.forEach.call(doc.querySelectorAll(".price-row--accent .btn-accent"), function (el) { els.push(el); });
+      els.forEach(function (el) {
+        el.classList.add("mag-motion");
+        var raf = false, tx = 0, ty = 0;
+        function render() {
+          raf = false;
+          playMo(m, el, { x: tx, y: ty }, { type: "spring", stiffness: 200, damping: 18 });
+        }
+        function queue(nx, ny) {
+          tx = nx; ty = ny;
+          if (!raf) { raf = true; window.requestAnimationFrame(render); }
+        }
+        el.addEventListener("pointermove", function (e) {
+          var r = el.getBoundingClientRect();
+          queue(((e.clientX - r.left) / r.width - 0.5) * 12, ((e.clientY - r.top) / r.height - 0.5) * 12);
         });
-      }
+        el.addEventListener("pointerleave", function () { queue(0, 0); });
+        el.addEventListener("pointercancel", function () { queue(0, 0); });
+      });
     });
   }
 
@@ -589,9 +707,9 @@
     initNav();
     initMenu();
     initLogo();
-    initTextReveal();
+    if (reducedMotion) { heroShow(); }
+    else { motionPromise.then(function (m) { if (m) heroCascade(m); else heroShow(); }); }
     initFormCursorFix();
-    initHero();
     initReveal();
     initWork();
     initChat();
@@ -599,5 +717,7 @@
     initFaq();
     initForm();
     initYear();
+    initMagnetic();
+    motionPromise.then(function (m) { window.__motion = m || null; });
   });
 })();
