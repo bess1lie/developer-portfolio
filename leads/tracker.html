@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Трекер холодных контактов — Алматы</title>
+<style>
+:root { color-scheme: dark; --bg:#0A0A0B; --card:#141416; --text:#F2F0EA;
+--muted:rgba(242,240,234,.62); --border:rgba(242,240,234,.12);
+--primary:#FF4D1C; --primary-h:#E04415; --shadow:0 4px 6px -1px rgba(0,0,0,.4);
+--radius:12px; }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+background:var(--bg); color:var(--text); line-height:1.5; min-height:100vh; }
+.container { max-width:1200px; margin:0 auto; padding:24px; }
+.header { margin-bottom:24px; border-bottom:1px solid var(--border); padding-bottom:20px; }
+.header-top { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; }
+h1 { font-size:26px; font-weight:700; letter-spacing:-.5px; }
+.subtitle { color:var(--muted); font-size:14px; margin-top:4px; }
+.badge-local { background:var(--primary); color:#fff; font-size:12px; font-weight:600;
+padding:4px 12px; border-radius:20px; text-transform:uppercase; letter-spacing:.5px; white-space:nowrap; }
+.info-box { background:rgba(255,77,28,.08); color:var(--muted); padding:10px 14px;
+border-radius:8px; font-size:13px; margin-top:14px; border-left:4px solid var(--primary); }
+.info-box code { background:rgba(255,255,255,.07); padding:2px 6px; border-radius:4px; }
+.stats { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px; }
+.stat { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:8px 16px; }
+.stat b { font-size:1.25rem; } .stat span { color:var(--muted); font-size:.78rem; display:block; }
+.controls { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; margin-bottom:18px; }
+.tabs { display:flex; background:var(--card); padding:4px; border-radius:10px;
+box-shadow:var(--shadow); border:1px solid var(--border); flex-wrap:wrap; }
+.tab { padding:8px 16px; border-radius:8px; font-size:14px; font-weight:500;
+color:var(--muted); cursor:pointer; border:none; background:transparent; min-height:40px; }
+.tab:hover { color:var(--text); }
+.tab.active { background:var(--primary); color:#fff; }
+.actions { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+select { padding:8px 12px; border:1px solid var(--border); border-radius:8px;
+background:var(--card); font-size:14px; color:var(--text); cursor:pointer; min-height:44px; }
+.toggle-label { display:flex; align-items:center; gap:8px; font-size:14px;
+color:var(--muted); cursor:pointer; min-height:44px; }
+.toggle-label input { display:none; }
+.toggle-switch { width:38px; height:22px; background:#3a3a3e; border-radius:20px;
+position:relative; transition:.25s; flex:none; }
+.toggle-switch::after { content:''; position:absolute; width:18px; height:18px;
+background:#fff; border-radius:50%; top:2px; left:2px; transition:.25s; }
+.toggle-label input:checked + .toggle-switch { background:var(--primary); }
+.toggle-label input:checked + .toggle-switch::after { left:18px; }
+.btn-primary { background:var(--primary); color:#fff; border:none; padding:10px 16px;
+border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; min-height:44px;
+display:flex; align-items:center; gap:6px; }
+.btn-primary:hover { background:var(--primary-h); }
+.alert { background:rgba(255,77,28,.1); color:#ffb59d; padding:12px 16px;
+border-radius:8px; font-size:14px; font-weight:500; margin-bottom:18px;
+display:flex; align-items:center; gap:10px; border:1px solid rgba(255,77,28,.35); }
+.table-container { background:var(--card); border-radius:var(--radius);
+box-shadow:var(--shadow); border:1px solid var(--border); overflow:hidden; }
+.table-scroll { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; min-width:820px; }
+th { text-align:left; padding:12px 18px; font-size:12px; font-weight:600;
+text-transform:uppercase; letter-spacing:.5px; color:var(--muted);
+background:rgba(255,255,255,.02); border-bottom:1px solid var(--border); }
+td { padding:14px 18px; border-bottom:1px solid var(--border); font-size:14px; vertical-align:top; }
+tr:last-child td { border-bottom:none; }
+a { color:var(--primary); }
+.business-name { font-weight:600; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.badge { padding:4px 10px; border-radius:20px; font-size:12px; font-weight:600; display:inline-block; white-space:nowrap; }
+.badge-coffee { background:rgba(255,180,0,.14); color:#ffcf6b; }
+.badge-barber { background:rgba(120,170,255,.14); color:#9cc2ff; }
+.badge-salon { background:rgba(255,130,200,.14); color:#ff9ecd; }
+.badge-shop { background:rgba(150,230,170,.14); color:#a5e8b5; }
+.badge-food { background:rgba(255,180,0,.14); color:#ffcf6b; }
+.badge-med { background:rgba(120,220,255,.14); color:#9cdcff; }
+.badge-edu { background:rgba(200,170,255,.16); color:#d3baff; }
+.badge-fit { background:rgba(130,255,170,.14); color:#8ff0b3; }
+.badge-svc { background:rgba(255,200,130,.14); color:#ffcf9c; }
+.st-unsent { background:rgba(120,170,255,.14); color:#9cc2ff; }
+.st-wa { background:rgba(200,140,255,.16); color:#d3aaff; }
+.st-em { background:rgba(80,220,200,.14); color:#7fe3d2; }
+.st-replied { background:rgba(80,220,130,.14); color:#7fe3a6; }
+.st-refused { background:rgba(255,110,110,.14); color:#ff9d9d; }
+.st-wrong { background:rgba(255,255,255,.08); color:var(--muted); }
+.warn { display:inline-block; font-size:.75rem; color:#ffb59d; margin-top:6px; }
+.hint { font-size:.8rem; color:var(--muted); }
+.rowbtns { display:flex; gap:6px; flex-wrap:wrap; }
+.rowbtns button { padding:8px 10px; min-height:40px; font-size:.82rem; border-radius:8px;
+cursor:pointer; background:var(--primary); border:none; color:#fff; font-weight:600; }
+.rowbtns button.ghost { background:transparent; border:1px solid var(--line,var(--border)); color:var(--text); font-weight:400; }
+.rowbtns button.danger { background:transparent; border:1px solid rgba(255,110,110,.4); color:#ff9d9d; }
+select.stsel { padding:8px 10px; font-size:.85rem; min-height:40px; max-width:170px; }
+.toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+background:#1d1d1f; border:1px solid var(--border); padding:10px 18px;
+border-radius:10px; display:none; z-index:1000; }
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.65);
+display:flex; align-items:center; justify-content:center; z-index:999;
+opacity:0; pointer-events:none; transition:opacity .2s; padding:16px; }
+.modal-overlay.active { opacity:1; pointer-events:auto; }
+.modal { background:var(--card); width:100%; max-width:520px; border-radius:16px;
+padding:24px; border:1px solid var(--border); transform:scale(.96); transition:transform .2s; }
+.modal-overlay.active .modal { transform:scale(1); }
+.modal h2 { margin-bottom:18px; font-size:20px; }
+.form-group { margin-bottom:14px; }
+.form-group label { display:block; font-size:13px; font-weight:500; margin-bottom:6px; color:var(--muted); }
+.form-group input, .form-group select { width:100%; padding:10px 12px;
+border:1px solid var(--border); border-radius:8px; font-size:14px; background:var(--bg); color:var(--text); }
+.modal-actions { display:flex; justify-content:flex-end; gap:12px; margin-top:20px; }
+.btn-secondary { padding:10px 16px; border-radius:8px; font-size:14px; cursor:pointer;
+background:transparent; border:1px solid var(--border); color:var(--text); min-height:44px; }
+details { margin-top:20px; background:var(--card); border:1px solid var(--border);
+border-radius:12px; padding:12px 16px; }
+summary { cursor:pointer; font-weight:600; min-height:44px; }
+.empty-state { text-align:center; padding:50px 20px; color:var(--muted); }
+</style>
+</head>
+<body>
+<div class="container">
+<header class="header">
+<div class="header-top">
+<div><h1>Трекер холодных контактов</h1><p class="subtitle">Холодные контакты — Алматы · ручная рассылка</p></div>
+<span class="badge-local">Локально · не деплоить</span>
+</div>
+<div class="info-box">Источник: <code>leads/cold-wa-email-2026-09-27.md</code> + <code>leads/cold-wave-2026-09-29.md</code> + <code>leads/cold-wave-2026-09-29b.md</code> (в .vercelignore, в прод не уйдёт)</div>
+</header>
+<div class="alert">⚠️ Уже contacted (волна 06–07.08) — не писать повторно. Строки ⚠️ — проверить перед отправкой, похожи на сеть.</div>
+<div class="stats" id="stats"></div>
+<div class="controls">
+<div class="tabs" id="categoryTabs">
+<button class="tab active" data-cat="">Все</button>
+<button class="tab" data-cat="cafe">Кофейни</button>
+<button class="tab" data-cat="barber">Барбершопы</button>
+<button class="tab" data-cat="salon">Салоны</button>
+<button class="tab" data-cat="shop">Мастерские</button>
+<button class="tab" data-cat="food">Еда</button>
+<button class="tab" data-cat="med">Мед</button>
+<button class="tab" data-cat="edu">Обучение</button>
+<button class="tab" data-cat="fit">Фитнес</button>
+<button class="tab" data-cat="svc">Услуги</button>
+</div>
+<div class="actions">
+<select id="fstat" aria-label="Статус"></select>
+<label class="toggle-label"><input type="checkbox" id="fhide"><span class="toggle-switch"></span>Скрыть отправленные</label>
+<button class="btn-primary" id="addbtn" type="button">+ Добавить контакт</button>
+</div>
+</div>
+<div class="table-container"><div class="table-scroll">
+<table><thead><tr><th>Бизнес</th><th>Контакты</th><th>Сайт / источник</th><th>Статус</th><th>Действия</th></tr></thead>
+<tbody id="rows"></tbody></table>
+<div id="emptyState" class="empty-state" style="display:none">Ничего не найдено. Измени фильтры.</div>
+</div></div>
+<details><summary>Уже contacted (волна 06–07.08) — справка</summary>
+<p class="hint" id="oldlist"></p></details>
+</div>
+<div class="modal-overlay" id="modalOverlay"><div class="modal">
+<h2>Добавить контакт</h2>
+<form id="addform">
+<div class="form-group"><label>Название</label><input id="n_name" required placeholder="Например: Кофейня Зёрна"></div>
+<div class="form-group"><label>Категория</label><select id="n_cat"><option value="cafe">Кофейня</option><option value="barber">Барбершоп</option><option value="salon">Салон</option><option value="shop">Мастерская</option><option value="food">Еда</option><option value="med">Мед</option><option value="edu">Обучение</option><option value="fit">Фитнес</option><option value="svc">Услуги</option></select></div>
+<div class="form-group"><label>Телефон</label><input id="n_phone" required placeholder="+77XXXXXXXXX"></div>
+<div class="form-group"><label>Email (необязательно)</label><input id="n_email" placeholder="info@..."></div>
+<div class="form-group"><label>Сайт / статус (необязательно)</label><input id="n_site" placeholder="нет (только Instagram ...)"></div>
+<div class="modal-actions">
+<button type="button" class="btn-secondary" id="cancelBtn">Отмена</button>
+<button type="submit" class="btn-primary">Добавить</button>
+</div>
+</form>
+</div></div>
+<div class="toast" id="toast">Скопировано</div>
+<script>
+"use strict";
+var SEED = [
+{id:"milk",name:"Milk&Honey",cat:"cafe",phone:"+77055556365",email:null,site:"нет (только Instagram milk_honey_almaty)",src:"2GIS firm 70000001112787901",flag:null},
+{id:"mari",name:"Mari central cafe",cat:"cafe",phone:"+77074990665",email:null,site:"нет (только Instagram mari_central_cafe)",src:"2GIS firm 70000001105808213",flag:null},
+{id:"bread",name:"BreadWay",cat:"cafe",phone:"+77772383702",email:"office@breadway.coffee",site:"домен есть, сайта нет (заглушка «Food»)",src:"2GIS firm 70000001111705280",flag:"проверить перед отправкой — похоже на сеть (3+ точки, найм)"},
+{id:"haji",name:"Hajime",cat:"barber",phone:"+77029019994",email:null,site:"нет (Instagram + виджет altegio)",src:"2GIS firm 70000001068902853",flag:"проверить перед отправкой — в карточке «3 филиала»"},
+{id:"city",name:"City Barber",cat:"barber",phone:"+77079480807",email:"citybarber@yandex.kz",site:"нет (Instagram + виджет altegio)",src:"2GIS firm 70000001030850253",flag:null},
+{id:"lion",name:"Lion`s Barbershop",cat:"barber",phone:"+77782155569",email:null,site:"нет (Instagram + виджет altegio)",src:"2GIS firm 70000001063144157",flag:null},
+{id:"inca",name:"Incanto",cat:"salon",phone:"+77071267785",email:null,site:"нет (в карточке только WhatsApp)",src:"2GIS firm 70000001052550085",flag:null},
+{id:"badi",name:"Badi",cat:"salon",phone:"+77019496008",email:"badisalon@mail.ru",site:"нет (Instagram + виджет zapis.kz)",src:"2GIS firm 70000001025141518",flag:null},
+{id:"raspil",name:"РаспилПро",cat:"shop",phone:"+77011073164",email:null,site:"нет (в карточке только WhatsApp)",src:"2GIS firm 70000001106092699 (волна 2)",flag:null},
+{id:"mafia",name:"Mafia Nails",cat:"salon",phone:"+77472436567",email:null,site:"нет (Instagram mafia_nails_almaty)",src:"2GIS firm 70000001045730413 (волна 2)",flag:null},
+{id:"msc",name:"Mebel Service Center",cat:"shop",phone:"+77717610904",email:null,site:"домен есть, сайт мёртв (msc.com.kz недоступен)",src:"2GIS firm 9429940001129178 (волна 2)",flag:null},
+{id:"k3",name:"К3-Beauty",cat:"salon",phone:"+77072306591",email:null,site:"нет (Instagram k3.beautysalon)",src:"2GIS firm 70000001105004432 (волна 2)",flag:null},
+{id:"mebelle",name:"Mebelle",cat:"shop",phone:"+77017755006",email:"almaty3297232@bk.ru",site:"нет (Instagram mebelle_kz)",src:"2GIS firm 70000001040103742 (волна 2)",flag:null},
+{id:"derevo",name:"Дерево Счастья",cat:"shop",phone:"+77017454427",email:"derevo_shyastye@mail.ru",site:"нет (Instagram derevo_shyastye)",src:"2GIS firm 70000001026860889 (волна 2)",flag:null},
+{id:"juma",name:"Juma Service",cat:"shop",phone:"+77026119999",email:null,site:"нет (Instagram jumaservice)",src:"2GIS firm 70000001107501244 (волна 2)",flag:null},
+{id:"onegin",name:"Onegin coffee",cat:"cafe",phone:"+77779013344",email:null,site:"нет (Instagram onegincoffee.kz + WhatsApp)",src:"2GIS firm 70000001048093378 (волна 29.09)",flag:null},
+{id:"dicoffee",name:"DI coffee shop",cat:"cafe",phone:"+77076366673",email:null,site:"нет (только телефон в Zoon)",src:"Zoon DI coffee shop, Муканова 186 (волна 29.09)",flag:null},
+{id:"makecoffee",name:"Make Coffee",cat:"cafe",phone:"+77778144555",email:null,site:"нет (Instagram make_coffeee + WhatsApp)",src:"2GIS firm 70000001098843916 (волна 29.09)",flag:null},
+{id:"sholdeme",name:"Sholdeme",cat:"cafe",phone:"+77760072253",email:null,site:"нет (Instagram sholdeme_coffee + WhatsApp)",src:"2GIS firm 70000001088874541 (волна 29.09)",flag:null},
+{id:"bellini",name:"Bellini",cat:"cafe",phone:"+77778229988",email:null,site:"нет (блока сайта в Zoon нет)",src:"Zoon Bellini, Ауэзова 130 (волна 29.09)",flag:"проверить перед отправкой — карточка 2GIS снята с публикации (410)"},
+{id:"nova",name:"Nova Coffee",cat:"cafe",phone:"+77770099081",email:null,site:"нет (только WhatsApp в 2GIS)",src:"2GIS firm 70000001105311917 (волна 29.09)",flag:null},
+{id:"elcoffee",name:"El Coffee",cat:"cafe",phone:"+77076931207",email:null,site:"нет (блока сайта в Zoon нет)",src:"Zoon El Coffee, Мамыр-1 4 (волна 29.09)",flag:"проверить перед отправкой — возможен 2-й адрес (Абая 109В)"},
+{id:"colombiano",name:"Colombiano Coffee",cat:"cafe",phone:"+77017103630",email:null,site:"нет (Instagram colombiano.coffee)",src:"restoran.kz 97034-colombiano-coffee (волна 29.09)",flag:null},
+{id:"manhatten",name:"Manhatten",cat:"barber",phone:"+77075844287",email:null,site:"нет (Instagram + taplink + altegio-виджет)",src:"2GIS firm 70000001055072918 (волна 29.09)",flag:null},
+{id:"severyug",name:"Север-Юг",cat:"barber",phone:"+77779679762",email:null,site:"нет (Instagram + altegio-виджет)",src:"2GIS firm 70000001051273263 (волна 29.09)",flag:null},
+{id:"franklin",name:"Franklin Barbershop",cat:"barber",phone:"+77081742416",email:null,site:"нет (Instagram + altegio-виджет)",src:"2GIS firm 70000001064708363 (волна 29.09)",flag:null},
+{id:"iron",name:"Iron Barbershop",cat:"barber",phone:"+77000905117",email:null,site:"нет (Instagram + WhatsApp)",src:"Яндекс Карты iron_barbershop (волна 29.09)",flag:null},
+{id:"dofamine",name:"Dofamine",cat:"salon",phone:"+77079641331",email:null,site:"нет (Instagram dofamine.kz + zapis.kz-виджет)",src:"2GIS firm 70000001040450079 (волна 29.09)",flag:null},
+{id:"beautyidea",name:"Beauty idea",cat:"salon",phone:"+77777248870",email:null,site:"нет (Instagram + zapis.kz-виджет)",src:"2GIS firm 70000001037410169 (волна 29.09)",flag:null},
+{id:"starkova",name:"Starkova Express Beauty Studio",cat:"salon",phone:"+77012022400",email:null,site:"нет (Instagram + zapis.kz-виджет)",src:"2GIS firm 70000001061238018 (волна 29.09)",flag:null},
+{id:"lamanicur",name:"la_manicur_almaty",cat:"salon",phone:"+77750782222",email:null,site:"нет (только Instagram + WhatsApp)",src:"2GIS firm 70000001061382206 (волна 29.09)",flag:null},
+{id:"bloombar",name:"Bloombar",cat:"salon",phone:"+77755293884",email:null,site:"нет (Instagram + zapis.kz-виджет)",src:"2GIS firm 70000001029765657 (волна 29.09)",flag:null},
+{id:"ladyart",name:"Lady Art Nails",cat:"salon",phone:"+77021111662",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001063741681 (волна 29.09)",flag:null},
+{id:"allo",name:"Allo",cat:"shop",phone:"+77002512399",email:"abuxolidgo@bk.ru",site:"нет (Instagram allomobile1 + WhatsApp)",src:"2GIS firm 70000001046927941 (волна 29.09)",flag:null},
+{id:"restart",name:"Re-start",cat:"shop",phone:"+77071900021",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001068550042 (волна 29.09)",flag:null},
+{id:"senimservice",name:"Senimservice.kz",cat:"shop",phone:"+77771222257",email:null,site:"домен в названии, но senimservice.kz мёртв",src:"2GIS firm 70000001054245025 (волна 29.09)",flag:null},
+{id:"grosstech",name:"GROSS TECH",cat:"shop",phone:"+77475714747",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001038009772 (волна 29.09)",flag:null},
+{id:"shkaffnur",name:"Shkaffnur",cat:"shop",phone:"+77021314266",email:null,site:"нет (Instagram shkaffnur + WhatsApp/Telegram)",src:"2GIS firm 9429940000925328 (волна 29.09)",flag:null},
+{id:"arnau",name:"Arnau Group",cat:"shop",phone:"+77017356433",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001036979216 (волна 29.09)",flag:null},
+{id:"kyeroom",name:"Kye room",cat:"shop",phone:"+77080810995",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001114693230 (волна 29.09)",flag:null},
+{id:"mokko",name:"Мокко",cat:"food",phone:"+77470381066",email:null,site:"нет (Instagram mokko.bakery + WhatsApp)",src:"2GIS firm 70000001084545639 (волна 29.09b)",flag:null},
+{id:"shokolad",name:"Шоколад",cat:"food",phone:"+77019405055",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001044316967 (волна 29.09b)",flag:null},
+{id:"dompek",name:"Дом",cat:"food",phone:"+77071350005",email:null,site:"нет (только WhatsApp в карточке)",src:"2GIS firm 70000001035200407 (волна 29.09b)",flag:"проверить перед отправкой — Яндекс даёт 2-й номер +7 707 855 3917"},
+{id:"pinkcake",name:"Pinkcake",cat:"food",phone:"+77024089127",email:null,site:"нет (Instagram pinkcake.kz + WhatsApp)",src:"2GIS firm 70000001061107141 (волна 29.09b)",flag:null},
+{id:"arafat",name:"Арафат",cat:"food",phone:"+77024074546",email:null,site:"нет (Instagram + 2 WhatsApp)",src:"2GIS firm 70000001061699244 (волна 29.09b)",flag:null},
+{id:"raflowers",name:"R&A Flowers",cat:"food",phone:"+77056660060",email:null,site:"нет (только Instagram + Facebook)",src:"instagram.com/cvetok_almaty (волна 29.09b)",flag:"проверить перед отправкой — карточки 2GIS нет, только Instagram"},
+{id:"aesthline",name:"Aesthetic line",cat:"med",phone:"+77771189524",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001062341634 (волна 29.09b)",flag:null},
+{id:"kolibri",name:"Колибри",cat:"med",phone:"+77058235015",email:null,site:"нет (Instagram colibri.vet + WhatsApp)",src:"2GIS firm 70000001063947296 (волна 29.09b)",flag:null},
+{id:"inkar",name:"Инкар",cat:"med",phone:"+77476998574",email:null,site:"нет (только WhatsApp, нет даже Instagram)",src:"2GIS firm 70000001075290174 (волна 29.09b)",flag:null},
+{id:"slimfit",name:"Slim fitness massage",cat:"med",phone:"+77473253445",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001061107829 (волна 29.09b)",flag:null},
+{id:"smile",name:"The Smile Dental Clinic",cat:"med",phone:"+77781965088",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001093684209 (волна 29.09b)",flag:null},
+{id:"almdent",name:"Almaty Dental Clinic",cat:"med",phone:"+77005320607",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001106070987 (волна 29.09b)",flag:null},
+{id:"cleverfox",name:"Clever Fox",cat:"edu",phone:"+77027479806",email:null,site:"нет (Instagram + WhatsApp)",src:"Spravker/2GIS 70000001032745311 (волна 29.09b)",flag:null},
+{id:"qutluk",name:"Qutluk Bilim",cat:"edu",phone:"+77013952184",email:null,site:"нет (Instagram + WhatsApp)",src:"Яндекс Карты qutluk_bilim (волна 29.09b)",flag:null},
+{id:"alakai",name:"Алакай",cat:"edu",phone:"+77079007969",email:null,site:"нет (Instagram + WhatsApp)",src:"Яндекс Карты alakay (волна 29.09b)",flag:"проверить перед отправкой — в 2GIS есть тёзка (Аркалык 88/1)"},
+{id:"madidance",name:"Madi Dance",cat:"edu",phone:"+77016900224",email:null,site:"нет (Instagram 26K + WhatsApp)",src:"Zoon Madi Dance (волна 29.09b)",flag:null},
+{id:"ds29",name:"Dance Studio 29",cat:"edu",phone:"+77074853110",email:null,site:"нет (Instagram + WhatsApp)",src:"Spravker dance-studio-29 (волна 29.09b)",flag:null},
+{id:"avtoshk",name:"Автошкола на Белинского",cat:"edu",phone:"+77772382781",email:null,site:"нет (Instagram + Taplink-визитка)",src:"vk.com/avtoshk + taplink (волна 29.09b)",flag:null},
+{id:"qfitness",name:"Q Fitness",cat:"fit",phone:"+77018042211",email:"info.qaharmanfit@gmail.com",site:"нет (IG+WA+email; qfitness.kz мёртв)",src:"2GIS firm 70000001038640677 (волна 29.09b)",flag:null},
+{id:"mardin",name:"Mardin Fitness",cat:"fit",phone:"+77072097509",email:null,site:"нет (Instagram)",src:"2GIS firm 70000001023093317 (волна 29.09b)",flag:null},
+{id:"legion",name:"Legion Fitness",cat:"fit",phone:"+77022028008",email:null,site:"нет (IG/VK/FB + WhatsApp)",src:"2GIS firm 70000001023930190 (волна 29.09b)",flag:null},
+{id:"bosstan",name:"BossTangym",cat:"fit",phone:"+77075552277",email:null,site:"нет (IG/WA/Viber/TG)",src:"2GIS firm 70000001065624470 (волна 29.09b)",flag:null},
+{id:"materia",name:"Materia",cat:"fit",phone:"+77012532715",email:null,site:"нет (IG/WA/TG)",src:"2GIS firm 70000001091851902 (волна 29.09b)",flag:null},
+{id:"titan",name:"Titan Fight Club",cat:"fit",phone:"+77071909874",email:null,site:"нет (IG/TikTok/YouTube + WA/TG)",src:"2GIS firm 70000001081076316 (волна 29.09b)",flag:null},
+{id:"cleanhome",name:"Clean home Almaty",cat:"svc",phone:"+77475011980",email:null,site:"нет (IG/WA/TG)",src:"2GIS firm 70000001039029809 (волна 29.09b)",flag:null},
+{id:"dana",name:"DANA",cat:"svc",phone:"+77012457721",email:null,site:"нет (Instagram + WA/TG)",src:"2GIS firm 70000001078616801 (волна 29.09b)",flag:null},
+{id:"minutka",name:"Минутка",cat:"svc",phone:"+77078230776",email:null,site:"нет (только WhatsApp)",src:"2GIS firm 70000001092049192 (волна 29.09b)",flag:null},
+{id:"dreamstudio",name:"Dream Studio",cat:"svc",phone:"+77772147310",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001018593755 (волна 29.09b)",flag:null},
+{id:"oknaplus",name:"Okna Plus",cat:"svc",phone:"+77776024606",email:null,site:"нет (только WA/Viber)",src:"2GIS firm 70000001065617394 (волна 29.09b)",flag:null},
+{id:"starkdet",name:"Stark Detailing",cat:"svc",phone:"+77054000022",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001104242788 (волна 29.09b)",flag:null}
+];
+var OLD = ["+7 775 932 7115","+7 771 161 0642","+7 777 804 4530","+7 701 799 9970","+7 705 555 6784","+7 707 222 0205","Baqytmebel (номера не было в списке)","+7 705 705 1702","+7 700 608 7090","+7 747 993 6019","+7 707 948 6402","+7 702 315 0509"];
+var DEMO = {cafe:"https://bess1lie.github.io/cafe-demo/",barber:"https://bess1lie.github.io/barbershop-demo/",salon:"https://bess1lie.github.io/furniture-demo/",shop:"https://bess1lie.github.io/furniture-demo/",food:"https://bess1lie.github.io/cafe-demo/",med:"https://bess1lie.github.io/furniture-demo/",edu:"https://bess1lie.github.io/furniture-demo/",fit:"https://bess1lie.github.io/furniture-demo/",svc:"https://bess1lie.github.io/furniture-demo/"};
+var PORTF = "https://developer-portfolio-six-theta.vercel.app/";
+var WA_TMPL = {
+cafe:"Здравствуйте! Я делаю сайты для малого бизнеса в Алматы. У {n} нет своего сайта — вечерние заявки могут уходить конкурентам, вот живой пример для кофейни: "+DEMO.cafe+" Если интересно, расскажу подробнее — ни к чему не обязывает.",
+barber:"Здравствуйте! Я делаю сайты для малого бизнеса в Алматы. У {n} нет своего сайта — клиенты пишут вечером и в выходные, а отвечать некому, вот пример для барбершопа: "+DEMO.barber+" Если интересно, расскажу подробнее — ни к чему не обязывает.",
+salon:"Здравствуйте! Я делаю сайты для малого бизнеса в Алматы. У {n} нет своего сайта — запись идёт через звонки и директ, вот пример сайта услуг: "+DEMO.salon+" Если интересно, расскажу подробнее — ни к чему не обязывает.",
+shop:"Здравствуйте! Я делаю сайты для малого бизнеса в Алматы. У {n} нет своего сайта — клиенты находят вас только в справочниках, вот пример сайта услуг: "+DEMO.shop+" Если интересно, расскажу подробнее — ни к чему не обязывает.",
+food:"Здравствуйте! Я делаю сайты для малого бизнеса в Алматы. У {n} нет своего сайта — заказы идут через директ вручную и часть теряется, вот пример: "+DEMO.food+" Если интересно, расскажу подробнее — ни к чему не обязывает.",
+med:"Здравствуйте! Я делаю сайты для малого бизнеса в Алматы. У {n} нет своего сайта — пациенты ищут прайс и свободное время вечером, а отвечать некому, вот пример сайта услуг: "+DEMO.med+" Если интересно, расскажу подробнее — ни к чему не обязывает.",
+edu:"Здравствуйте! Я делаю сайты для малого бизнеса в Алматы. У {n} нет своего сайта — родители ищут программу, цены и пробный урок вечером, вот пример: "+DEMO.edu+" Если интересно, расскажу подробнее — ни к чему не обязывает.",
+fit:"Здравствуйте! Я делаю сайты для малого бизнеса в Алматы. У {n} нет своего сайта — расписание и цены спрашивают в директе по одному, вот пример: "+DEMO.fit+" Если интересно, расскажу подробнее — ни к чему не обязывает.",
+svc:"Здравствуйте! Я делаю сайты для малого бизнеса в Алматы. У {n} нет своего сайта — заявки идут через звонки и мессенджеры вручную, вот пример сайта услуг: "+DEMO.svc+" Если интересно, расскажу подробнее — ни к чему не обязывает."};
+function emailTmpl(r){return "Здравствуйте!\n\nМеня зовут Бесс, я делаю сайты для малого бизнеса в Алматы — лендинги от 69 000 ₸ и AI-админа, который отвечает клиентам и ведёт запись даже ночью (12 000 ₸/мес).\n\nЗаметил, что у "+r.name+" нет своего сайта: заявки обрабатываются вручную, а вечером и в выходные часть теряется. Вот пример: "+DEMO[r.cat]+". Все работы: "+PORTF+"\n\nЕсли актуально — ответьте на письмо или напишите в Telegram: https://t.me/bess1liebot. Ни к чему не обязывает.\n\nС уважением,\nБесс, bess1lie — сайты для малого бизнеса, Алматы\n+7 708 027 80 30";}
+var ST = {unsent:"не отправлено",wa:"отправлено WA",em:"отправлено email",replied:"ответили",refused:"отказ",wrong:"не тот сегмент"};
+var CATN = {cafe:"Кофейня",barber:"Барбершоп",salon:"Салон",shop:"Мастерская",food:"Еда",med:"Мед",edu:"Обучение",fit:"Фитнес",svc:"Услуги"};
+var LS = "cold-leads-v1";
+function load(){ try { var s = JSON.parse(localStorage.getItem(LS)||"{}"); return {st:s.st||{}, custom:s.custom||[], del:s.del||[]}; } catch(e){ return {st:{}, custom:[], del:[]}; } }
+function save(s){ localStorage.setItem(LS, JSON.stringify(s)); }
+var S = load();
+function all(){ return SEED.filter(function(r){return S.del.indexOf(r.id)<0;}).concat(S.custom); }
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function waNum(p){ return String(p).replace(/[^0-9]/g,""); }
+function toast(m){ var t=document.getElementById("toast"); t.textContent=m||"Скопировано"; t.style.display="block"; setTimeout(function(){t.style.display="none";},1600); }
+function copyText(t){ function done(){toast("Скопировано");} function fb(){ var ta=document.createElement("textarea"); ta.value=t; document.body.appendChild(ta); ta.select(); try{document.execCommand("copy");}catch(e){} document.body.removeChild(ta); done(); } if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fb);} else fb(); }
+function stBadge(st){ return '<span class="badge st-'+st+'">'+ST[st]+"</span>"; }
+function render(){
+var fc="", fs=document.getElementById("fstat").value, fh=document.getElementById("fhide").checked;
+var act=document.querySelector("#categoryTabs .tab.active"); if(act)fc=act.getAttribute("data-cat");
+var tb=document.getElementById("rows"); tb.innerHTML="";
+var rows=all(), c={tot:rows.length,wa:0,em:0,rep:0,left:0};
+var shown=0;
+rows.forEach(function(r){
+var st=S.st[r.id]||"unsent";
+if(st==="wa")c.wa++; if(st==="em")c.em++; if(st==="replied")c.rep++; if(st==="unsent")c.left++;
+if(fc&&r.cat!==fc)return; if(fs&&st!==fs)return; if(fh&&st!=="unsent")return;
+shown++;
+var tr=document.createElement("tr");
+var cc={cafe:"badge-coffee",barber:"badge-barber",shop:"badge-shop",food:"badge-food",med:"badge-med",edu:"badge-edu",fit:"badge-fit",svc:"badge-svc"}[r.cat]||"badge-salon";
+var contacts='<a href="tel:'+esc(r.phone)+'">'+esc(r.phone)+'</a><br><a href="https://wa.me/'+waNum(r.phone)+'" target="_blank" rel="noopener">WhatsApp →</a>';
+if(r.email)contacts+='<br><a href="mailto:'+esc(r.email)+'">'+esc(r.email)+"</a>";
+var flag=r.flag?'<br><span class="warn">⚠️ '+esc(r.flag)+"</span>":"";
+var html='<td><div class="business-name"><span class="badge '+cc+'">'+CATN[r.cat]+"</span>"+esc(r.name)+"</div>"+flag+"</td>";
+html+="<td>"+contacts+"</td><td>"+esc(r.site)+"<br><span class='hint'>"+esc(r.src||"ручной ввод")+"</span></td>";
+html+="<td>"+stBadge(st)+"</td>";
+tr.innerHTML=html;
+var tdS=document.createElement("td"); tdS.colSpan=1;
+var sel=document.createElement("select"); sel.className="stsel"; sel.setAttribute("aria-label","Статус "+r.name);
+Object.keys(ST).forEach(function(k){ var o=document.createElement("option"); o.value=k; o.textContent=ST[k]; if(k===st)o.selected=true; sel.appendChild(o); });
+sel.onchange=function(){S.st[r.id]=sel.value; save(S); render();};
+var box=document.createElement("div"); box.className="rowbtns";
+box.appendChild(sel);
+function mkBtn(t,cls,fn){ var b=document.createElement("button"); b.textContent=t; if(cls)b.className=cls; b.onclick=fn; box.appendChild(b); }
+mkBtn("WA-текст",null,function(){copyText(WA_TMPL[r.cat].replace("{n}",r.name));});
+if(r.email)mkBtn("Email-текст","ghost",function(){copyText(emailTmpl(r));});
+mkBtn("Номер","ghost",function(){copyText(r.phone);});
+mkBtn("✕","danger",function(){ if(confirm("Удалить "+r.name+" из таблицы?")){ S.del.push(r.id); S.custom=S.custom.filter(function(x){return x.id!==r.id;}); save(S); render(); } });
+tdS.appendChild(box);
+tr.appendChild(tdS);
+tb.appendChild(tr);
+});
+document.getElementById("emptyState").style.display=shown?"none":"block";
+var emElig=rows.filter(function(r){return r.email;}).length;
+document.getElementById("stats").innerHTML=
+'<div class="stat"><b>'+c.tot+'</b><span>всего</span></div>'+
+'<div class="stat"><b>'+c.wa+'</b><span>отправлено WA</span></div>'+
+'<div class="stat"><b>'+c.em+'</b><span>отправлено email (из '+emElig+')</span></div>'+
+'<div class="stat"><b>'+c.rep+'</b><span>ответили</span></div>'+
+'<div class="stat"><b>'+c.left+'</b><span>осталось</span></div>';
+}
+(function init(){
+var fs=document.getElementById("fstat");
+[["","Все статусы"]].concat(Object.keys(ST).map(function(k){return [k,ST[k]];})).forEach(function(p){ var o=document.createElement("option"); o.value=p[0]; o.textContent=p[1]; fs.appendChild(o); });
+document.querySelector("#categoryTabs").addEventListener("click",function(e){
+var t=e.target.closest?e.target.closest(".tab"):null; if(!t)return;
+document.querySelectorAll("#categoryTabs .tab").forEach(function(x){x.classList.remove("active");});
+t.classList.add("active"); render();});
+fs.onchange=render; document.getElementById("fhide").onchange=render;
+document.getElementById("oldlist").textContent=OLD.join(" · ");
+var ov=document.getElementById("modalOverlay");
+document.getElementById("addbtn").onclick=function(){ov.classList.add("active");};
+document.getElementById("cancelBtn").onclick=function(){ov.classList.remove("active");};
+ov.addEventListener("click",function(e){ if(e.target===ov)ov.classList.remove("active"); });
+document.getElementById("addform").onsubmit=function(e){e.preventDefault();
+function v(id){return document.getElementById(id).value.trim();}
+var r={id:"c"+Date.now(),name:v("n_name"),cat:document.getElementById("n_cat").value,phone:v("n_phone"),email:v("n_email")||null,site:v("n_site"),src:"ручной ввод",flag:null};
+if(!r.name||!r.phone)return; S.custom.push(r); save(S); e.target.reset(); ov.classList.remove("active"); render(); toast("Добавлено");};
+render();
+})();
+</script>
+</body>
+</html>
