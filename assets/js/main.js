@@ -608,13 +608,22 @@
         contact: form.contact.value.trim(),
         interest: form.interest.value,
         description: form.description.value.trim(),
-        website: form.website.value
+        website: form.website.value,
+        consent: form.consent.checked
       };
       if (!data.name || !data.contact) {
         if (hint) {
           hint.classList.remove("is-success");
           hint.classList.add("is-error");
           hint.textContent = "Заполните имя и контакт.";
+        }
+        return;
+      }
+      if (!data.consent) {
+        if (hint) {
+          hint.classList.remove("is-success");
+          hint.classList.add("is-error");
+          hint.textContent = "Отметьте согласие на обработку персональных данных.";
         }
         return;
       }

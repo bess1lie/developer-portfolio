@@ -1814,3 +1814,12 @@ h1, h2, h3, .wordmark { font-family: 'Manrope', 'Tenge Fallback', 'Manrope Fallb
   }
   .btn:hover, .bento-tile:hover, .hero-choice-card:hover { transform: none; }
 }
+
+/* Юридические ссылки в подвале + чекбокс согласия */
+.footer-legal { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 18px; }
+.footer-legal a { font-size: 0.85rem; color: var(--fg-dim); }
+.footer-req { margin-top: 10px; font-size: 0.8rem; color: var(--fg-dim); }
+.consent-check { display: flex; gap: 12px; align-items: flex-start; border: 1px solid var(--line, #e5e0d8); border-radius: 12px; padding: 12px 14px; }
+.consent-check input[type="checkbox"] { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; accent-color: var(--accent); }
+.consent-check span { font-size: 0.85rem; line-height: 1.55; color: var(--fg-dim); }
+.consent-check a { text-decoration: underline; }

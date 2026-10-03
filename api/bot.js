@@ -208,7 +208,7 @@ async function sendStart(chatId) {
   states.delete(chatId);
   await tg("sendMessage", {
     chat_id: chatId,
-    text: "Привет! Мы — команда bess1lie: сайты от 69 000₸, Telegram-боты от 59 000₸, AI-админ 24/7 — 12 000₸/мес.\n\nВыберите, что вас интересует:",
+    text: "Привет! Мы — команда bess1lie: сайты от 69 000₸, Telegram-боты от 59 000₸, AI-админ 24/7 — 12 000₸/мес.\n\nПродолжая диалог, вы соглашаетесь на обработку данных для связи по заявке (в т.ч. передачу через Telegram, серверы могут быть за пределами РК). Подробнее: https://developer-portfolio-six-theta.vercel.app/privacy/\n\nВыберите, что вас интересует:",
     reply_markup: menuKeyboard(),
   });
 }

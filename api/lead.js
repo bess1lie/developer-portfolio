@@ -11,9 +11,15 @@ export default async function handler(req, res) {
   const description = String(body.description || "").trim();
   const interest = String(body.interest || "").trim();
   const website = String(body.website || "").trim(); // honeypot
+  const consent = body.consent === true;
 
   // Honeypot: если бот заполнил скрытое поле — молча "принять", в TG не слать
   if (website) return res.status(200).json({ ok: true });
+
+  // Согласие обязательно (серверная проверка, клиентскую можно обойти)
+  if (!consent) {
+    return res.status(400).json({ ok: false, error: "Необходимо согласие на обработку персональных данных." });
+  }
 
   // Валидация
   if (!name || !contact) {
@@ -40,13 +46,16 @@ export default async function handler(req, res) {
     timeZone: "Asia/Almaty", dateStyle: "short", timeStyle: "short"
   }).format(new Date());
 
+  const POLICY_VERSION = "2026-10-v1";
+
   const text =
     "\u{1F514} Новая заявка с сайта\n" +
     "\u{1F464} Имя: " + name + "\n" +
     "\u{1F4DE} Контакт: " + contact + "\n" +
     "\u{1F3AF} Интерес: " + interestLabel + "\n" +
     "\u{1F4DD} Проект: " + (description || "—") + "\n" +
-    "\u{1F552} Время: " + time;
+    "\u{1F552} Время: " + time + "\n" +
+    "✅ Согласие: да (" + POLICY_VERSION + ")";
 
   try {
     const r = await fetch("https://api.telegram.org/bot" + token + "/sendMessage", {
