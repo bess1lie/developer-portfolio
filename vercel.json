@@ -1,4 +1,10 @@
 {
+  "rewrites": [
+    { "source": "/privacy", "destination": "/privacy.html" },
+    { "source": "/privacy/", "destination": "/privacy.html" },
+    { "source": "/offer", "destination": "/offer.html" },
+    { "source": "/offer/", "destination": "/offer.html" }
+  ],
   "headers": [
     {
       "source": "/",
