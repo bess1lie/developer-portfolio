@@ -1,5 +1,8 @@
 leads/
 system-plan.md
 assets/branding/content/
+# Служебные картинки для мессенджеров: с сайта не ссылаются (проверено grep),
+# из деплоя исключены, чтобы не отдавались публично и не индексировались.
+assets/branding/whatsapp/
 __pycache__/
 *.pyc
