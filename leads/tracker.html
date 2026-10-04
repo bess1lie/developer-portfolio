@@ -108,6 +108,13 @@ details { margin-top:20px; background:var(--card); border:1px solid var(--border
 border-radius:12px; padding:12px 16px; }
 summary { cursor:pointer; font-weight:600; min-height:44px; }
 .empty-state { text-align:center; padding:50px 20px; color:var(--muted); }
+.daybadge { background:rgba(255,77,28,.14); color:#ffb59d; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:600; white-space:nowrap; }
+.msgbtn { background:rgba(120,170,255,.14); color:#9cc2ff; border:none; padding:8px 12px; min-height:40px; font-size:.82rem; border-radius:8px; cursor:pointer; font-weight:600; }
+.msgfull { font-size:.8rem; color:var(--muted); margin-top:8px; max-width:320px; white-space:pre-wrap; }
+.cbtn { background:var(--primary); border:none; color:#fff; font-weight:600; padding:8px 12px; min-height:40px; font-size:.82rem; border-radius:8px; cursor:pointer; }
+.cbtn:hover { background:var(--primary-h); }
+.xbtn { background:transparent; border:1px solid rgba(255,110,110,.4); color:#ff9d9d; padding:8px 10px; min-height:40px; font-size:.82rem; border-radius:8px; cursor:pointer; margin-top:6px; }
+.dayhead td { background:rgba(255,77,28,.07); font-weight:700; font-size:15px; padding:12px 18px; color:#ffb59d; }
 </style>
 </head>
 <body>
@@ -117,7 +124,7 @@ summary { cursor:pointer; font-weight:600; min-height:44px; }
 <div><h1>Трекер холодных контактов</h1><p class="subtitle">Холодные контакты — Алматы · ручная рассылка</p></div>
 <span class="badge-local">Локально · не деплоить</span>
 </div>
-<div class="info-box">Источник: <code>leads/cold-wa-email-2026-09-27.md</code> + <code>leads/cold-wave-2026-09-29.md</code> + <code>leads/cold-wave-2026-09-29b.md</code> (в .vercelignore, в прод не уйдёт)</div>
+<div class="info-box">Источник: <code>leads/cold-wa-email-2026-09-27.md</code> + <code>leads/cold-wave-2026-09-29.md</code> + <code>leads/cold-wave-2026-09-29b.md</code> + <code>leads/send-plan-2026-10.md</code> (в .vercelignore, в прод не уйдёт)</div>
 </header>
 <div class="alert">⚠️ Уже contacted (волна 06–07.08) — не писать повторно. Строки ⚠️ — проверить перед отправкой, похожи на сеть.</div>
 <div class="stats" id="stats"></div>
@@ -135,13 +142,14 @@ summary { cursor:pointer; font-weight:600; min-height:44px; }
 <button class="tab" data-cat="svc">Услуги</button>
 </div>
 <div class="actions">
+<select id="fday" aria-label="День"><option value="">Все дни</option></select>
 <select id="fstat" aria-label="Статус"></select>
 <label class="toggle-label"><input type="checkbox" id="fhide"><span class="toggle-switch"></span>Скрыть отправленные</label>
 <button class="btn-primary" id="addbtn" type="button">+ Добавить контакт</button>
 </div>
 </div>
 <div class="table-container"><div class="table-scroll">
-<table><thead><tr><th>Бизнес</th><th>Контакты</th><th>Сайт / источник</th><th>Статус</th><th>Действия</th></tr></thead>
+<table><thead><tr><th>День</th><th>Бизнес</th><th>Контакты</th><th>Текст</th><th>Копировать</th><th>Статус</th></tr></thead>
 <tbody id="rows"></tbody></table>
 <div id="emptyState" class="empty-state" style="display:none">Ничего не найдено. Измени фильтры.</div>
 </div></div>
@@ -154,6 +162,8 @@ summary { cursor:pointer; font-weight:600; min-height:44px; }
 <div class="form-group"><label>Название</label><input id="n_name" required placeholder="Например: Кофейня Зёрна"></div>
 <div class="form-group"><label>Категория</label><select id="n_cat"><option value="cafe">Кофейня</option><option value="barber">Барбершоп</option><option value="salon">Салон</option><option value="shop">Мастерская</option><option value="food">Еда</option><option value="med">Мед</option><option value="edu">Обучение</option><option value="fit">Фитнес</option><option value="svc">Услуги</option></select></div>
 <div class="form-group"><label>Телефон</label><input id="n_phone" required placeholder="+77XXXXXXXXX"></div>
+<div class="form-group"><label>День</label><select id="n_day"><option value="">—</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select></div>
+<div class="form-group"><label>Текст</label><select id="n_msg"><option value="">по категории</option><option value="base">База</option><option value="beauty">Бьюти</option><option value="flowers">Цветы</option><option value="bakery">Еда</option><option value="fitness">Фитнес</option><option value="kids">Дети</option><option value="cafe">Кафе</option><option value="barber">Барбер</option><option value="shop">Мастерская</option><option value="med">Мед</option><option value="svc">Услуги</option><option value="courses">Курсы</option></select></div>
 <div class="form-group"><label>Email (необязательно)</label><input id="n_email" placeholder="info@..."></div>
 <div class="form-group"><label>Сайт / статус (необязательно)</label><input id="n_site" placeholder="нет (только Instagram ...)"></div>
 <div class="modal-actions">
@@ -166,91 +176,125 @@ summary { cursor:pointer; font-weight:600; min-height:44px; }
 <script>
 "use strict";
 var SEED = [
-{id:"milk",name:"Milk&Honey",cat:"cafe",phone:"+77055556365",email:null,site:"нет (только Instagram milk_honey_almaty)",src:"2GIS firm 70000001112787901",flag:null},
-{id:"mari",name:"Mari central cafe",cat:"cafe",phone:"+77074990665",email:null,site:"нет (только Instagram mari_central_cafe)",src:"2GIS firm 70000001105808213",flag:null},
-{id:"bread",name:"BreadWay",cat:"cafe",phone:"+77772383702",email:"office@breadway.coffee",site:"домен есть, сайта нет (заглушка «Food»)",src:"2GIS firm 70000001111705280",flag:"проверить перед отправкой — похоже на сеть (3+ точки, найм)"},
-{id:"haji",name:"Hajime",cat:"barber",phone:"+77029019994",email:null,site:"нет (Instagram + виджет altegio)",src:"2GIS firm 70000001068902853",flag:"проверить перед отправкой — в карточке «3 филиала»"},
-{id:"city",name:"City Barber",cat:"barber",phone:"+77079480807",email:"citybarber@yandex.kz",site:"нет (Instagram + виджет altegio)",src:"2GIS firm 70000001030850253",flag:null},
-{id:"lion",name:"Lion`s Barbershop",cat:"barber",phone:"+77782155569",email:null,site:"нет (Instagram + виджет altegio)",src:"2GIS firm 70000001063144157",flag:null},
-{id:"inca",name:"Incanto",cat:"salon",phone:"+77071267785",email:null,site:"нет (в карточке только WhatsApp)",src:"2GIS firm 70000001052550085",flag:null},
-{id:"badi",name:"Badi",cat:"salon",phone:"+77019496008",email:"badisalon@mail.ru",site:"нет (Instagram + виджет zapis.kz)",src:"2GIS firm 70000001025141518",flag:null},
-{id:"raspil",name:"РаспилПро",cat:"shop",phone:"+77011073164",email:null,site:"нет (в карточке только WhatsApp)",src:"2GIS firm 70000001106092699 (волна 2)",flag:null},
-{id:"mafia",name:"Mafia Nails",cat:"salon",phone:"+77472436567",email:null,site:"нет (Instagram mafia_nails_almaty)",src:"2GIS firm 70000001045730413 (волна 2)",flag:null},
-{id:"msc",name:"Mebel Service Center",cat:"shop",phone:"+77717610904",email:null,site:"домен есть, сайт мёртв (msc.com.kz недоступен)",src:"2GIS firm 9429940001129178 (волна 2)",flag:null},
-{id:"k3",name:"К3-Beauty",cat:"salon",phone:"+77072306591",email:null,site:"нет (Instagram k3.beautysalon)",src:"2GIS firm 70000001105004432 (волна 2)",flag:null},
-{id:"mebelle",name:"Mebelle",cat:"shop",phone:"+77017755006",email:"almaty3297232@bk.ru",site:"нет (Instagram mebelle_kz)",src:"2GIS firm 70000001040103742 (волна 2)",flag:null},
-{id:"derevo",name:"Дерево Счастья",cat:"shop",phone:"+77017454427",email:"derevo_shyastye@mail.ru",site:"нет (Instagram derevo_shyastye)",src:"2GIS firm 70000001026860889 (волна 2)",flag:null},
-{id:"juma",name:"Juma Service",cat:"shop",phone:"+77026119999",email:null,site:"нет (Instagram jumaservice)",src:"2GIS firm 70000001107501244 (волна 2)",flag:null},
-{id:"onegin",name:"Onegin coffee",cat:"cafe",phone:"+77779013344",email:null,site:"нет (Instagram onegincoffee.kz + WhatsApp)",src:"2GIS firm 70000001048093378 (волна 29.09)",flag:null},
-{id:"dicoffee",name:"DI coffee shop",cat:"cafe",phone:"+77076366673",email:null,site:"нет (только телефон в Zoon)",src:"Zoon DI coffee shop, Муканова 186 (волна 29.09)",flag:null},
-{id:"makecoffee",name:"Make Coffee",cat:"cafe",phone:"+77778144555",email:null,site:"нет (Instagram make_coffeee + WhatsApp)",src:"2GIS firm 70000001098843916 (волна 29.09)",flag:null},
-{id:"sholdeme",name:"Sholdeme",cat:"cafe",phone:"+77760072253",email:null,site:"нет (Instagram sholdeme_coffee + WhatsApp)",src:"2GIS firm 70000001088874541 (волна 29.09)",flag:null},
-{id:"bellini",name:"Bellini",cat:"cafe",phone:"+77778229988",email:null,site:"нет (блока сайта в Zoon нет)",src:"Zoon Bellini, Ауэзова 130 (волна 29.09)",flag:"проверить перед отправкой — карточка 2GIS снята с публикации (410)"},
-{id:"nova",name:"Nova Coffee",cat:"cafe",phone:"+77770099081",email:null,site:"нет (только WhatsApp в 2GIS)",src:"2GIS firm 70000001105311917 (волна 29.09)",flag:null},
-{id:"elcoffee",name:"El Coffee",cat:"cafe",phone:"+77076931207",email:null,site:"нет (блока сайта в Zoon нет)",src:"Zoon El Coffee, Мамыр-1 4 (волна 29.09)",flag:"проверить перед отправкой — возможен 2-й адрес (Абая 109В)"},
-{id:"colombiano",name:"Colombiano Coffee",cat:"cafe",phone:"+77017103630",email:null,site:"нет (Instagram colombiano.coffee)",src:"restoran.kz 97034-colombiano-coffee (волна 29.09)",flag:null},
-{id:"manhatten",name:"Manhatten",cat:"barber",phone:"+77075844287",email:null,site:"нет (Instagram + taplink + altegio-виджет)",src:"2GIS firm 70000001055072918 (волна 29.09)",flag:null},
-{id:"severyug",name:"Север-Юг",cat:"barber",phone:"+77779679762",email:null,site:"нет (Instagram + altegio-виджет)",src:"2GIS firm 70000001051273263 (волна 29.09)",flag:null},
-{id:"franklin",name:"Franklin Barbershop",cat:"barber",phone:"+77081742416",email:null,site:"нет (Instagram + altegio-виджет)",src:"2GIS firm 70000001064708363 (волна 29.09)",flag:null},
-{id:"iron",name:"Iron Barbershop",cat:"barber",phone:"+77000905117",email:null,site:"нет (Instagram + WhatsApp)",src:"Яндекс Карты iron_barbershop (волна 29.09)",flag:null},
-{id:"dofamine",name:"Dofamine",cat:"salon",phone:"+77079641331",email:null,site:"нет (Instagram dofamine.kz + zapis.kz-виджет)",src:"2GIS firm 70000001040450079 (волна 29.09)",flag:null},
-{id:"beautyidea",name:"Beauty idea",cat:"salon",phone:"+77777248870",email:null,site:"нет (Instagram + zapis.kz-виджет)",src:"2GIS firm 70000001037410169 (волна 29.09)",flag:null},
-{id:"starkova",name:"Starkova Express Beauty Studio",cat:"salon",phone:"+77012022400",email:null,site:"нет (Instagram + zapis.kz-виджет)",src:"2GIS firm 70000001061238018 (волна 29.09)",flag:null},
-{id:"lamanicur",name:"la_manicur_almaty",cat:"salon",phone:"+77750782222",email:null,site:"нет (только Instagram + WhatsApp)",src:"2GIS firm 70000001061382206 (волна 29.09)",flag:null},
-{id:"bloombar",name:"Bloombar",cat:"salon",phone:"+77755293884",email:null,site:"нет (Instagram + zapis.kz-виджет)",src:"2GIS firm 70000001029765657 (волна 29.09)",flag:null},
-{id:"ladyart",name:"Lady Art Nails",cat:"salon",phone:"+77021111662",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001063741681 (волна 29.09)",flag:null},
-{id:"allo",name:"Allo",cat:"shop",phone:"+77002512399",email:"abuxolidgo@bk.ru",site:"нет (Instagram allomobile1 + WhatsApp)",src:"2GIS firm 70000001046927941 (волна 29.09)",flag:null},
-{id:"restart",name:"Re-start",cat:"shop",phone:"+77071900021",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001068550042 (волна 29.09)",flag:null},
-{id:"senimservice",name:"Senimservice.kz",cat:"shop",phone:"+77771222257",email:null,site:"домен в названии, но senimservice.kz мёртв",src:"2GIS firm 70000001054245025 (волна 29.09)",flag:null},
-{id:"grosstech",name:"GROSS TECH",cat:"shop",phone:"+77475714747",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001038009772 (волна 29.09)",flag:null},
-{id:"shkaffnur",name:"Shkaffnur",cat:"shop",phone:"+77021314266",email:null,site:"нет (Instagram shkaffnur + WhatsApp/Telegram)",src:"2GIS firm 9429940000925328 (волна 29.09)",flag:null},
-{id:"arnau",name:"Arnau Group",cat:"shop",phone:"+77017356433",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001036979216 (волна 29.09)",flag:null},
-{id:"kyeroom",name:"Kye room",cat:"shop",phone:"+77080810995",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001114693230 (волна 29.09)",flag:null},
-{id:"mokko",name:"Мокко",cat:"food",phone:"+77470381066",email:null,site:"нет (Instagram mokko.bakery + WhatsApp)",src:"2GIS firm 70000001084545639 (волна 29.09b)",flag:null},
-{id:"shokolad",name:"Шоколад",cat:"food",phone:"+77019405055",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001044316967 (волна 29.09b)",flag:null},
-{id:"dompek",name:"Дом",cat:"food",phone:"+77071350005",email:null,site:"нет (только WhatsApp в карточке)",src:"2GIS firm 70000001035200407 (волна 29.09b)",flag:"проверить перед отправкой — Яндекс даёт 2-й номер +7 707 855 3917"},
-{id:"pinkcake",name:"Pinkcake",cat:"food",phone:"+77024089127",email:null,site:"нет (Instagram pinkcake.kz + WhatsApp)",src:"2GIS firm 70000001061107141 (волна 29.09b)",flag:null},
-{id:"arafat",name:"Арафат",cat:"food",phone:"+77024074546",email:null,site:"нет (Instagram + 2 WhatsApp)",src:"2GIS firm 70000001061699244 (волна 29.09b)",flag:null},
-{id:"raflowers",name:"R&A Flowers",cat:"food",phone:"+77056660060",email:null,site:"нет (только Instagram + Facebook)",src:"instagram.com/cvetok_almaty (волна 29.09b)",flag:"проверить перед отправкой — карточки 2GIS нет, только Instagram"},
-{id:"aesthline",name:"Aesthetic line",cat:"med",phone:"+77771189524",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001062341634 (волна 29.09b)",flag:null},
-{id:"kolibri",name:"Колибри",cat:"med",phone:"+77058235015",email:null,site:"нет (Instagram colibri.vet + WhatsApp)",src:"2GIS firm 70000001063947296 (волна 29.09b)",flag:null},
-{id:"inkar",name:"Инкар",cat:"med",phone:"+77476998574",email:null,site:"нет (только WhatsApp, нет даже Instagram)",src:"2GIS firm 70000001075290174 (волна 29.09b)",flag:null},
-{id:"slimfit",name:"Slim fitness massage",cat:"med",phone:"+77473253445",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001061107829 (волна 29.09b)",flag:null},
-{id:"smile",name:"The Smile Dental Clinic",cat:"med",phone:"+77781965088",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001093684209 (волна 29.09b)",flag:null},
-{id:"almdent",name:"Almaty Dental Clinic",cat:"med",phone:"+77005320607",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001106070987 (волна 29.09b)",flag:null},
-{id:"cleverfox",name:"Clever Fox",cat:"edu",phone:"+77027479806",email:null,site:"нет (Instagram + WhatsApp)",src:"Spravker/2GIS 70000001032745311 (волна 29.09b)",flag:null},
-{id:"qutluk",name:"Qutluk Bilim",cat:"edu",phone:"+77013952184",email:null,site:"нет (Instagram + WhatsApp)",src:"Яндекс Карты qutluk_bilim (волна 29.09b)",flag:null},
-{id:"alakai",name:"Алакай",cat:"edu",phone:"+77079007969",email:null,site:"нет (Instagram + WhatsApp)",src:"Яндекс Карты alakay (волна 29.09b)",flag:"проверить перед отправкой — в 2GIS есть тёзка (Аркалык 88/1)"},
-{id:"madidance",name:"Madi Dance",cat:"edu",phone:"+77016900224",email:null,site:"нет (Instagram 26K + WhatsApp)",src:"Zoon Madi Dance (волна 29.09b)",flag:null},
-{id:"ds29",name:"Dance Studio 29",cat:"edu",phone:"+77074853110",email:null,site:"нет (Instagram + WhatsApp)",src:"Spravker dance-studio-29 (волна 29.09b)",flag:null},
-{id:"avtoshk",name:"Автошкола на Белинского",cat:"edu",phone:"+77772382781",email:null,site:"нет (Instagram + Taplink-визитка)",src:"vk.com/avtoshk + taplink (волна 29.09b)",flag:null},
-{id:"qfitness",name:"Q Fitness",cat:"fit",phone:"+77018042211",email:"info.qaharmanfit@gmail.com",site:"нет (IG+WA+email; qfitness.kz мёртв)",src:"2GIS firm 70000001038640677 (волна 29.09b)",flag:null},
-{id:"mardin",name:"Mardin Fitness",cat:"fit",phone:"+77072097509",email:null,site:"нет (Instagram)",src:"2GIS firm 70000001023093317 (волна 29.09b)",flag:null},
-{id:"legion",name:"Legion Fitness",cat:"fit",phone:"+77022028008",email:null,site:"нет (IG/VK/FB + WhatsApp)",src:"2GIS firm 70000001023930190 (волна 29.09b)",flag:null},
-{id:"bosstan",name:"BossTangym",cat:"fit",phone:"+77075552277",email:null,site:"нет (IG/WA/Viber/TG)",src:"2GIS firm 70000001065624470 (волна 29.09b)",flag:null},
-{id:"materia",name:"Materia",cat:"fit",phone:"+77012532715",email:null,site:"нет (IG/WA/TG)",src:"2GIS firm 70000001091851902 (волна 29.09b)",flag:null},
-{id:"titan",name:"Titan Fight Club",cat:"fit",phone:"+77071909874",email:null,site:"нет (IG/TikTok/YouTube + WA/TG)",src:"2GIS firm 70000001081076316 (волна 29.09b)",flag:null},
-{id:"cleanhome",name:"Clean home Almaty",cat:"svc",phone:"+77475011980",email:null,site:"нет (IG/WA/TG)",src:"2GIS firm 70000001039029809 (волна 29.09b)",flag:null},
-{id:"dana",name:"DANA",cat:"svc",phone:"+77012457721",email:null,site:"нет (Instagram + WA/TG)",src:"2GIS firm 70000001078616801 (волна 29.09b)",flag:null},
-{id:"minutka",name:"Минутка",cat:"svc",phone:"+77078230776",email:null,site:"нет (только WhatsApp)",src:"2GIS firm 70000001092049192 (волна 29.09b)",flag:null},
-{id:"dreamstudio",name:"Dream Studio",cat:"svc",phone:"+77772147310",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001018593755 (волна 29.09b)",flag:null},
-{id:"oknaplus",name:"Okna Plus",cat:"svc",phone:"+77776024606",email:null,site:"нет (только WA/Viber)",src:"2GIS firm 70000001065617394 (волна 29.09b)",flag:null},
-{id:"starkdet",name:"Stark Detailing",cat:"svc",phone:"+77054000022",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001104242788 (волна 29.09b)",flag:null}
-];
+{id:"milk",name:"Milk&Honey",cat:"cafe",phone:"+77055556365",email:null,site:"нет (только Instagram milk_honey_almaty)",src:"2GIS firm 70000001112787901",flag:"проверить прозвоном (03.10.2026): номер не подтверждается в источниках",day:7,msg:"cafe"},
+{id:"mari",name:"Mari central cafe",cat:"cafe",phone:"+77074990665",email:null,site:"нет (только Instagram mari_central_cafe)",src:"2GIS firm 70000001105808213",flag:null,day:1,msg:"cafe"},
+{id:"bread",name:"BreadWay",cat:"cafe",phone:"+77772383702",email:"office@breadway.coffee",site:"домен есть, сайта нет (заглушка «Food»)",src:"2GIS firm 70000001111705280",flag:"проверить перед отправкой — похоже на сеть (3+ точки, найм)",day:8,msg:"cafe"},
+{id:"haji",name:"Hajime",cat:"barber",phone:"+77029019994",email:null,site:"нет (Instagram + виджет altegio)",src:"2GIS firm 70000001068902853",flag:"проверить перед отправкой — в карточке «3 филиала»",day:7,msg:"barber"},
+{id:"city",name:"City Barber",cat:"barber",phone:"+77079480807",email:"citybarber@yandex.kz",site:"нет (Instagram + виджет altegio)",src:"2GIS firm 70000001030850253",flag:null,day:1,msg:"barber"},
+{id:"lion",name:"Lion`s Barbershop",cat:"barber",phone:"+77782155569",email:null,site:"нет (Instagram + виджет altegio)",src:"2GIS firm 70000001063144157",flag:null,day:2,msg:"barber"},
+{id:"inca",name:"Incanto",cat:"salon",phone:"+77071267785",email:null,site:"нет (в карточке только WhatsApp)",src:"2GIS firm 70000001052550085",flag:null,day:1,msg:"beauty"},
+{id:"badi",name:"Badi",cat:"salon",phone:"+77019496008",email:"badisalon@mail.ru",site:"нет (Instagram + виджет zapis.kz)",src:"2GIS firm 70000001025141518",flag:null,day:2,msg:"beauty"},
+{id:"raspil",name:"РаспилПро",cat:"shop",phone:"+77011073164",email:null,site:"нет (в карточке только WhatsApp)",src:"2GIS firm 70000001106092699 (волна 2)",flag:null,day:1,msg:"shop"},
+{id:"mafia",name:"Mafia Nails",cat:"salon",phone:"+77472436567",email:null,site:"нет (Instagram mafia_nails_almaty)",src:"2GIS firm 70000001045730413 (волна 2)",flag:null,day:3,msg:"beauty"},
+{id:"msc",name:"Mebel Service Center",cat:"shop",phone:"+77717610904",email:null,site:"домен есть, сайт мёртв (msc.com.kz недоступен)",src:"2GIS firm 9429940001129178 (волна 2)",flag:"проверить прозвоном (03.10.2026): мобильный не виден в 2GIS",day:8,msg:"shop"},
+{id:"k3",name:"К3-Beauty",cat:"salon",phone:"+77072306591",email:null,site:"нет (Instagram k3.beautysalon)",src:"2GIS firm 70000001105004432 (волна 2)",flag:null,day:3,msg:"beauty"},
+{id:"mebelle",name:"Mebelle",cat:"shop",phone:"+77017755006",email:"almaty3297232@bk.ru",site:"нет (Instagram mebelle_kz)",src:"2GIS firm 70000001040103742 (волна 2)",flag:null,day:2,msg:"shop"},
+{id:"derevo",name:"Дерево Счастья",cat:"shop",phone:"+77017454427",email:"derevo_shyastye@mail.ru",site:"нет (Instagram derevo_shyastye)",src:"2GIS firm 70000001026860889 (волна 2)",flag:null,day:3,msg:"shop"},
+{id:"juma",name:"Juma Service",cat:"shop",phone:"+77026119999",email:null,site:"нет (Instagram jumaservice)",src:"2GIS firm 70000001107501244 (волна 2)",flag:null,day:4,msg:"shop"},
+{id:"onegin",name:"Onegin coffee",cat:"cafe",phone:"+77779013344",email:null,site:"нет (Instagram onegincoffee.kz + WhatsApp)",src:"2GIS firm 70000001048093378 (волна 29.09)",flag:null,day:1,msg:"cafe"},
+{id:"dicoffee",name:"DI coffee shop",cat:"cafe",phone:"+77076366673",email:null,site:"нет (только телефон в Zoon)",src:"Zoon DI coffee shop, Муканова 186 (волна 29.09)",flag:"проверить прозвоном (03.10.2026): адрес Муканова 186 не бьётся",day:9,msg:"base"},
+{id:"makecoffee",name:"Make Coffee",cat:"cafe",phone:"+77778144555",email:null,site:"нет (Instagram make_coffeee + WhatsApp)",src:"2GIS firm 70000001098843916 (волна 29.09)",flag:null,day:2,msg:"cafe"},
+{id:"sholdeme",name:"Sholdeme",cat:"cafe",phone:"+77760072253",email:null,site:"нет (Instagram sholdeme_coffee + WhatsApp)",src:"2GIS firm 70000001088874541 (волна 29.09)",flag:null,day:3,msg:"cafe"},
+{id:"bellini",name:"Bellini",cat:"cafe",phone:"+77778229988",email:null,site:"нет (блока сайта в Zoon нет)",src:"Zoon Bellini, Ауэзова 130 (волна 29.09)",flag:"проверить прозвоном (03.10.2026): Zoon активен, тел. совпадает, 2GIS-карточка была недоступна; Яндекс 03.10 показывает «закрыто» по другому адресу — конфликт, только прозвон",day:10,msg:"cafe"},
+{id:"nova",name:"Nova Coffee",cat:"cafe",phone:"+77770099081",email:null,site:"нет (только WhatsApp в 2GIS)",src:"2GIS firm 70000001105311917 (волна 29.09)",flag:null,day:4,msg:"cafe"},
+{id:"elcoffee",name:"El Coffee",cat:"cafe",phone:"+77076931207",email:null,site:"нет (блока сайта в Zoon нет)",src:"Zoon El Coffee, Мамыр-1 4 (волна 29.09)",flag:"проверить прозвоном (03.10.2026): Zoon активен, тел. совпадает, есть 2-й адрес Абая 109В)",day:10,msg:"cafe"},
+{id:"colombiano",name:"Colombiano Coffee",cat:"cafe",phone:"+77017103630",email:null,site:"нет (Instagram colombiano.coffee)",src:"restoran.kz 97034-colombiano-coffee (волна 29.09)",flag:null,day:5,msg:"cafe"},
+{id:"manhatten",name:"Manhatten",cat:"barber",phone:"+77075844287",email:null,site:"нет (Instagram + taplink + altegio-виджет)",src:"2GIS firm 70000001055072918 (волна 29.09)",flag:null,day:2,msg:"barber"},
+{id:"severyug",name:"Север-Юг",cat:"barber",phone:"+77779679762",email:null,site:"нет (Instagram + altegio-виджет)",src:"2GIS firm 70000001051273263 (волна 29.09)",flag:null,day:3,msg:"barber"},
+{id:"franklin",name:"Franklin Barbershop",cat:"barber",phone:"+77081742416",email:null,site:"нет (Instagram + altegio-виджет)",src:"2GIS firm 70000001064708363 (волна 29.09)",flag:null,day:4,msg:"barber"},
+{id:"iron",name:"Iron Barbershop",cat:"barber",phone:"+77000905117",email:null,site:"нет (Instagram + WhatsApp)",src:"Яндекс Карты iron_barbershop (волна 29.09)",flag:null,day:5,msg:"barber"},
+{id:"dofamine",name:"Dofamine",cat:"salon",phone:"+77079641331",email:null,site:"нет (Instagram dofamine.kz + zapis.kz-виджет)",src:"2GIS firm 70000001040450079 (волна 29.09)",flag:null,day:4,msg:"beauty"},
+{id:"beautyidea",name:"Beauty idea",cat:"salon",phone:"+77777248870",email:null,site:"нет (Instagram + zapis.kz-виджет)",src:"2GIS firm 70000001037410169 (волна 29.09)",flag:null,day:5,msg:"beauty"},
+{id:"starkova",name:"Starkova Express Beauty Studio",cat:"salon",phone:"+77012022400",email:null,site:"нет (Instagram + zapis.kz-виджет)",src:"2GIS firm 70000001061238018 (волна 29.09)",flag:null,day:5,msg:"beauty"},
+{id:"lamanicur",name:"la_manicur_almaty",cat:"salon",phone:"+77750782222",email:null,site:"нет (только Instagram + WhatsApp)",src:"2GIS firm 70000001061382206 (волна 29.09)",flag:null,day:6,msg:"beauty"},
+{id:"bloombar",name:"Bloombar",cat:"salon",phone:"+77755293884",email:null,site:"нет (Instagram + zapis.kz-виджет)",src:"2GIS firm 70000001029765657 (волна 29.09)",flag:null,day:6,msg:"beauty"},
+{id:"ladyart",name:"Lady Art Nails",cat:"salon",phone:"+77021111662",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001063741681 (волна 29.09)",flag:null,day:6,msg:"beauty"},
+{id:"allo",name:"Allo",cat:"shop",phone:"+77002512399",email:"abuxolidgo@bk.ru",site:"нет (Instagram allomobile1 + WhatsApp)",src:"2GIS firm 70000001046927941 (волна 29.09)",flag:null,day:4,msg:"shop"},
+{id:"restart",name:"Re-start",cat:"shop",phone:"+77071900021",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001068550042 (волна 29.09)",flag:"проверить прозвоном (03.10.2026): есть тёзка restartalmaty.kz с чужим номером",day:8,msg:"shop"},
+{id:"senimservice",name:"Senimservice.kz",cat:"shop",phone:"+77771222257",email:null,site:"домен в названии, но senimservice.kz мёртв",src:"2GIS firm 70000001054245025 (волна 29.09)",flag:null,day:5,msg:"shop"},
+{id:"grosstech",name:"GROSS TECH",cat:"shop",phone:"+77475714747",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001038009772 (волна 29.09)",flag:null,day:5,msg:"shop"},
+{id:"shkaffnur",name:"Shkaffnur",cat:"shop",phone:"+77021314266",email:null,site:"нет (Instagram shkaffnur + WhatsApp/Telegram)",src:"2GIS firm 9429940000925328 (волна 29.09)",flag:null,day:6,msg:"shop"},
+{id:"kyeroom",name:"Kye room",cat:"shop",phone:"+77080810995",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001114693230 (волна 29.09)",flag:null,day:6,msg:"shop"},
+{id:"mokko",name:"Мокко",cat:"food",phone:"+77470381066",email:null,site:"нет (Instagram mokko.bakery + WhatsApp)",src:"2GIS firm 70000001084545639 (волна 29.09b)",flag:null,day:1,msg:"bakery"},
+{id:"shokolad",name:"Шоколад",cat:"food",phone:"+77019405055",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001044316967 (волна 29.09b)",flag:null,day:2,msg:"bakery"},
+{id:"dompek",name:"Дом",cat:"food",phone:"+77071350005",email:null,site:"нет (только WhatsApp в карточке)",src:"2GIS firm 70000001035200407 (волна 29.09b)",flag:"проверить перед отправкой — Яндекс даёт 2-й номер +7 707 855 3917",day:8,msg:"base"},
+{id:"pinkcake",name:"Pinkcake",cat:"food",phone:"+77024089127",email:null,site:"нет (Instagram pinkcake.kz + WhatsApp; домен pinkcake.kz мёртв)",src:"2GIS firm 70000001061107141 (волна 29.09b)",flag:"проверить прозвоном (03.10.2026): домен мёртв, номер без следов",day:8,msg:"bakery"},
+{id:"arafat",name:"Арафат",cat:"food",phone:"+77024074546",email:null,site:"нет (Instagram + 2 WhatsApp)",src:"2GIS firm 70000001061699244 (волна 29.09b)",flag:null,day:3,msg:"bakery"},
+{id:"raflowers",name:"R&A Flowers",cat:"food",phone:"+77056660060",email:null,site:"нет (только Instagram + Facebook)",src:"instagram.com/cvetok_almaty (волна 29.09b)",flag:"проверить перед отправкой — карточки 2GIS нет, только Instagram",day:9,msg:"flowers"},
+{id:"aesthline",name:"Aesthetic line",cat:"med",phone:"+77771189524",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001062341634 (волна 29.09b)",flag:null,day:1,msg:"med"},
+{id:"kolibri",name:"Колибри",cat:"med",phone:"+77058235015",email:null,site:"нет (Instagram colibri.vet + WhatsApp)",src:"2GIS firm 70000001063947296 (волна 29.09b)",flag:null,day:2,msg:"med"},
+{id:"slimfit",name:"Slim fitness massage",cat:"med",phone:"+77473253445",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001061107829 (волна 29.09b)",flag:null,day:3,msg:"med"},
+{id:"smile",name:"The Smile Dental Clinic",cat:"med",phone:"+77781965088",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001093684209 (волна 29.09b)",flag:null,day:4,msg:"med"},
+{id:"almdent",name:"Almaty Dental Clinic",cat:"med",phone:"+77005320607",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001106070987 (волна 29.09b)",flag:"проверить прозвоном (03.10.2026): связь с найденными тёзками не доказана",day:8,msg:"base"},
+{id:"cleverfox",name:"Clever Fox",cat:"edu",phone:"+77027479806",email:null,site:"нет (Instagram + WhatsApp)",src:"Spravker/2GIS 70000001032745311 (волна 29.09b)",flag:null,day:1,msg:"kids"},
+{id:"qutluk",name:"Qutluk Bilim",cat:"edu",phone:"+77013952184",email:null,site:"нет (Instagram + WhatsApp)",src:"Яндекс Карты qutluk_bilim (волна 29.09b)",flag:null,day:2,msg:"kids"},
+{id:"alakai",name:"Алакай",cat:"edu",phone:"+77079007969",email:null,site:"нет (Instagram + WhatsApp)",src:"Яндекс Карты alakay (волна 29.09b)",flag:"проверить перед отправкой — в 2GIS есть тёзка (Аркалык 88/1)",day:8,msg:"kids"},
+{id:"madidance",name:"Madi Dance",cat:"edu",phone:"+77016900224",email:null,site:"нет (Instagram 26K + WhatsApp)",src:"Zoon Madi Dance (волна 29.09b)",flag:"проверить прозвоном (03.10.2026): в Яндексе другой номер",day:9,msg:"fitness"},
+{id:"ds29",name:"Dance Studio 29",cat:"edu",phone:"+77074853110",email:null,site:"нет (Instagram + WhatsApp)",src:"Spravker dance-studio-29 (волна 29.09b)",flag:null,day:3,msg:"fitness"},
+{id:"avtoshk",name:"Автошкола на Белинского",cat:"edu",phone:"+77772382781",email:null,site:"нет (Instagram + Taplink-визитка)",src:"vk.com/avtoshk + taplink (волна 29.09b)",flag:null,day:4,msg:"courses"},
+{id:"qfitness",name:"Q Fitness",cat:"fit",phone:"+77018042211",email:"info.qaharmanfit@gmail.com",site:"нет (IG+WA+email; qfitness.kz мёртв)",src:"2GIS firm 70000001038640677 (волна 29.09b)",flag:null,day:1,msg:"fitness"},
+{id:"mardin",name:"Mardin Fitness",cat:"fit",phone:"+77072097509",email:null,site:"нет (Instagram)",src:"2GIS firm 70000001023093317 (волна 29.09b)",flag:null,day:2,msg:"fitness"},
+{id:"legion",name:"Legion Fitness",cat:"fit",phone:"+77022028008",email:null,site:"нет (IG/VK/FB + WhatsApp)",src:"2GIS firm 70000001023930190 (волна 29.09b)",flag:null,day:3,msg:"fitness"},
+{id:"bosstan",name:"BossTangym",cat:"fit",phone:"+77075552277",email:null,site:"нет (IG/WA/Viber/TG)",src:"2GIS firm 70000001065624470 (волна 29.09b)",flag:null,day:4,msg:"fitness"},
+{id:"materia",name:"Materia",cat:"fit",phone:"+77012532715",email:null,site:"нет (IG/WA/TG)",src:"2GIS firm 70000001091851902 (волна 29.09b)",flag:null,day:5,msg:"fitness"},
+{id:"titan",name:"Titan Fight Club",cat:"fit",phone:"+77071909874",email:null,site:"нет (IG/TikTok/YouTube + WA/TG)",src:"2GIS firm 70000001081076316 (волна 29.09b)",flag:null,day:5,msg:"fitness"},
+{id:"cleanhome",name:"Clean home Almaty",cat:"svc",phone:"+77475011980",email:null,site:"нет (IG/WA/TG)",src:"2GIS firm 70000001039029809 (волна 29.09b)",flag:"проверить прозвоном (03.10.2026): есть похожий cleaninghome.kz",day:8,msg:"svc"},
+{id:"dana",name:"DANA",cat:"svc",phone:"+77012457721",email:null,site:"нет (Instagram + WA/TG)",src:"2GIS firm 70000001078616801 (волна 29.09b)",flag:"проверить прозвоном (03.10.2026): несколько тёзок Dana, номера расходятся",day:9,msg:"base"},
+{id:"minutka",name:"Минутка",cat:"svc",phone:"+77078230776",email:null,site:"нет (только WhatsApp)",src:"2GIS firm 70000001092049192 (волна 29.09b)",flag:"проверить прозвоном (03.10.2026): название generic, следов нет",day:9,msg:"base"},
+{id:"dreamstudio",name:"Dream Studio",cat:"svc",phone:"+77772147310",email:null,site:"нет (Instagram + WhatsApp)",src:"2GIS firm 70000001018593755 (волна 29.09b)",flag:"проверить прозвоном (03.10.2026): несколько тёзок Dream, номера расходятся",day:10,msg:"base"},
+{id:"sholpy",name:"Шолпы",cat:"salon",phone:"+77714114733",email:null,site:"нет (Instagram sholpy_san_salony + zapis.kz)",src:"2GIS firm 70000001110075347 (добавлен 03.10)",flag:null,day:6,msg:"beauty"},
+{id:"botaeye",name:"Bota Eyebrows",cat:"salon",phone:"+77025006262",email:null,site:"нет (Instagram + taplink, не путать с botabeautysalon.kz)",src:"2GIS firm 70000001025515397 (добавлен 03.10)",flag:null,day:6,msg:"beauty"},
+{id:"dili",name:"Dili",cat:"salon",phone:"+77079342186",email:null,site:"нет (Instagram dili_beauty_salon + Dikidi-виджет)",src:"2GIS firm 70000001029247107 (добавлен 03.10)",flag:null,day:7,msg:"beauty"},
+{id:"prima",name:"Prima Beauty Lab",cat:"salon",phone:"+77078333114",email:null,site:"нет (Instagram prima.beauty.lab + WhatsApp)",src:"2GIS firm 70000001057058773 (добавлен 03.10)",flag:null,day:7,msg:"beauty"},
+{id:"cosmo",name:"Cosmo Beauty",cat:"salon",phone:"+77066026034",email:null,site:"нет (Instagram cosmo_beauty_salon_ + zapis.kz)",src:"zapis.kz/salon/9624 (добавлен 03.10)",flag:null,day:7,msg:"beauty"},
+{id:"cozylab",name:"Cozy lab",cat:"salon",phone:"+77471969692",email:null,site:"нет (Instagram + zapis.kz, 3 филиала)",src:"2GIS (добавлен 03.10)",flag:null,day:7,msg:"beauty"},
+{id:"london",name:"London beauty",cat:"salon",phone:"+77077607273",email:null,site:"нет (Instagram londonbeauty_kz)",src:"Instagram (добавлен 03.10)",flag:"проверить при звонке: 2 адреса (Кабанбай батыра 71 vs Гагарина 309)",day:8,msg:"beauty"},
+{id:"mylove",name:"My love",cat:"salon",phone:"+77012082281",email:null,site:"нет (Instagram + zapis.kz)",src:"zapis.kz/salon/my-love-14761 (добавлен 03.10)",flag:"проверить: рейтинги расходятся (zapis 10 vs 2GIS 277)",day:9,msg:"beauty"},
+{id:"aitikids",name:"Aitikids",cat:"salon",phone:"+77009345464",email:null,site:"нет (Instagram aitikids_almaty + Altegio)",src:"2GIS firm 70000001089496562 (добавлен 03.10)",flag:null,day:7,msg:"kids"},
+{id:"pricheskin",name:"Прическин",cat:"salon",phone:"+77003032727",email:null,site:"нет (Instagram pricheskin_almaty)",src:"2GIS firm 70000001044057668 (добавлен 03.10)",flag:null,day:7,msg:"kids"},
+{id:"kidsstudio",name:"Kids studio",cat:"salon",phone:"+77478659507",email:null,site:"нет (Instagram kidsstudio.kz)",src:"2GIS firm 70000001094762519 (добавлен 03.10)",flag:"низкий приоритет: 4.0, 64 оценки",day:9,msg:"kids"},
+{id:"shynar",name:"Shynar_Vizazh",cat:"salon",phone:"+77781945556",email:null,site:"нет (Instagram shynarvizazh_studio)",src:"2GIS firm 70000001081883565 (добавлен 03.10)",flag:null,day:7,msg:"beauty"},
+{id:"rasmetova",name:"Rasmetova beauty",cat:"salon",phone:"+77756376737",email:null,site:"нет (Instagram rasmetova_beauty)",src:"2GIS firm 70000001060127335 (добавлен 03.10)",flag:null,day:7,msg:"beauty"},
+{id:"magicfl",name:"Magic Flowers",cat:"food",phone:"+77009516802",email:null,site:"нет (Instagram magicflowers.almaty)",src:"2GIS (добавлен 03.10)",flag:null,day:4,msg:"flowers"},
+{id:"ambre",name:"AMBRE flowers",cat:"food",phone:"+77089357439",email:null,site:"нет (Instagram ambre_flowers_almaty)",src:"2GIS (добавлен 03.10)",flag:"проверить прозвоном: номер частично скрыт в 2GIS",day:10,msg:"flowers"},
+{id:"chicfl",name:"Chic Flowers",cat:"food",phone:"+77768889887",email:null,site:"нет (Instagram chicflowers.almaty)",src:"2GIS (добавлен 03.10)",flag:"проверить прозвоном: номер частично скрыт в 2GIS",day:10,msg:"flowers"},
+{id:"caelum",name:"Caelum Flowers",cat:"food",phone:"+77020412928",email:null,site:"нет (Instagram caelum.flowers)",src:"2GIS (добавлен 03.10)",flag:"проверить прозвоном: номер частично скрыт в 2GIS",day:10,msg:"flowers"},
+{id:"bentoday",name:"Bentoday",cat:"food",phone:"+77767553188",email:null,site:"нет (Instagram bentoday.almaty)",src:"2GIS (добавлен 03.10)",flag:"проверить прозвоном: номер частично скрыт в 2GIS",day:10,msg:"bakery"},
+{id:"dolcetto",name:"Dolcetto",cat:"food",phone:"+77773195225",email:null,site:"нет (Instagram dolcetto_ala)",src:"2GIS (добавлен 03.10)",flag:"проверить прозвоном: номер частично скрыт в 2GIS",day:10,msg:"bakery"},
+{id:"lavla",name:"Lavla",cat:"cafe",phone:"+77023770545",email:null,site:"нет (Instagram lavla.almaty)",src:"2GIS firm 70000001060420607 (добавлен 03.10)",flag:"проверить прозвоном: номер частично скрыт в 2GIS",day:10,msg:"cafe"},
+{id:"elastic",name:"Elastic Stretch Studio",cat:"fit",phone:"+77055944291",email:null,site:"нет (Instagram elastic.stretch)",src:"2GIS firm 70000001065088390 (добавлен 03.10)",flag:null,day:6,msg:"fitness"},
+{id:"exodom",name:"EXO.DOM pole studio",cat:"fit",phone:"+77772317221",email:null,site:"нет (Instagram exodom_dance)",src:"2GIS firm 70000001022375441 (добавлен 03.10)",flag:null,day:6,msg:"fitness"},
+{id:"barre",name:"Barre fit & stretch",cat:"fit",phone:"+77053024472",email:null,site:"нет (Instagram barre_almaty)",src:"2GIS firm 70000001039584816 (добавлен 03.10)",flag:null,day:6,msg:"fitness"},
+{id:"indira",name:"Indira Fit Women\u0027s Studio",cat:"fit",phone:"87005707085",email:null,site:"нет (Instagram)",src:"2GIS firm 70000001095215346 (добавлен 03.10)",flag:"проверить: в 2GIS +77005007085, за городом (Жана Куат)",day:8,msg:"fitness"},
+{id:"olala",name:"Olala Dance Studio",cat:"edu",phone:"+77772415353",email:null,site:"нет (Instagram olaladancestudio)",src:"2GIS firm 9429940000789142 (добавлен 03.10)",flag:null,day:4,msg:"fitness"},
+{id:"hola",name:"HOLA DANCE",cat:"edu",phone:"+77474650746",email:null,site:"нет (Instagram hola_dance)",src:"2GIS firm 70000001061262500 (добавлен 03.10)",flag:"проверить: в 2GIS другие номера",day:9,msg:"fitness"},
+{id:"lpgdiet",name:"lpg_diet",cat:"med",phone:"+77071827759",email:null,site:"нет (только Instagram lpg_diet_almaty)",src:"Instagram (добавлен 03.10)",flag:"только Instagram, нет в 2GIS",day:9,msg:"med"},
+{id:"inochi",name:"Inochi SPA",cat:"med",phone:"+77071629896",email:null,site:"нет (Instagram inochi_spa_salon)",src:"Instagram (добавлен 03.10)",flag:"проверить: 2GIS-карточка удалена, у агрегаторов другой номер",day:9,msg:"med"},
+{id:"altynine",name:"Алтын Ине",cat:"edu",phone:"+77784511925",email:null,site:"нет (Instagram altyninealmaty)",src:"2GIS firm 70000001035764676 (добавлен 03.10)",flag:null,day:5,msg:"courses"},
+{id:"tados",name:"Tados",cat:"edu",phone:"+77013687370",email:null,site:"нет (Instagram kursy_tatiany_kairkenovny)",src:"2GIS firm 70000001029055241 (добавлен 03.10)",flag:null,day:5,msg:"courses"},
+{id:"talents",name:"Talents Space",cat:"svc",phone:"+77075170017",email:null,site:"нет (Instagram talents.space.almaty)",src:"2GIS firm 70000001046984026 (добавлен 03.10)",flag:null,day:1,msg:"svc"},
+{id:"workspace",name:"WorkSpace 727",cat:"svc",phone:"+77477273030",email:null,site:"нет (Instagram coworking727)",src:"2GIS firm 70000001042615977 (добавлен 03.10)",flag:null,day:2,msg:"svc"},
+{id:"oknaplus",name:"Okna Plus",cat:"svc",phone:"+77776024606",email:null,site:"нет (только WA/Viber)",src:"2GIS firm 70000001065617394 (волна 29.09b)",flag:null,day:3,msg:"svc"}];
 var OLD = ["+7 775 932 7115","+7 771 161 0642","+7 777 804 4530","+7 701 799 9970","+7 705 555 6784","+7 707 222 0205","Baqytmebel (номера не было в списке)","+7 705 705 1702","+7 700 608 7090","+7 747 993 6019","+7 707 948 6402","+7 702 315 0509"];
 var DEMO = {cafe:"https://bess1lie.github.io/cafe-demo/",barber:"https://bess1lie.github.io/barbershop-demo/",salon:"https://bess1lie.github.io/furniture-demo/",shop:"https://bess1lie.github.io/furniture-demo/",food:"https://bess1lie.github.io/cafe-demo/",med:"https://bess1lie.github.io/furniture-demo/",edu:"https://bess1lie.github.io/furniture-demo/",fit:"https://bess1lie.github.io/furniture-demo/",svc:"https://bess1lie.github.io/furniture-demo/"};
 var PORTF = "https://developer-portfolio-six-theta.vercel.app/";
-var WA_TMPL = {
-cafe:"Здравствуйте! Я делаю сайты для малого бизнеса в Алматы. У {n} нет своего сайта — вечерние заявки могут уходить конкурентам, вот живой пример для кофейни: "+DEMO.cafe+" Если интересно, расскажу подробнее — ни к чему не обязывает.",
-barber:"Здравствуйте! Я делаю сайты для малого бизнеса в Алматы. У {n} нет своего сайта — клиенты пишут вечером и в выходные, а отвечать некому, вот пример для барбершопа: "+DEMO.barber+" Если интересно, расскажу подробнее — ни к чему не обязывает.",
-salon:"Здравствуйте! Я делаю сайты для малого бизнеса в Алматы. У {n} нет своего сайта — запись идёт через звонки и директ, вот пример сайта услуг: "+DEMO.salon+" Если интересно, расскажу подробнее — ни к чему не обязывает.",
-shop:"Здравствуйте! Я делаю сайты для малого бизнеса в Алматы. У {n} нет своего сайта — клиенты находят вас только в справочниках, вот пример сайта услуг: "+DEMO.shop+" Если интересно, расскажу подробнее — ни к чему не обязывает.",
-food:"Здравствуйте! Я делаю сайты для малого бизнеса в Алматы. У {n} нет своего сайта — заказы идут через директ вручную и часть теряется, вот пример: "+DEMO.food+" Если интересно, расскажу подробнее — ни к чему не обязывает.",
-med:"Здравствуйте! Я делаю сайты для малого бизнеса в Алматы. У {n} нет своего сайта — пациенты ищут прайс и свободное время вечером, а отвечать некому, вот пример сайта услуг: "+DEMO.med+" Если интересно, расскажу подробнее — ни к чему не обязывает.",
-edu:"Здравствуйте! Я делаю сайты для малого бизнеса в Алматы. У {n} нет своего сайта — родители ищут программу, цены и пробный урок вечером, вот пример: "+DEMO.edu+" Если интересно, расскажу подробнее — ни к чему не обязывает.",
-fit:"Здравствуйте! Я делаю сайты для малого бизнеса в Алматы. У {n} нет своего сайта — расписание и цены спрашивают в директе по одному, вот пример: "+DEMO.fit+" Если интересно, расскажу подробнее — ни к чему не обязывает.",
-svc:"Здравствуйте! Я делаю сайты для малого бизнеса в Алматы. У {n} нет своего сайта — заявки идут через звонки и мессенджеры вручную, вот пример сайта услуг: "+DEMO.svc+" Если интересно, расскажу подробнее — ни к чему не обязывает."};
-function emailTmpl(r){return "Здравствуйте!\n\nМеня зовут Бесс, я делаю сайты для малого бизнеса в Алматы — лендинги от 69 000 ₸ и AI-админа, который отвечает клиентам и ведёт запись даже ночью (12 000 ₸/мес).\n\nЗаметил, что у "+r.name+" нет своего сайта: заявки обрабатываются вручную, а вечером и в выходные часть теряется. Вот пример: "+DEMO[r.cat]+". Все работы: "+PORTF+"\n\nЕсли актуально — ответьте на письмо или напишите в Telegram: https://t.me/bess1liebot. Ни к чему не обязывает.\n\nС уважением,\nБесс, bess1lie — сайты для малого бизнеса, Алматы\n+7 708 027 80 30";}
+var MSGS = {
+ "base": "Здравствуйте. Меня зовут Даниил, я из команды Bess1lie. Мы делаем сайты и боты для малого бизнеса. Обычно к нам приходят, когда заявки идут через директ и часть теряется — вечером ответить некому, утром клиент уже у конкурентов. Буду благодарен, если передадите это сообщение владельцу или тому, кто у вас решает такие вещи. Наш сайт и цены — в описании контакта, там же примеры работ.",
+ "beauty": "Добрый день. Меня зовут Даниил, я из команды Bess1lie. Для салонов делаем красивые сайты — клиенты видят ваши работы, прайс и записываются, заявки не теряются. Доверия к вам сразу больше. Передайте, пожалуйста, владельцу. Наш сайт и цены — в описании контакта.",
+ "flowers": "Здравствуйте. Меня зовут Даниил, я из команды Bess1lie. Для цветочных делаем красивые сайты — клиент выбирает букет, видит примерную стоимость и ваши контакты. Удобно и вам, и покупателю. Передайте, пожалуйста, тому, кто у вас решает. Наш сайт и цены — в описании контакта.",
+ "bakery": "Здравствуйте. Меня зовут Даниил, я из команды Bess1lie. Для пекарен и кондитерских делаем сайты — каталог, цены и контакты. Покупателю удобно выбрать, вам меньше вопросов в директе. Передайте, пожалуйста, владельцу. Наш сайт и цены — в описании контакта.",
+ "fitness": "Добрый день. Меня зовут Даниил, я из команды Bess1lie. Для студий делаем сайты с расписанием, ценами и записью на пробное — человеку удобно посмотреть и записаться, вам меньше однотипных вопросов в директе. Передайте, пожалуйста, владельцу. Наш сайт и цены — в описании контакта.",
+ "kids": "Здравствуйте. Меня зовут Даниил, я из команды Bess1lie. Для детских студий делаем сайты — программы, цены и контакты в одном месте. Мамам удобно посмотреть вечером и записаться. Передайте, пожалуйста, тому, кто у вас решает. Наш сайт и цены — в описании контакта.",
+ "cafe": "Здравствуйте. Меня зовут Даниил, я из команды Bess1lie. Для кафе делаем сайты с меню, ценами и контактами — гость все видит сам и не пишет по мелочам. Передайте, пожалуйста, владельцу. Наш сайт и цены — в описании контакта.",
+ "barber": "Добрый день. Меня зовут Даниил, я из команды Bess1lie. Для барбершопов делаем сайты — мастера, прайс и запись в одном месте. Клиент видит все сам и записывается, администратору меньше звонков. Передайте, пожалуйста, владельцу. Наш сайт и цены — в описании контакта.",
+ "shop": "Здравствуйте. Меня зовут Даниил, я из команды Bess1lie. Для мастерских делаем сайты-каталоги — ваши работы, цены и контакты. Клиент смотрит и приходит уже с пониманием, что хочет. Передайте, пожалуйста, тому, кто у вас решает. Наш сайт и цены — в описании контакта.",
+ "med": "Добрый день. Меня зовут Даниил, я из команды Bess1lie. Для клиник делаем сайты — услуги, врачи, цены и запись. Пациентам удобно найти все самим, вам меньше звонков по мелочам. Передайте, пожалуйста, владельцу. Наш сайт и цены — в описании контакта.",
+ "svc": "Здравствуйте. Меня зовут Даниил, я из команды Bess1lie. Для услуг делаем сайты — что делаете, сколько стоит и как связаться. Клиент все видит сам, заявки приходят понятнее. Передайте, пожалуйста, тому, кто у вас решает. Наш сайт и цены — в описании контакта.",
+ "courses": "Добрый день. Меня зовут Даниил, я из команды Bess1lie. Для учебных центров делаем сайты — программы, расписание, цены и запись. Ученики все находят сами. Передайте, пожалуйста, тому, кто у вас решает. Наш сайт и цены — в описании контакта."
+};
+var MSGN = {"base": "База", "beauty": "Бьюти", "flowers": "Цветы", "bakery": "Еда", "fitness": "Фитнес", "kids": "Дети", "cafe": "Кафе", "barber": "Барбер", "shop": "Мастерская", "med": "Мед", "svc": "Услуги", "courses": "Курсы"};
+var MSGCAT = {"cafe": "cafe", "barber": "barber", "salon": "beauty", "shop": "shop", "food": "bakery", "med": "med", "edu": "courses", "fit": "fitness", "svc": "svc"};
+function emailTmpl_unused(r){return "Здравствуйте!\n\nМеня зовут Бесс, я делаю сайты для малого бизнеса в Алматы — лендинги от 69 000 ₸ и AI-админа, который отвечает клиентам и ведёт запись даже ночью (12 000 ₸/мес).\n\nЗаметил, что у "+r.name+" нет своего сайта: заявки обрабатываются вручную, а вечером и в выходные часть теряется. Вот пример: "+DEMO[r.cat]+". Все работы: "+PORTF+"\n\nЕсли актуально — ответьте на письмо или напишите в Telegram: https://t.me/bess1liebot. Ни к чему не обязывает.\n\nС уважением,\nБесс, bess1lie — сайты для малого бизнеса, Алматы\n+7 708 027 80 30";}
 var ST = {unsent:"не отправлено",wa:"отправлено WA",em:"отправлено email",replied:"ответили",refused:"отказ",wrong:"не тот сегмент"};
 var CATN = {cafe:"Кофейня",barber:"Барбершоп",salon:"Салон",shop:"Мастерская",food:"Еда",med:"Мед",edu:"Обучение",fit:"Фитнес",svc:"Услуги"};
 var LS = "cold-leads-v1";
@@ -263,39 +307,46 @@ function waNum(p){ return String(p).replace(/[^0-9]/g,""); }
 function toast(m){ var t=document.getElementById("toast"); t.textContent=m||"Скопировано"; t.style.display="block"; setTimeout(function(){t.style.display="none";},1600); }
 function copyText(t){ function done(){toast("Скопировано");} function fb(){ var ta=document.createElement("textarea"); ta.value=t; document.body.appendChild(ta); ta.select(); try{document.execCommand("copy");}catch(e){} document.body.removeChild(ta); done(); } if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fb);} else fb(); }
 function stBadge(st){ return '<span class="badge st-'+st+'">'+ST[st]+"</span>"; }
+function msgOf(r){ return r.msg || MSGCAT[r.cat] || "base"; }
 function render(){
-var fc="", fs=document.getElementById("fstat").value, fh=document.getElementById("fhide").checked;
-var act=document.querySelector("#categoryTabs .tab.active"); if(act)fc=act.getAttribute("data-cat");
+var fd=document.getElementById("fday").value, fs=document.getElementById("fstat").value, fh=document.getElementById("fhide").checked;
+var fc=""; var act=document.querySelector("#categoryTabs .tab.active"); if(act)fc=act.getAttribute("data-cat");
 var tb=document.getElementById("rows"); tb.innerHTML="";
 var rows=all(), c={tot:rows.length,wa:0,em:0,rep:0,left:0};
 var shown=0;
-rows.forEach(function(r){
+var list=rows.slice();
+if(!fd){ list.sort(function(a,b){ var x=a.day||99, y=b.day||99; return x-y; }); }
+var lastDay="@@";
+list.forEach(function(r){
 var st=S.st[r.id]||"unsent";
 if(st==="wa")c.wa++; if(st==="em")c.em++; if(st==="replied")c.rep++; if(st==="unsent")c.left++;
+if(fd&&String(r.day||"")!==fd)return;
 if(fc&&r.cat!==fc)return; if(fs&&st!==fs)return; if(fh&&st!=="unsent")return;
 shown++;
+if(!fd&&(r.day||"—")!==lastDay){ lastDay=r.day||"—"; var dh=document.createElement("tr"); dh.className="dayhead"; dh.innerHTML="<td colspan=\"6\">День "+lastDay+"</td>"; tb.appendChild(dh); }
 var tr=document.createElement("tr");
 var cc={cafe:"badge-coffee",barber:"badge-barber",shop:"badge-shop",food:"badge-food",med:"badge-med",edu:"badge-edu",fit:"badge-fit",svc:"badge-svc"}[r.cat]||"badge-salon";
 var contacts='<a href="tel:'+esc(r.phone)+'">'+esc(r.phone)+'</a><br><a href="https://wa.me/'+waNum(r.phone)+'" target="_blank" rel="noopener">WhatsApp →</a>';
 if(r.email)contacts+='<br><a href="mailto:'+esc(r.email)+'">'+esc(r.email)+"</a>";
 var flag=r.flag?'<br><span class="warn">⚠️ '+esc(r.flag)+"</span>":"";
-var html='<td><div class="business-name"><span class="badge '+cc+'">'+CATN[r.cat]+"</span>"+esc(r.name)+"</div>"+flag+"</td>";
-html+="<td>"+contacts+"</td><td>"+esc(r.site)+"<br><span class='hint'>"+esc(r.src||"ручной ввод")+"</span></td>";
-html+="<td>"+stBadge(st)+"</td>";
+var msg=msgOf(r);
+var html='<td><span class="daybadge">День '+(r.day||"—")+"</span></td>";
+html+='<td><div class="business-name"><span class="badge '+cc+'">'+CATN[r.cat]+"</span>"+esc(r.name)+"</div>"+flag+"</td>";
+html+="<td>"+contacts+"</td>";
+html+='<td><button class="msgbtn" data-mid="'+r.id+'">'+esc(MSGN[msg]||msg)+' ⌄</button><div class="msgfull" id="mf-'+r.id+'" style="display:none">'+esc(MSGS[msg])+"</div></td>";
 tr.innerHTML=html;
-var tdS=document.createElement("td"); tdS.colSpan=1;
+var tdC=document.createElement("td");
+var cb=document.createElement("button"); cb.className="cbtn"; cb.textContent="Скопировать";
+cb.onclick=(function(mm){return function(){copyText(MSGS[mm]);};})(msg);
+tdC.appendChild(cb); tr.appendChild(tdC);
+var tdS=document.createElement("td");
 var sel=document.createElement("select"); sel.className="stsel"; sel.setAttribute("aria-label","Статус "+r.name);
 Object.keys(ST).forEach(function(k){ var o=document.createElement("option"); o.value=k; o.textContent=ST[k]; if(k===st)o.selected=true; sel.appendChild(o); });
-sel.onchange=function(){S.st[r.id]=sel.value; save(S); render();};
-var box=document.createElement("div"); box.className="rowbtns";
-box.appendChild(sel);
-function mkBtn(t,cls,fn){ var b=document.createElement("button"); b.textContent=t; if(cls)b.className=cls; b.onclick=fn; box.appendChild(b); }
-mkBtn("WA-текст",null,function(){copyText(WA_TMPL[r.cat].replace("{n}",r.name));});
-if(r.email)mkBtn("Email-текст","ghost",function(){copyText(emailTmpl(r));});
-mkBtn("Номер","ghost",function(){copyText(r.phone);});
-mkBtn("✕","danger",function(){ if(confirm("Удалить "+r.name+" из таблицы?")){ S.del.push(r.id); S.custom=S.custom.filter(function(x){return x.id!==r.id;}); save(S); render(); } });
-tdS.appendChild(box);
-tr.appendChild(tdS);
+sel.onchange=(function(id,el){return function(){S.st[id]=el.value; save(S); render();};})(r.id,sel);
+tdS.appendChild(sel);
+var del=document.createElement("button"); del.className="xbtn"; del.textContent="✕";
+del.onclick=(function(id,nm){return function(){ if(confirm("Удалить "+nm+" из таблицы?")){ S.del.push(id); S.custom=S.custom.filter(function(x){return x.id!==id;}); save(S); render(); } };})(r.id,r.name);
+tdS.appendChild(del); tr.appendChild(tdS);
 tb.appendChild(tr);
 });
 document.getElementById("emptyState").style.display=shown?"none":"block";
@@ -314,7 +365,11 @@ document.querySelector("#categoryTabs").addEventListener("click",function(e){
 var t=e.target.closest?e.target.closest(".tab"):null; if(!t)return;
 document.querySelectorAll("#categoryTabs .tab").forEach(function(x){x.classList.remove("active");});
 t.classList.add("active"); render();});
+var fday=document.getElementById("fday");
+for(var d=1;d<=10;d++){ var o=document.createElement("option"); o.value=String(d); o.textContent="День "+d; fday.appendChild(o); }
+fday.onchange=render;
 fs.onchange=render; document.getElementById("fhide").onchange=render;
+document.getElementById("rows").addEventListener("click",function(e){ var b=e.target.closest?e.target.closest(".msgbtn"):null; if(!b)return; var dd=document.getElementById("mf-"+b.getAttribute("data-mid")); if(dd)dd.style.display=dd.style.display==="none"?"block":"none"; });
 document.getElementById("oldlist").textContent=OLD.join(" · ");
 var ov=document.getElementById("modalOverlay");
 document.getElementById("addbtn").onclick=function(){ov.classList.add("active");};
@@ -322,7 +377,7 @@ document.getElementById("cancelBtn").onclick=function(){ov.classList.remove("act
 ov.addEventListener("click",function(e){ if(e.target===ov)ov.classList.remove("active"); });
 document.getElementById("addform").onsubmit=function(e){e.preventDefault();
 function v(id){return document.getElementById(id).value.trim();}
-var r={id:"c"+Date.now(),name:v("n_name"),cat:document.getElementById("n_cat").value,phone:v("n_phone"),email:v("n_email")||null,site:v("n_site"),src:"ручной ввод",flag:null};
+var _nd=document.getElementById("n_day").value,_nm=document.getElementById("n_msg").value; var r={id:"c"+Date.now(),name:v("n_name"),cat:document.getElementById("n_cat").value,phone:v("n_phone"),email:v("n_email")||null,site:v("n_site"),src:"ручной ввод",flag:null,day:_nd?parseInt(_nd,10):"",msg:_nm||MSGCAT[document.getElementById("n_cat").value]||"base"};
 if(!r.name||!r.phone)return; S.custom.push(r); save(S); e.target.reset(); ov.classList.remove("active"); render(); toast("Добавлено");};
 render();
 })();
