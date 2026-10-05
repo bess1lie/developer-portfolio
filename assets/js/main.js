@@ -1,1 +1,732 @@
-!function(){"use strict";var e=document;e.documentElement.classList.add("js"),window.__blBoot=!0;var t=window.matchMedia("(prefers-reduced-motion: reduce)").matches,n=!1;try{new Function("return import('')"),n=!0}catch(e){n=!1}var o=!t&&n?Promise.resolve().then(function(){return import("https://cdn.jsdelivr.net/npm/motion@11.18.2/+esm").then(function(e){return e}).catch(function(){return null})}):Promise.resolve(null);function i(){if(document.querySelectorAll("[data-scrolltop]").forEach(function(e){e.addEventListener("click",function(e){e.preventDefault(),window.scrollTo({top:0,behavior:t?"auto":"smooth"})})}),document.querySelectorAll('a[href^="#"]').forEach(function(e){var n=e.getAttribute("href");"#top"!==n&&e.addEventListener("click",function(e){var o=n.slice(1),i=document.getElementById(o);if(i){var r=i.querySelector("h2")||i,a=document.querySelector(".nav")?document.querySelector(".nav").offsetHeight:64,s=r.getBoundingClientRect().top+window.scrollY-a-32;e.preventDefault(),window.scrollTo({top:s,behavior:t?"auto":"smooth"}),history.pushState(null,"",n);var c=!1,l=function(){c=!0};window.addEventListener("wheel",l,{once:!0,passive:!0}),window.addEventListener("touchmove",l,{once:!0,passive:!0});var d=Date.now(),u=d,f=window.scrollY,m=0;!function e(){if(!(c||Date.now()-u>8e3)){var t=Date.now(),n=window.scrollY;t-d>3e3||t-d>500&&Math.abs(n-f)<1?function(e,t){var n=document.querySelector(".nav")?document.querySelector(".nav").offsetHeight:64,o=e.getBoundingClientRect().top-n-32;return Math.abs(o)>2?(window.scrollTo({top:window.scrollY+o,behavior:"instant"}),!0):(t&&t(),!1)}(r)&&m<2&&(m++,setTimeout(function(){c||(d=Date.now(),f=window.scrollY,e())},700)):(f=n,requestAnimationFrame(e))}}();var h=document.getElementById("mmenu");if(h&&h.classList.contains("is-open")){var v=document.querySelector(".nav-toggle");v&&v.click()}}})}),location.hash){var e=location.hash.slice(1),n=document.getElementById(e);n&&setTimeout(function(){var e=n.querySelector("h2")||n,t=document.querySelector(".nav").offsetHeight,o=e.getBoundingClientRect().top+window.scrollY-t-32;window.scrollTo({top:o,behavior:"instant"})},200)}}function r(e,t,n,o){try{if(t._mAnim)try{t._mAnim.stop()}catch(e){}t.style.willChange="transform, opacity";var i=e.animate(t,n,o);return t._mAnim=i,i&&i.finished&&i.finished.then(function(){t._mAnim===i&&(t.style.willChange="")}).catch(function(){}),i}catch(e){return null}}function a(){var n=e.querySelectorAll(".work-tab"),o=e.querySelectorAll(".work-panel");n.length||(n=e.querySelectorAll(".work-item"));var i=e.querySelectorAll(".work-mock-inner img[data-shot]"),a=e.querySelector(".work-carousel-track"),s=e.querySelectorAll(".work-dots span");if(n.length){o.length||(o=n);var c=e.querySelector(".work-scene");if(c){var l=0;if(o.forEach(function(e){e.hidden=!1;var t=e.offsetHeight;t>l&&(l=t)}),l){c.style.minHeight=l+"px";var d=e.getElementById("work-panel");d&&o.length>1&&(d.style.minHeight=l+"px")}}n.forEach(function(e,t){e.addEventListener("click",function(){h(t)}),e.addEventListener("keydown",function(e){if("ArrowLeft"===e.key||"ArrowRight"===e.key){e.preventDefault();var o="ArrowLeft"===e.key?-1:1,i=(t+o+n.length)%n.length;n[i].focus(),h(i)}})}),h(0);var u=a?a.querySelectorAll(".work-carousel-card"):[],f=!1;a&&a.addEventListener("scroll",function(){f||(f=!0,window.requestAnimationFrame(v))},{passive:!0});var m=window.matchMedia("(max-width: 900px)");m.addEventListener?m.addEventListener("change",y):m.addListener&&m.addListener(y)}function h(e){n.forEach(function(t,n){var o=n===e;t.classList.toggle("is-active",o),t.setAttribute("aria-selected",o?"true":"false"),t.setAttribute("tabindex",o?"0":"-1")});var o=[{num:"01",type:"ЛЕНДИНГ",title:"Кофейня «Дәме»",desc:"Меню, отзывы и форма заявки в одном понятном сайте.",tags:["Меню в ₸","Адаптив","Форма заявки"],meta:["от 69 000 ₸","5–10 дней"],href:"https://bess1lie.github.io/cafe-demo/"},{num:"02",type:"КОРПОРАТИВНЫЙ САЙТ",title:"Барбершоп «Жігіт»",desc:"Услуги, мастера, прайс и онлайн-запись в одном месте.",tags:["Мастера","Онлайн-запись"],meta:["от 129 000 ₸","от 14 дней"],href:"https://bess1lie.github.io/barbershop-demo/"},{num:"03",type:"САЙТ С КАТАЛОГОМ",title:"Мастерская «Ағаш»",desc:"Каталог изделий, фильтры и калькулятор стоимости.",tags:["Каталог","Калькулятор"],meta:["от 189 000 ₸","от 20 дней"],href:"https://bess1lie.github.io/furniture-demo/"}],a=document.getElementById("work-panel-num"),c=document.getElementById("work-panel-type"),l=document.getElementById("work-panel-title"),d=document.getElementById("work-panel-desc"),u=document.getElementById("work-panel-tags"),f=document.getElementById("work-panel-meta"),m=document.getElementById("work-panel-link");if(l&&o[e]){a&&(a.textContent=o[e].num),c&&(c.textContent=o[e].type),l.textContent=o[e].title,d.textContent=o[e].desc,u.innerHTML=o[e].tags.map(function(e){return"<li>"+e+"</li>"}).join(""),f&&(f.innerHTML="<span>"+o[e].meta[0]+"</span><span>"+o[e].meta[1]+"</span>"),m.href=o[e].href;var h=window.__motion||null;h&&!t&&r(h,l,{opacity:[0,1],transform:["translateY(8px)","translateY(0px)"]},{type:"spring",stiffness:320,damping:30})||(l.style.opacity="1",l.style.transform="none")}var v=window.__motion||null,y=!(!v||t);y&&i.forEach(function(e){e.style.transition="none"}),i.forEach(function(t){var n=Number(t.getAttribute("data-shot"))===e;n?t.removeAttribute("hidden"):t.setAttribute("hidden",""),y&&n?r(v,t,{opacity:[0,1],transform:["translateY(10px) scale(.985)","translateY(0px) scale(1)"],filter:["blur(3px)","blur(0px)"]},{duration:.55,ease:"easeOut"})||(t.style.opacity="1",t.style.transform="none",t.style.filter="blur(0)"):(t.style.opacity=n?"1":"0",t.style.transform=n?"none":"translateY(10px) scale(.985)",t.style.filter=n?"blur(0)":"blur(3px)")}),s.length&&s.forEach(function(t,n){t.classList.toggle("is-active",n===e)})}function v(){if(f=!1,a&&!(u.length<2)&&s.length){var e=a.scrollWidth-a.clientWidth,t=e>0?Math.round(a.scrollLeft/(e/(u.length-1))):0;!function(e){s.length&&s.forEach(function(t,n){t.classList.toggle("is-active",n===e)})}(Math.max(0,Math.min(u.length-1,t)))}}function y(){m.matches&&v()}}function s(e){if(e){var t=Array.prototype.slice.call(e.querySelectorAll("[data-chat]"));t.length||(t=Array.prototype.slice.call(e.querySelectorAll(".msg"))),t.forEach(function(e){e.classList.contains("typing")||e.classList.add("chat-item","is-shown")})}}function c(){var e=document.getElementById("chat-demo");e&&(t||!("IntersectionObserver"in window)?s(e):(Array.prototype.slice.call(e.querySelectorAll("[data-chat]")).forEach(function(e){e.classList.add("chat-item")}),o.then(function(t){if(t){var n=!1,o=null;try{o=t.inView(e,function(){if(!n){n=!0;try{o&&o()}catch(e){}!function(e,t){var n=Array.prototype.slice.call(t.querySelectorAll("[data-chat]"));if(n.length){var o;try{o=e.stagger(.5)}catch(e){o=function(e){return.5*e}}var i=null;n.forEach(function(e,t){var r=Math.round(250+1e3*o(t,n.length));setTimeout(function(){i&&i!==e&&(i.classList.remove("is-shown"),i=null),e.classList.add("is-shown"),e.classList.contains("typing")&&(i=e)},r)});var r=Math.round(250+1e3*o(n.length,n.length))+900;setTimeout(function(){i&&(i.classList.remove("is-shown"),i=null)},r)}}(t,e)}},{amount:.3})}catch(t){return void s(e)}setTimeout(function(){if(!n){n=!0;try{o&&o()}catch(e){}s(e)}},6e3)}else s(e)})));var n=document.querySelector(".phone-mini .phone-screen");if(n){n.querySelectorAll(".msg").forEach(function(e){e.classList.remove("chat-item"),e.classList.add("show"),e.style.visibility="visible",e.style.opacity="1",e.style.transform="none"});var i=n.querySelector(".booking-card");i&&(i.classList.remove("chat-item"),i.classList.add("show"),i.style.visibility="visible",i.style.opacity="1",i.style.transform="none")}}function l(){var t=e.getElementById("lead-form");if(t){var n=t.querySelector(".form-hint"),o=t.querySelector("button[type='submit']");t.addEventListener("submit",function(e){e.preventDefault();var i={name:t.name.value.trim(),contact:t.contact.value.trim(),interest:t.interest.value,description:t.description.value.trim(),website:t.website.value,consent:t.consent.checked};i.name&&i.contact?i.consent?(o&&(o.disabled=!0,o.textContent="Отправляем…"),n&&(n.classList.remove("is-success","is-error"),n.textContent=""),function(e){return fetch("/api/lead",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(e)}).then(function(e){if(!e.ok)throw new Error("send failed: "+e.status);return e.json()})}(i).then(function(e){n&&(n.classList.remove("is-error"),n.classList.add("is-success"),n.textContent="Заявка отправлена! Ответим в течение нескольких часов."),t.reset(),o&&(o.disabled=!1,o.textContent="Отправить заявку")}).catch(function(){n&&(n.classList.remove("is-success"),n.classList.add("is-error"),n.textContent="Не удалось отправить заявку. Попробуйте ещё раз."),o&&(o.disabled=!1,o.textContent="Повторить")})):n&&(n.classList.remove("is-success"),n.classList.add("is-error"),n.textContent="Отметьте согласие на обработку персональных данных."):n&&(n.classList.remove("is-success"),n.classList.add("is-error"),n.textContent="Заполните имя и контакт.")})}}e.addEventListener("DOMContentLoaded",function(){!function(){function e(){var e=document.querySelector(".nav")?document.querySelector(".nav").offsetHeight:64;document.querySelectorAll("section[id]").forEach(function(t){var n=parseFloat(window.getComputedStyle(t).paddingTop),o=t.querySelector("h2"),i=o?parseFloat(window.getComputedStyle(o).marginTop):0,r=32+e-n-i;t.style.scrollMarginTop=r+"px",o&&(o.style.scrollMarginTop=e+32+"px")})}if(e(),window.__syncAnchors=e,window.addEventListener("resize",e),"ResizeObserver"in window){var t=new ResizeObserver(e);document.querySelectorAll("section[id]").forEach(function(e){t.observe(e)})}if(location.hash){var n=location.hash.slice(1),o=document.getElementById(n);o&&setTimeout(function(){var e=document.querySelector(".nav").offsetHeight;o.getBoundingClientRect().top,window.scrollY,parseFloat(window.getComputedStyle(o).paddingTop),window.scrollTo({top:o.offsetTop-e-32+parseFloat(window.getComputedStyle(o).paddingTop),behavior:"instant"})},100)}}();var n,s,d=e.getElementById("intro");d&&d.remove(),function(){var e=document.querySelector(".nav"),t=Array.prototype.slice.call(document.querySelectorAll(".nav-links a"));function n(){if(e){var t=e.offsetHeight||64,n=t+1,o=Math.round(window.innerWidth/2),i=document.elementFromPoint(o,n),r=!(!i||!i.closest('[data-theme="dark"]'));if(!r)for(var a=document.querySelectorAll('[data-theme="dark"]'),s=0;s<a.length;s++){var c=a[s].getBoundingClientRect();if(c.top<=t&&c.bottom>t){r=!0;break}if(c.top<=t+.5&&c.bottom>=t+.5){r=!0;break}}e.classList.toggle("nav--dark",r)}}e&&(window.addEventListener("resize",n,{passive:!0}),n());var o=["work","services","ai-admin","why","pricing","process","contact","faq"].map(function(e){return document.getElementById(e)}).filter(Boolean);function i(){for(var n=null,i=0;i<o.length;i++)o[i].getBoundingClientRect().top<.4*window.innerHeight&&(n=o[i].id);if(t.forEach(function(e){e.classList.toggle("is-active",e.getAttribute("href")==="#"+n)}),e){var r=window.scrollY>40;e.classList.contains("is-scrolled")!==r&&(e.classList.toggle("is-scrolled",r),window.__syncAnchors&&window.__syncAnchors())}}window.addEventListener("scroll",function(){window.requestAnimationFrame(function(){n(),i()})},{passive:!0}),i()}(),function(){var t=e.querySelector(".nav-toggle"),n=e.getElementById("mmenu");if(t&&n){n.hidden=!1;var o=!1,i=0;t.addEventListener("click",function(){r(!o)}),n.querySelectorAll("a").forEach(function(e){e.addEventListener("click",function(){r(!1)})}),e.addEventListener("keydown",function(e){"Escape"===e.key&&o&&r(!1)})}function r(r){if(o!==r)if(o=r,t.setAttribute("aria-expanded",r?"true":"false"),t.setAttribute("aria-label",r?"Закрыть меню":"Открыть меню"),r){i=window.scrollY,e.body.style.top=-i+"px",e.body.classList.add("menu-open"),n.classList.add("is-open");var a=n.querySelector("a");a&&a.focus({preventScroll:!0})}else n.classList.remove("is-open"),e.body.classList.remove("menu-open"),e.body.style.top="",window.scrollTo({top:i,behavior:"instant"}),t.focus({preventScroll:!0})}}(),i(),e.querySelectorAll("h1 .line > span").forEach(function(e){e.style.transform="none",e.style.opacity="1",e.style.willChange=""}),(n=e.getElementById("lead-form"))&&(n.addEventListener("mouseenter",function(){e.body.classList.add("form-hover")}),n.addEventListener("mouseleave",function(){e.body.classList.remove("form-hover")}),n.querySelectorAll(".magnetic").forEach(function(e){e.classList.remove("magnetic")})),function(){var n=e.querySelectorAll(".reveal, .reveal-scale, .reveal-blur");if(n.length)if(!t&&"IntersectionObserver"in window){var o=new IntersectionObserver(function(e){e.forEach(function(e){e.isIntersecting&&(e.target.classList.add("is-visible"),o.unobserve(e.target))})},{threshold:.12});n.forEach(function(e){o.observe(e)})}else n.forEach(function(e){e.classList.add("is-visible")})}(),a(),c(),function(){var n=document.getElementById("timeline");if(n){var i=n.querySelectorAll("li");if(i.length)if(e.documentElement.classList.contains("js")&&!t){var r=!1,a=!1;window.addEventListener("scroll",c,{passive:!0}),window.addEventListener("resize",c),"ResizeObserver"in window&&new ResizeObserver(c).observe(n),document.fonts&&document.fonts.ready&&document.fonts.ready.then(s),s(),o.then(function(e){if(e&&!t){r=!0;try{i.forEach(function(t,n){n>=i.length-1||e.scroll(e.animate(t,{"--f":[0,1]},{ease:"linear"}),{target:t,offset:["start center","end center"]})})}catch(e){r=!1}s()}})}else i.forEach(function(e){e.classList.add("is-done"),e.classList.add("is-active"),e.style.setProperty("--f","1")})}function s(){for(var e=.55*window.innerHeight,t=[],n=0;n<i.length;n++){var o=i[n].querySelector(".step-num"),s=o?o.getBoundingClientRect():i[n].getBoundingClientRect();t.push(s.top+s.height/2)}for(var c=0;c<i.length;c++){var l=t[c],d=e>=l,u=!1;if(d){var f=t[c+1];(c===i.length-1||e<f)&&(u=!0)}if(i[c].classList.toggle("is-done",d&&!u),i[c].classList.toggle("is-active",u),c<i.length-1&&!r){var m=t[c+1],h=0;h=e<=l?0:e>=m?1:(e-l)/(m-l),h=Math.max(0,Math.min(1,h)),i[c].style.setProperty("--f",h.toFixed(3))}}a=!1}function c(){a||(a=!0,requestAnimationFrame(s))}}(),document.querySelectorAll(".faq-item").forEach(function(e){var t=e.querySelector(".faq-question"),n=e.querySelector(".faq-answer");t&&n&&t.addEventListener("click",function(){var o=e.classList.contains("is-open");document.querySelectorAll(".faq-item.is-open").forEach(function(e){e.classList.remove("is-open"),e.querySelector(".faq-question").setAttribute("aria-expanded","false"),e.querySelector(".faq-answer").setAttribute("hidden","")}),o||(e.classList.add("is-open"),t.setAttribute("aria-expanded","true"),n.removeAttribute("hidden"))})}),l(),(s=e.getElementById("year"))&&(s.textContent=String((new Date).getFullYear())),o.then(function(n){if(n&&!t&&window.matchMedia&&window.matchMedia("(pointer:fine)").matches){var o=[];Array.prototype.forEach.call(e.querySelectorAll(".hero-cta .btn-accent"),function(e){o.push(e)}),Array.prototype.forEach.call(e.querySelectorAll(".price-row--accent .btn-accent"),function(e){o.push(e)}),o.forEach(function(e){e.classList.add("mag-motion");var t=!1,o=0,i=0;function a(){t=!1,r(n,e,{x:o,y:i},{type:"spring",stiffness:200,damping:18})}function s(e,n){o=e,i=n,t||(t=!0,window.requestAnimationFrame(a))}e.addEventListener("pointermove",function(t){var n=e.getBoundingClientRect();s(12*((t.clientX-n.left)/n.width-.5),12*((t.clientY-n.top)/n.height-.5))}),e.addEventListener("pointerleave",function(){s(0,0)}),e.addEventListener("pointercancel",function(){s(0,0)})})}}),o.then(function(e){window.__motion=e||null})})}();
+/* bess1lie — dependency-free interactions */
+(function () {
+  "use strict";
+  var doc = document;
+  doc.documentElement.classList.add("js");
+  window.__blBoot = true;
+  var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Motion (CDN, pinned 11.18.2) — progressive enhancement ---------- */
+  var MOTION_URL = "https://cdn.jsdelivr.net/npm/motion@11.18.2/+esm";
+  var motionSupported = false;
+  try { new Function("return import('')"); motionSupported = true; } catch (e) { motionSupported = false; }
+  var motionPromise = (!reducedMotion && motionSupported)
+    ? Promise.resolve().then(function () {
+        return import(MOTION_URL).then(function (m) { return m; }).catch(function () { return null; });
+      })
+    : Promise.resolve(null);
+
+  /* ---------- Якоря — точный скролл ---------- */
+  function initAnchors() {
+    function update(){
+      var headerH = document.querySelector('.nav') ? document.querySelector('.nav').offsetHeight : 64;
+      document.querySelectorAll('section[id]').forEach(function(sec){
+        var padTop = parseFloat(window.getComputedStyle(sec).paddingTop);
+        var h2 = sec.querySelector('h2');
+        var h2mt = h2 ? parseFloat(window.getComputedStyle(h2).marginTop) : 0;
+        var m = 32 + headerH - padTop - h2mt;
+        sec.style.scrollMarginTop = m + 'px';
+        if (h2) h2.style.scrollMarginTop = (headerH + 32) + 'px';
+      });
+    }
+    update();
+    window.__syncAnchors = update;
+    window.addEventListener('resize', update);
+    if ('ResizeObserver' in window) {
+      var ro = new ResizeObserver(update);
+      document.querySelectorAll('section[id]').forEach(function(s){ ro.observe(s); });
+    }
+    // also handle direct hash on load
+    if (location.hash) {
+      var id = location.hash.slice(1);
+      var el = document.getElementById(id);
+      if (el) setTimeout(function(){
+        var headerH = document.querySelector('.nav').offsetHeight;
+        var top = el.getBoundingClientRect().top + window.scrollY - headerH - 32 + parseFloat(window.getComputedStyle(el).paddingTop);
+        window.scrollTo({top: el.offsetTop - headerH - 32 + parseFloat(window.getComputedStyle(el).paddingTop), behavior:'instant'});
+      }, 100);
+    }
+  }
+
+  /* ---------- Навигация: всегда наверху + точное переключение темы ---------- */
+  function initNav() {
+    var nav = document.querySelector(".nav");
+    var links = Array.prototype.slice.call(document.querySelectorAll(".nav-links a"));
+    function updateNavTheme() {
+      if (!nav) return;
+      var h = nav.offsetHeight || 64;
+      var y = h + 1;
+      var x = Math.round(window.innerWidth / 2);
+      var el = document.elementFromPoint(x, y);
+      var isDark = !!(el && el.closest('[data-theme="dark"]'));
+      if (!isDark) {
+        // fallback: проверка через getBoundingClientRect секций ровно под кромкой шапки
+        var darkSections = document.querySelectorAll('[data-theme="dark"]');
+        for (var i = 0; i < darkSections.length; i++) {
+          var r = darkSections[i].getBoundingClientRect();
+          if (r.top <= h && r.bottom > h) { isDark = true; break; }
+          if (r.top <= h+0.5 && r.bottom >= h+0.5) { isDark = true; break; }
+        }
+      }
+      nav.classList.toggle("nav--dark", isDark);
+    }
+    if (nav) {
+      window.addEventListener("resize", updateNavTheme, { passive: true });
+      updateNavTheme();
+    }
+    var secs = ["work", "services", "ai-admin", "why", "pricing", "process", "contact", "faq"].map(function (id) {
+      return document.getElementById(id);
+    }).filter(Boolean);
+    function mark() {
+      var cur = null;
+      for (var i = 0; i < secs.length; i++) {
+        if (secs[i].getBoundingClientRect().top < window.innerHeight * 0.4) cur = secs[i].id;
+      }
+      links.forEach(function (a) {
+        a.classList.toggle("is-active", a.getAttribute("href") === "#" + cur);
+      });
+      if (nav) {
+        var sc = window.scrollY > 40;
+        if (nav.classList.contains("is-scrolled") !== sc) {
+          nav.classList.toggle("is-scrolled", sc);
+          if (window.__syncAnchors) window.__syncAnchors();
+        }
+      }
+    }
+    window.addEventListener("scroll", function () { window.requestAnimationFrame(function () { updateNavTheme(); mark(); }); }, { passive: true });
+    mark();
+  }
+
+  /* ---------- Мобильное меню ---------- */
+  function initMenu() {
+    var toggle = doc.querySelector(".nav-toggle");
+    var menu = doc.getElementById("mmenu");
+    if (!toggle || !menu) return;
+    menu.hidden = false;
+    var open = false;
+    var savedY = 0;
+    function setMenu(next) {
+      if (open === next) return;
+      open = next;
+      toggle.setAttribute("aria-expanded", next ? "true" : "false");
+      toggle.setAttribute("aria-label", next ? "Закрыть меню" : "Открыть меню");
+      if (next) {
+        savedY = window.scrollY;
+        doc.body.style.top = -savedY + "px";
+        doc.body.classList.add("menu-open");
+        menu.classList.add("is-open");
+        var first = menu.querySelector("a");
+        if (first) first.focus({ preventScroll: true });
+      } else {
+        menu.classList.remove("is-open");
+        doc.body.classList.remove("menu-open");
+        doc.body.style.top = "";
+        window.scrollTo({ top: savedY, behavior: "instant" });
+        toggle.focus({ preventScroll: true });
+      }
+    }
+    toggle.addEventListener("click", function () { setMenu(!open); });
+    menu.querySelectorAll("a").forEach(function (a) {
+      a.addEventListener("click", function () { setMenu(false); });
+    });
+    doc.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && open) setMenu(false);
+    });
+  }
+
+  /* ---------- Логотип наверх ---------- */
+  function initLogo() {
+    document.querySelectorAll("[data-scrolltop]").forEach(function (el) {
+      el.addEventListener("click", function (e) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" });
+      });
+    });
+    // точный скролл для якорей — h2 на 32px ниже шапки
+    // content-visibility placeholders выше цели могут сдвинуть layout уже
+    // после остановки скролла, поэтому коррекция делается до 3 проходов.
+    function snapTo(h2, onDone) {
+      var hh = document.querySelector('.nav') ? document.querySelector('.nav').offsetHeight : 64;
+      var d = h2.getBoundingClientRect().top - hh - 32;
+      if (Math.abs(d) > 2) { window.scrollTo({ top: window.scrollY + d, behavior: 'instant' }); return true; }
+      if (onDone) onDone();
+      return false;
+    }
+    document.querySelectorAll('a[href^="#"]').forEach(function(a){
+      var href=a.getAttribute('href');
+      if(href==='#top') return;
+      a.addEventListener('click', function(e){
+        var id=href.slice(1);
+        var sec=document.getElementById(id);
+        if(!sec) return;
+        var h2=sec.querySelector('h2') || sec;
+        var headerH=document.querySelector('.nav') ? document.querySelector('.nav').offsetHeight : 64;
+        var top = h2.getBoundingClientRect().top + window.scrollY - headerH - 32;
+        // reserve height for images already done via width/height
+        e.preventDefault();
+        window.scrollTo({top: top, behavior: reducedMotion ? 'auto' : 'smooth'});
+        history.pushState(null,'',href);
+        // snap-correction: wait until smooth scroll settles, then fix residual drift
+        var cancelled = false;
+        var cancel = function(){ cancelled = true; };
+        window.addEventListener('wheel', cancel, {once:true, passive:true});
+        window.addEventListener('touchmove', cancel, {once:true, passive:true});
+        var t0 = Date.now(), tStart = t0, lastY = window.scrollY, fixes = 0;
+        (function settle(){
+          if (cancelled || Date.now() - tStart > 8000) return;
+          var now = Date.now(), y = window.scrollY;
+          if (now - t0 > 3000 || (now - t0 > 500 && Math.abs(y - lastY) < 1)) {
+            if (snapTo(h2) && fixes < 2) {
+              fixes++;
+              setTimeout(function(){ if (!cancelled) { t0 = Date.now(); lastY = window.scrollY; settle(); } }, 700);
+            }
+          } else { lastY = y; requestAnimationFrame(settle); }
+        })();
+        // close mobile menu if open
+        var mmenu=document.getElementById('mmenu');
+        if(mmenu && mmenu.classList.contains('is-open')){
+          var toggle=document.querySelector('.nav-toggle');
+          if(toggle) toggle.click();
+        }
+      });
+    });
+    // handle direct hash on load
+    if(location.hash){
+      var id=location.hash.slice(1);
+      var sec=document.getElementById(id);
+      if(sec){
+        setTimeout(function(){
+          var h2=sec.querySelector('h2') || sec;
+          var headerH=document.querySelector('.nav').offsetHeight;
+          var top = h2.getBoundingClientRect().top + window.scrollY - headerH - 32;
+          window.scrollTo({top: top, behavior:'instant'});
+        }, 200);
+      }
+    }
+  }
+
+  /* Один Motion-аниматор на элемент: гасит предыдущую анимацию,
+     ставит will-change на время работы и чистит его после финиша */
+  function playMo(m, el, props, opts) {
+    try {
+      if (el._mAnim) { try { el._mAnim.stop(); } catch (e0) {} }
+      el.style.willChange = "transform, opacity";
+      var a = m.animate(el, props, opts);
+      el._mAnim = a;
+      if (a && a.finished) {
+        a.finished.then(function () {
+          if (el._mAnim === a) el.style.willChange = "";
+        }).catch(function () {});
+      }
+      return a;
+    } catch (e) { return null; }
+  }
+  /* ---------- Hero-каскад через Motion (fallback: показать сразу) ---------- */
+  function heroShow() {
+    doc.querySelectorAll("h1 .line > span").forEach(function (s) {
+      s.style.transform = "none"; s.style.opacity = "1"; s.style.willChange = "";
+    });
+  }
+  function heroCascade(m) {
+    var spans = doc.querySelectorAll("#hero-title .line > span");
+    if (!spans.length) return;
+    var allOk = true;
+    spans.forEach(function (s, i) {
+      if (!playMo(m, s, { transform: ["translateY(110%)", "translateY(0px)"], opacity: [0, 1] },
+        { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: i * 0.07 })) allOk = false;
+    });
+    if (!allOk) heroShow();
+  }
+
+  /* ---------- Reveal — single IO, variants + stagger ---------- */
+  function initReveal() {
+    var els = doc.querySelectorAll(".reveal, .reveal-scale, .reveal-blur");
+    if (!els.length) return;
+    if (reducedMotion || !("IntersectionObserver" in window)) {
+      els.forEach(function (el) { el.classList.add("is-visible"); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          en.target.classList.add("is-visible");
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    els.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---------- Работы: табы + сцена + телефон ---------- */
+  function initWork() {
+    var tabs = doc.querySelectorAll(".work-tab");
+    var panels = doc.querySelectorAll(".work-panel");
+    // for old markup compat: if no work-tab, try work-item
+    if (!tabs.length) tabs = doc.querySelectorAll(".work-item");
+    var shotsBrowser = doc.querySelectorAll(".work-mock-inner img[data-shot]");
+    var carousel = doc.querySelector(".work-carousel-track");
+    var dots = doc.querySelectorAll(".work-dots span");
+    if (!tabs.length) return;
+    // ensure panels exist — if not, create from tabs data
+    if (!panels.length) {
+      // fallback: use work-item detail as panels
+      panels = tabs;
+    }
+    var cur = 0;
+    // make scene height stable: measure max panel height
+    var scene = doc.querySelector(".work-scene");
+    if (scene) {
+      var maxH = 0;
+      // temporarily show all to measure
+      panels.forEach(function(p){
+        p.hidden = false;
+        var h = p.offsetHeight;
+        if (h > maxH) maxH = h;
+      });
+      if (maxH) {
+        scene.style.minHeight = maxH + 'px';
+        // use grid-stack to keep height stable
+        var panelContainer = doc.getElementById("work-panel");
+        if (panelContainer && panels.length>1) {
+          // set minHeight on panel container
+          panelContainer.style.minHeight = maxH + 'px';
+        }
+      }
+    }
+    function activate(i) {
+      cur = i;
+      tabs.forEach(function(el,k){
+        var on = k===i;
+        el.classList.toggle("is-active", on);
+        el.setAttribute("aria-selected", on ? "true" : "false");
+        el.setAttribute("tabindex", on ? "0" : "-1");
+      });
+      // panels: show one, hide others via hidden + visibility
+      var panelData = [
+        {num:"01", type:"ЛЕНДИНГ", title:"Кофейня «Дәме»", desc:"Меню, отзывы и форма заявки в одном понятном сайте.", tags:["Меню в ₸","Адаптив","Форма заявки"], meta:["от 69 000 ₸","5–10 дней"], href:"https://bess1lie.github.io/cafe-demo/"},
+        {num:"02", type:"КОРПОРАТИВНЫЙ САЙТ", title:"Барбершоп «Жігіт»", desc:"Услуги, мастера, прайс и онлайн-запись в одном месте.", tags:["Мастера","Онлайн-запись"], meta:["от 129 000 ₸","от 14 дней"], href:"https://bess1lie.github.io/barbershop-demo/"},
+        {num:"03", type:"САЙТ С КАТАЛОГОМ", title:"Мастерская «Ағаш»", desc:"Каталог изделий, фильтры и калькулятор стоимости.", tags:["Каталог","Калькулятор"], meta:["от 189 000 ₸","от 20 дней"], href:"https://bess1lie.github.io/furniture-demo/"}
+      ];
+      var panelNum = document.getElementById("work-panel-num");
+      var panelType = document.getElementById("work-panel-type");
+      var panelTitle = document.getElementById("work-panel-title");
+      var panelDesc = document.getElementById("work-panel-desc");
+      var panelTags = document.getElementById("work-panel-tags");
+      var panelMeta = document.getElementById("work-panel-meta");
+      var panelLink = document.getElementById("work-panel-link");
+      if (panelTitle && panelData[i]) {
+        if (panelNum) panelNum.textContent = panelData[i].num;
+        if (panelType) panelType.textContent = panelData[i].type;
+        panelTitle.textContent = panelData[i].title;
+        panelDesc.textContent = panelData[i].desc;
+        panelTags.innerHTML = panelData[i].tags.map(function(t){return "<li>"+t+"</li>";}).join("");
+        if (panelMeta) panelMeta.innerHTML = "<span>"+panelData[i].meta[0]+"</span><span>"+panelData[i].meta[1]+"</span>";
+        panelLink.href = panelData[i].href;
+        var moT = window.__motion || null;
+        if (moT && !reducedMotion) {
+          if (!playMo(moT, panelTitle, { opacity: [0, 1], transform: ["translateY(8px)", "translateY(0px)"] }, { type: "spring", stiffness: 320, damping: 30 })) {
+            panelTitle.style.opacity = "1"; panelTitle.style.transform = "none";
+          }
+        } else {
+          panelTitle.style.opacity = "1"; panelTitle.style.transform = "none";
+        }
+      }
+      var moI = window.__motion || null;
+      var useMotionImg = !!(moI && !reducedMotion);
+      if (useMotionImg) shotsBrowser.forEach(function (s) { s.style.transition = "none"; });
+      shotsBrowser.forEach(function(s){
+        var on = Number(s.getAttribute("data-shot"))===i;
+        if (on) s.removeAttribute("hidden"); else s.setAttribute("hidden","");
+        if (useMotionImg && on) {
+          if (!playMo(moI, s, { opacity: [0, 1], transform: ["translateY(10px) scale(.985)", "translateY(0px) scale(1)"], filter: ["blur(3px)", "blur(0px)"] }, { duration: 0.55, ease: "easeOut" })) {
+            s.style.opacity = "1"; s.style.transform = "none"; s.style.filter = "blur(0)";
+          }
+        } else {
+          s.style.opacity = on ? "1" : "0";
+          s.style.transform = on ? "none" : "translateY(10px) scale(.985)";
+          s.style.filter = on ? "blur(0)" : "blur(3px)";
+        }
+      });
+      if (dots.length) {
+        dots.forEach(function(d,k){ d.classList.toggle("is-active", k===i); });
+      }
+    }
+    tabs.forEach(function(el, idx){
+      el.addEventListener("click", function(){ activate(idx); });
+      el.addEventListener("keydown", function(e){
+        if(e.key==="ArrowLeft" || e.key==="ArrowRight"){
+          e.preventDefault();
+          var dir = e.key==="ArrowLeft" ? -1 : 1;
+          var next = (idx + dir + tabs.length) % tabs.length;
+          tabs[next].focus();
+          activate(next);
+        }
+      });
+    });
+    activate(0);
+    // mobile carousel: single source of truth for dots is real scroll pos
+    var trackCards = carousel ? carousel.querySelectorAll('.work-carousel-card') : [];
+    var scrollTicking = false;
+    function setDots(i){
+      cur = i;
+      if (dots.length) dots.forEach(function(d,k){ d.classList.toggle('is-active', k===i); });
+    }
+    function syncDotsToScroll(){
+      scrollTicking = false;
+      if (!carousel || trackCards.length < 2 || !dots.length) return;
+      var max = carousel.scrollWidth - carousel.clientWidth;
+      var i = max > 0 ? Math.round(carousel.scrollLeft / (max / (trackCards.length - 1))) : 0;
+      setDots(Math.max(0, Math.min(trackCards.length - 1, i)));
+    }
+    if (carousel) {
+      carousel.addEventListener('scroll', function(){
+        if (!scrollTicking) { scrollTicking = true; window.requestAnimationFrame(syncDotsToScroll); }
+      }, { passive: true });
+    }
+    var carouselMq = window.matchMedia('(max-width: 900px)');
+    function onCarouselMq(){
+      if (carouselMq.matches) syncDotsToScroll();
+    }
+    if (carouselMq.addEventListener) carouselMq.addEventListener('change', onCarouselMq);
+    else if (carouselMq.addListener) carouselMq.addListener(onCarouselMq);
+  }
+
+  /* ---------- Чат — один компонент, фиксированная высота, классы ---------- */
+  function setupBoxInstant(box) {
+    if (!box) return;
+    var items = Array.prototype.slice.call(box.querySelectorAll("[data-chat]"));
+    if (!items.length) {
+      // hero compact: 3 msgs
+      items = Array.prototype.slice.call(box.querySelectorAll(".msg"));
+    }
+    // static: full conversation visible at once, no autoplay sequencing
+    items.forEach(function (el) {
+      if (el.classList.contains("typing")) return;
+      el.classList.add("chat-item", "is-shown");
+    });
+    // without JS fallback handled via CSS (.js not present)
+  }
+  function chatSequence(m, box) {
+    var items = Array.prototype.slice.call(box.querySelectorAll("[data-chat]"));
+    if (!items.length) return;
+    var step;
+    try { step = m.stagger(0.5); }
+    catch (e) { step = function (i) { return i * 0.5; }; }
+    var lastTyping = null;
+    items.forEach(function (el, i) {
+      var at = Math.round(250 + step(i, items.length) * 1000);
+      setTimeout(function () {
+        if (lastTyping && lastTyping !== el) {
+          lastTyping.classList.remove("is-shown");
+          lastTyping = null;
+        }
+        el.classList.add("is-shown");
+        if (el.classList.contains("typing")) lastTyping = el;
+      }, at);
+    });
+    // safety: спрятать висящий typing в конце
+    var endAt = Math.round(250 + step(items.length, items.length) * 1000) + 900;
+    setTimeout(function () {
+      if (lastTyping) { lastTyping.classList.remove("is-shown"); lastTyping = null; }
+    }, endAt);
+  }
+  function initChat() {
+    var aiBox = document.getElementById("chat-demo");
+    if (aiBox) {
+      if (reducedMotion || !("IntersectionObserver" in window)) {
+        setupBoxInstant(aiBox);
+      } else {
+        // hidden prep: только chat-item, is-shown ставит секвенс (или fallback)
+        Array.prototype.slice.call(aiBox.querySelectorAll("[data-chat]")).forEach(function (el) {
+          el.classList.add("chat-item");
+        });
+        motionPromise.then(function (m) {
+          if (!m) { setupBoxInstant(aiBox); return; }
+          var started = false;
+          var stop = null;
+          try {
+            stop = m.inView(aiBox, function () {
+              if (started) return; started = true;
+              try { if (stop) stop(); } catch (e) {}
+              chatSequence(m, aiBox);
+            }, { amount: 0.3 });
+          } catch (e) { setupBoxInstant(aiBox); return; }
+          // safety: если inView не сработал за 6с — показать всё
+          setTimeout(function () {
+            if (!started) {
+              started = true;
+              try { if (stop) stop(); } catch (e) {}
+              setupBoxInstant(aiBox);
+            }
+          }, 6000);
+        });
+      }
+    }
+    var heroBox = document.querySelector(".phone-mini .phone-screen");
+    if (heroBox) {
+      // hero is showcase — keep messages visible, no chat-item logic
+      var heroMsgs = heroBox.querySelectorAll(".msg");
+      heroMsgs.forEach(function(el){
+        el.classList.remove("chat-item");
+        el.classList.add("show");
+        el.style.visibility = "visible";
+        el.style.opacity = "1";
+        el.style.transform = "none";
+      });
+      var heroCard = heroBox.querySelector(".booking-card");
+      if (heroCard) {
+        heroCard.classList.remove("chat-item");
+        heroCard.classList.add("show");
+        heroCard.style.visibility = "visible";
+        heroCard.style.opacity = "1";
+        heroCard.style.transform = "none";
+      }
+    }
+  }
+
+  /* ---------- Timeline — сегменты между кружками ---------- */
+  function initTimeline() {
+    var tl = document.getElementById("timeline");
+    if (!tl) return;
+    var items = tl.querySelectorAll("li");
+    if (!items.length) return;
+    // без JS и reduced-motion — всё заполнено
+    if (!doc.documentElement.classList.contains('js') || reducedMotion) {
+      items.forEach(function(li){ li.classList.add('is-done'); li.classList.add('is-active'); li.style.setProperty('--f','1'); });
+      return;
+    }
+    var motionFill = false;
+    var ticking = false;
+    function update(){
+      var vh = window.innerHeight;
+      var refY = vh * 0.55;
+      var centers = [];
+      for (var i=0;i<items.length;i++){
+        var circle = items[i].querySelector('.step-num');
+        var r = circle ? circle.getBoundingClientRect() : items[i].getBoundingClientRect();
+        centers.push(r.top + r.height/2);
+      }
+      // set is-done / is-active and --f per segment
+      for (var k=0;k<items.length;k++){
+        var cy = centers[k];
+        var isReached = refY >= cy;
+        var isActive = false;
+        if (isReached) {
+          // last reached
+          var nextCy = centers[k+1];
+          if (k === items.length-1 || refY < nextCy) isActive = true;
+        }
+        items[k].classList.toggle('is-done', isReached && !isActive);
+        items[k].classList.toggle('is-active', isActive);
+        // segment k -> k+1 (заливка: Motion scroll, иначе ручной расчёт)
+        if (k < items.length-1 && !motionFill) {
+          var next = centers[k+1];
+          var f = 0;
+          if (refY <= cy) f = 0;
+          else if (refY >= next) f = 1;
+          else f = (refY - cy) / (next - cy);
+          f = Math.max(0, Math.min(1, f));
+          items[k].style.setProperty('--f', f.toFixed(3));
+        }
+      }
+      ticking = false;
+    }
+    function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(update); } }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    window.addEventListener('resize', onScroll);
+    if ('ResizeObserver' in window) new ResizeObserver(onScroll).observe(tl);
+    // also observe font load
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(update);
+    update();
+    // заливка --f через Motion scroll (классы остаются на ручной логике выше)
+    motionPromise.then(function (m) {
+      if (!m || reducedMotion) return;
+      motionFill = true;
+      try {
+        items.forEach(function (li, k) {
+          if (k >= items.length - 1) return;
+          m.scroll(m.animate(li, { "--f": [0, 1] }, { ease: "linear" }), { target: li, offset: ["start center", "end center"] });
+        });
+      } catch (e) { motionFill = false; }
+      update();
+    });
+  }
+
+  /* ---------- FAQ ---------- */
+  function initFaq() {
+    document.querySelectorAll(".faq-item").forEach(function (item) {
+      var btn = item.querySelector(".faq-question");
+      var answer = item.querySelector(".faq-answer");
+      if (!btn || !answer) return;
+      btn.addEventListener("click", function () {
+        var open = item.classList.contains("is-open");
+        document.querySelectorAll(".faq-item.is-open").forEach(function (other) {
+          other.classList.remove("is-open");
+          other.querySelector(".faq-question").setAttribute("aria-expanded", "false");
+          other.querySelector(".faq-answer").setAttribute("hidden", "");
+        });
+        if (!open) {
+          item.classList.add("is-open");
+          btn.setAttribute("aria-expanded", "true");
+          answer.removeAttribute("hidden");
+        }
+      });
+    });
+  }
+
+  /* ---------- Форма — фикс курсора и radio ---------- */
+  function initFormCursorFix() {
+    var form = doc.getElementById('lead-form');
+    if (!form) return;
+    form.addEventListener('mouseenter', function(){ doc.body.classList.add('form-hover'); });
+    form.addEventListener('mouseleave', function(){ doc.body.classList.remove('form-hover'); });
+    // also disable magnetic on ancestors
+    var magnetics = form.querySelectorAll('.magnetic');
+    magnetics.forEach(function(el){ el.classList.remove('magnetic'); });
+  }
+
+  /* ---------- Форма ---------- */
+  function sendLead(data) {
+    return fetch("/api/lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    }).then(function (res) {
+      if (!res.ok) throw new Error("send failed: " + res.status);
+      return res.json();
+    });
+  }
+  function initForm() {
+    var form = doc.getElementById("lead-form");
+    if (!form) return;
+    var hint = form.querySelector(".form-hint");
+    var btn = form.querySelector("button[type='submit']");
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var data = {
+        name: form.name.value.trim(),
+        contact: form.contact.value.trim(),
+        interest: form.interest.value,
+        description: form.description.value.trim(),
+        website: form.website.value,
+        consent: form.consent.checked
+      };
+      if (!data.name || !data.contact) {
+        if (hint) {
+          hint.classList.remove("is-success");
+          hint.classList.add("is-error");
+          hint.textContent = "Заполните имя и контакт.";
+        }
+        return;
+      }
+      if (!data.consent) {
+        if (hint) {
+          hint.classList.remove("is-success");
+          hint.classList.add("is-error");
+          hint.textContent = "Отметьте согласие на обработку персональных данных.";
+        }
+        return;
+      }
+      if (btn) { btn.disabled = true; btn.textContent = "Отправляем…"; }
+      if (hint) {
+        hint.classList.remove("is-success", "is-error");
+        hint.textContent = "";
+      }
+      sendLead(data).then(function (res) {
+        // check if res is json and ok
+        if (hint) {
+          hint.classList.remove("is-error");
+          hint.classList.add("is-success");
+          hint.textContent = "Заявка отправлена! Ответим в течение нескольких часов.";
+        }
+        form.reset();
+        if (btn) { btn.disabled = false; btn.textContent = "Отправить заявку"; }
+      }).catch(function () {
+        // The website flow must stay on-site. Telegram is sent only server-side.
+        if (hint) {
+          hint.classList.remove("is-success");
+          hint.classList.add("is-error");
+          hint.textContent = "Не удалось отправить заявку. Попробуйте ещё раз.";
+        }
+        if (btn) { btn.disabled = false; btn.textContent = "Повторить"; }
+      });
+      // also handle non-ok res
+      // if fetch returns 404, it will be caught as error above via res.ok check in sendLead
+    });
+  }
+
+  /* ---------- Год ---------- */
+  function initYear() {
+    var el = doc.getElementById("year");
+    if (el) el.textContent = String(new Date().getFullYear());
+  }
+
+  /* ---------- Intro ---------- */
+  function initIntro() {
+    var intro = doc.getElementById("intro");
+    if (!intro) return;
+    try {
+      if (sessionStorage.getItem("bl-intro") || reducedMotion) {
+        intro.remove();
+        return;
+      }
+      sessionStorage.setItem("bl-intro", "1");
+    } catch (err) {
+      intro.remove();
+      return;
+    }
+    setTimeout(function () { intro.remove(); }, 1400);
+  }
+
+  /* ---------- Magnetic CTA (hero + pricing, только pointer:fine) ---------- */
+  function initMagnetic() {
+    motionPromise.then(function (m) {
+      if (!m || reducedMotion) return;
+      var fine = window.matchMedia && window.matchMedia("(pointer:fine)").matches;
+      if (!fine) return;
+      var els = [];
+      Array.prototype.forEach.call(doc.querySelectorAll(".hero-cta .btn-accent"), function (el) { els.push(el); });
+      Array.prototype.forEach.call(doc.querySelectorAll(".price-row--accent .btn-accent"), function (el) { els.push(el); });
+      els.forEach(function (el) {
+        el.classList.add("mag-motion");
+        var raf = false, tx = 0, ty = 0;
+        function render() {
+          raf = false;
+          playMo(m, el, { x: tx, y: ty }, { type: "spring", stiffness: 200, damping: 18 });
+        }
+        function queue(nx, ny) {
+          tx = nx; ty = ny;
+          if (!raf) { raf = true; window.requestAnimationFrame(render); }
+        }
+        el.addEventListener("pointermove", function (e) {
+          var r = el.getBoundingClientRect();
+          queue(((e.clientX - r.left) / r.width - 0.5) * 12, ((e.clientY - r.top) / r.height - 0.5) * 12);
+        });
+        el.addEventListener("pointerleave", function () { queue(0, 0); });
+        el.addEventListener("pointercancel", function () { queue(0, 0); });
+      });
+    });
+  }
+
+  /* ---------- Init ---------- */
+  doc.addEventListener("DOMContentLoaded", function () {
+    initAnchors();
+    var intro = doc.getElementById("intro");
+    if (intro) intro.remove();
+    initNav();
+    initMenu();
+    initLogo();
+    if (reducedMotion) { heroShow(); }
+    else { motionPromise.then(function (m) { if (m) heroCascade(m); else heroShow(); }); }
+    initFormCursorFix();
+    initReveal();
+    initWork();
+    initChat();
+    initTimeline();
+    initFaq();
+    initForm();
+    initYear();
+    initMagnetic();
+    motionPromise.then(function (m) { window.__motion = m || null; });
+  });
+})();
