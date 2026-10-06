@@ -303,9 +303,13 @@
       });
       // panels: show one, hide others via hidden + visibility
       var panelData = [
-        {num:"01", type:"ЛЕНДИНГ", title:"Кофейня «Дәме»", desc:"Меню, отзывы и форма заявки в одном понятном сайте.", tags:["Меню в ₸","Адаптив","Форма заявки"], meta:["от 69 000 ₸","5–10 дней"], href:"https://bess1lie.github.io/cafe-demo/"},
-        {num:"02", type:"КОРПОРАТИВНЫЙ САЙТ", title:"Барбершоп «Жігіт»", desc:"Услуги, мастера, прайс и онлайн-запись в одном месте.", tags:["Мастера","Онлайн-запись"], meta:["от 129 000 ₸","от 14 дней"], href:"https://bess1lie.github.io/barbershop-demo/"},
-        {num:"03", type:"САЙТ С КАТАЛОГОМ", title:"Мастерская «Ағаш»", desc:"Каталог изделий, фильтры и калькулятор стоимости.", tags:["Каталог","Калькулятор"], meta:["от 189 000 ₸","от 20 дней"], href:"https://bess1lie.github.io/furniture-demo/"}
+        {num:"01", type:"ЛЕНДИНГ", title:"Кофейня «Дәме»", desc:"Меню, отзывы и форма заявки в одном понятном сайте.", tags:["Меню в ₸","Адаптив","Форма заявки"], meta:["от 69 000 ₸","5–10 дней"], href:"https://bess1lie.github.io/cafe-demo-v2/"},
+        {num:"02", type:"КОРПОРАТИВНЫЙ САЙТ", title:"Барбершоп «Жігіт»", desc:"Услуги, мастера, прайс и онлайн-запись в одном месте.", tags:["Мастера","Онлайн-запись"], meta:["от 129 000 ₸","от 14 дней"], href:"https://bess1lie.github.io/barbershop-demo-v2/"},
+        {num:"03", type:"САЙТ С КАТАЛОГОМ", title:"Мастерская «Ағаш»", desc:"Каталог изделий, фильтры и калькулятор стоимости.", tags:["Каталог","Калькулятор"], meta:["от 189 000 ₸","от 20 дней"], href:"https://bess1lie.github.io/furniture-demo/"},
+        {num:"04", type:"ЛЕНДИНГ", title:"Салон «SENNE»", desc:"Услуги, мастера и запись в одном спокойном сайте.", tags:["Услуги","Мастера","Запись"], meta:["от 69 000 ₸","5–10 дней"], href:"https://bess1lie.github.io/salon-demo/"},
+        {num:"05", type:"ЛЕНДИНГ", title:"Медцентр «Тихий берег»", desc:"Услуги, врачи и запись на приём без лишнего.", tags:["Услуги","Врачи","Запись"], meta:["от 69 000 ₸","5–10 дней"], href:"https://bess1lie.github.io/med-demo/"},
+        {num:"06", type:"ЛЕНДИНГ", title:"Студия «SLOPE»", desc:"Направления, расписание и цены в одном ритме.", tags:["Направления","Расписание","Цены"], meta:["от 69 000 ₸","5–10 дней"], href:"https://bess1lie.github.io/fit-demo/"},
+        {num:"07", type:"ЛЕНДИНГ", title:"Школа «Контур»", desc:"Программа, формат обучения и запись на пробный урок.", tags:["Программа","Формат","Пробный урок"], meta:["от 69 000 ₸","5–10 дней"], href:"https://bess1lie.github.io/edu-demo/"}
       ];
       var panelNum = document.getElementById("work-panel-num");
       var panelType = document.getElementById("work-panel-type");
@@ -333,18 +337,26 @@
       }
       var moI = window.__motion || null;
       var useMotionImg = !!(moI && !reducedMotion);
-      if (useMotionImg) shotsBrowser.forEach(function (s) { s.style.transition = "none"; });
+      // race-guard: settle all shots to hidden/off first so rapid tab clicks never show a stale frame
+      shotsBrowser.forEach(function (s) {
+        try { s.getAnimations().forEach(function (a) { a.cancel(); }); } catch (e) {}
+        s.style.transition = "none";
+        s.setAttribute("hidden","");
+        s.style.opacity = "0";
+        s.style.transform = "translateY(10px) scale(.985)";
+        s.style.filter = "blur(3px)";
+      });
+      if (scene) { void scene.offsetHeight; }
       shotsBrowser.forEach(function(s){
         var on = Number(s.getAttribute("data-shot"))===i;
-        if (on) s.removeAttribute("hidden"); else s.setAttribute("hidden","");
+        if (on) s.removeAttribute("hidden");
         if (useMotionImg && on) {
           if (!playMo(moI, s, { opacity: [0, 1], transform: ["translateY(10px) scale(.985)", "translateY(0px) scale(1)"], filter: ["blur(3px)", "blur(0px)"] }, { duration: 0.55, ease: "easeOut" })) {
             s.style.opacity = "1"; s.style.transform = "none"; s.style.filter = "blur(0)";
           }
-        } else {
-          s.style.opacity = on ? "1" : "0";
-          s.style.transform = on ? "none" : "translateY(10px) scale(.985)";
-          s.style.filter = on ? "blur(0)" : "blur(3px)";
+        } else if (on) {
+          s.style.transition = "";
+          s.style.opacity = "1"; s.style.transform = "none"; s.style.filter = "blur(0)";
         }
       });
       if (dots.length) {
